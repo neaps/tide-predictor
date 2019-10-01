@@ -1,30 +1,24 @@
+import harmonics from '../harmonics'
+
 class station {
   constructor(stationInfo) {
     this.harmonics = []
-    this.requiredFields = [
-      'name',
-      'amplitude',
-      'phase_GMT',
-      'phase_local',
-      'speed'
-    ]
+    this.isSubordinate = false
+
     if (stationInfo) {
-      this.setHarmonics(stationInfo.HarmonicConstituents)
+      this.setHarmonicConstituents(stationInfo.HarmonicConstituents)
+      if (typeof stationInfo.isSubordinate !== 'undefined') {
+        this.setIsSubordinate(stationInfo.isSubordinate)
+      }
     }
   }
 
-  setHarmonics(harmonics) {
-    if (!Array.isArray(harmonics)) {
-      throw 'Harmonics data is not an array'
-    }
-    harmonics.forEach(harmonicEntry => {
-      this.requiredFields.forEach(field => {
-        if (typeof harmonicEntry[field] === 'undefined') {
-          throw `Harmonic entry missing field ${field}`
-        }
-      })
-    })
-    this.harmonics = harmonics
+  setIsSubordinate(isSubordinate) {
+    this.isSubordinate = isSubordinate
+  }
+
+  setHarmonicConstituents(constituents) {
+    this.harmonics = new harmonics(constituents)
   }
 
   getHarmonics() {

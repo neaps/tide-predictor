@@ -1,4 +1,26 @@
-class harmonics {}
+class harmonics {
+  constructor(constituents) {
+    this.requiredFields = [
+      'name',
+      'amplitude',
+      'phase_GMT',
+      'phase_local',
+      'speed'
+    ]
+
+    if (!Array.isArray(constituents)) {
+      throw 'Harmonic constituents are not an array'
+    }
+
+    constituents.forEach(constituent => {
+      this.requiredFields.forEach(field => {
+        if (typeof constituent[field] === 'undefined') {
+          throw `Harmonic constituent entry missing field ${field}`
+        }
+      })
+    })
+  }
+}
 
 const harmonicTypes = {
   M2: 'Principal lunar semidiurnal constituent',
