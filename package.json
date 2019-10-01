@@ -1,0 +1,31 @@
+{
+  "name": "js-tides",
+  "version": "0.0.1",
+  "description": "Tide predictor",
+  "main": "index.js",
+  "repository": "https://github.com/kevee/js-tides",
+  "author": "Kevin Miller <keveemiller@gmail.com>",
+  "license": "MIT",
+  "module": "./lib/index.es6.js",
+  "browser": "./dist/tidely.js",
+  "dependencies": {
+    "@babel/core": "^7.6.2",
+    "@babel/preset-env": "^7.6.2",
+    "babel-preset-env": "^1.7.0",
+    "grunt": "^1.0.4",
+    "grunt-babel": "^8.0.0",
+    "grunt-contrib-clean": "^2.0.0",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-uglify": "^4.0.1",
+    "grunt-contrib-watch": "^1.1.0",
+    "grunt-exec": "^3.0.0",
+    "rollup-plugin-babel": "^4.3.3"
+  },
+  "devDependencies": {
+    "babel-jest": "^24.9.0",
+    "jest": "^24.9.0"
+  },
+  "scripts": {
+    "test": "jest"
+  }
+}
