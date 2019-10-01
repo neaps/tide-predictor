@@ -1,8 +1,11 @@
-import harmonics, { harmonicTypes } from '../index'
+import harmonics from '../index'
+import constituentTypes from '../constituent-types'
+import mockHarmonicConstituents from '../__mocks__/constituents'
+import moment from 'moment'
 
-test('harmonicTypes has types defined', () => {
-  expect(harmonicTypes.M2).toBeDefined()
-  expect(harmonicTypes.M3).toBe('Lunar terdiurnal constituent')
+test('constituentTypes has types defined', () => {
+  expect(constituentTypes.M2).toBeDefined()
+  expect(constituentTypes.M3).toBe('Lunar terdiurnal constituent')
 })
 
 test('harmonics constituents are valid', () => {
@@ -38,4 +41,25 @@ test('harmonics constituents are valid', () => {
     errorMessage = error
   }
   expect(errorMessage).toBe('Harmonic constituent entry missing field speed')
+})
+
+test('start and end times are set correctly', () => {
+  const testHarmonics = new harmonics(mockHarmonicConstituents)
+  let timeErrorMessage = false
+  try {
+    testHarmonics.setTimeSpan('lkjsdlf', 'sdfklj')
+  } catch (error) {
+    timeErrorMessage = error
+  }
+  expect(timeErrorMessage).toBe(
+    'Invalid date format, should be a moment object, Date object, or timestamp'
+  )
+
+  timeErrorMessage = false
+  try {
+    testHarmonics.setTimeSpan(moment(), moment())
+  } catch (error) {
+    timeErrorMessage = error
+  }
+  expect(timeErrorMessage).toBe(false)
 })
