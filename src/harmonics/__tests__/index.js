@@ -3,6 +3,9 @@ import constituentTypes from '../constituent-types'
 import mockHarmonicConstituents from '../__mocks__/constituents'
 import moment from 'moment'
 
+const startDate = moment.unix(1569966078) //2019-10-01
+const endDate = moment.unix(1567346400) //2019-09-01
+
 test('constituentTypes has types defined', () => {
   expect(constituentTypes.M2).toBeDefined()
   expect(constituentTypes.M3).toBe('Lunar terdiurnal constituent')
@@ -61,5 +64,21 @@ test('start and end times are set correctly', () => {
   } catch (error) {
     timeErrorMessage = error
   }
-  expect(timeErrorMessage).toBe(false)
+  expect(timeErrorMessage).toBeFalsy()
+
+  timeErrorMessage = false
+  try {
+    const harmonicsNoTime = new harmonics(mockHarmonicConstituents)
+    harmonicsNoTime.getStartYear()
+  } catch (error) {
+    timeErrorMessage = error
+  }
+  expect(timeErrorMessage).toBe('Start date is not yet set')
+})
+
+test('harmonics finds the correct start of year', () => {
+  const harmonicsTime = new harmonics(mockHarmonicConstituents)
+  harmonicsTime.setTimeSpan(startDate, endDate)
+
+  expect(harmonicsTime.getStartYear()).toBe(1546311600)
 })
