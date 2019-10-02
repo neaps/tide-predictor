@@ -13,3 +13,6 @@ jobs:
           command: 'yarn run circleci'
           environment:
             JEST_JUNIT_OUTPUT: 'reports/junit/js-test-results.xml'
+      - run:
+          name: coverage
+          command: 'yarn run coverage; grunt coveralls;'

@@ -58,6 +58,15 @@ module.exports = function(grunt) {
         files: ['src/**/*.js', 'test/**/*.js'],
         tasks: ['exec:test']
       }
+    },
+    coveralls: {
+      options: {
+        force: false
+      },
+
+      coverage: {
+        src: 'coverage/lcov.info'
+      }
     }
   })
   this.registerTask(
@@ -71,4 +80,5 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch')
   grunt.loadNpmTasks('grunt-babel')
   grunt.loadNpmTasks('grunt-exec')
+  grunt.loadNpmTasks('grunt-coveralls')
 }

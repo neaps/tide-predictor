@@ -9,15 +9,14 @@
   "module": "./lib/index.es6.js",
   "browser": "./dist/tidely.js",
   "dependencies": {
+    "grunt-coveralls": "^2.0.0",
     "moment": "^2.24.0",
     "numjs": "^0.16.0"
   },
   "devDependencies": {
-    "babel-jest": "^24.9.0",
-    "jest": "^24.9.0",
-    "rollup-plugin-babel": "^4.3.3",
     "@babel/core": "^7.6.2",
     "@babel/preset-env": "^7.6.2",
+    "babel-jest": "^24.9.0",
     "babel-preset-env": "^1.7.0",
     "grunt": "^1.0.4",
     "grunt-babel": "^8.0.0",
@@ -26,7 +25,9 @@
     "grunt-contrib-uglify": "^4.0.1",
     "grunt-contrib-watch": "^1.1.0",
     "grunt-exec": "^3.0.0",
-    "jest-junit": "^8.0.0"
+    "jest": "^24.9.0",
+    "jest-junit": "^8.0.0",
+    "rollup-plugin-babel": "^4.3.3"
   },
   "scripts": {
     "test": "jest",
