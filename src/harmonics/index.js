@@ -37,6 +37,9 @@ class harmonics {
   setTimeSpan(start, end) {
     this.start = this.getMomentFromDate(start)
     this.end = this.getMomentFromDate(end)
+    if (this.start.isSameOrAfter(this.end)) {
+      throw 'Start time must be before end time'
+    }
   }
 
   /**
@@ -65,6 +68,23 @@ class harmonics {
       throw 'Start date is not yet set'
     }
     return moment(`${this.start.year()}-01-01`, 'YYYY-MM-DD').unix()
+  }
+
+  /**
+   * Returns an array of unix timestamps between start and end
+   * times, divided by number of seconds. Defaults to 10 minutes.
+   * @param {number} seconds
+   */
+  timeline(seconds) {
+    seconds = typeof seconds !== 'undefined' ? seconds : 10 * 60
+    const timeline = []
+    const end = this.end.unix()
+    let lastTime = this.start.unix()
+    while (lastTime <= end) {
+      timeline.push(lastTime)
+      lastTime += seconds
+    }
+    if (lastTime) return timeline
   }
 }
 

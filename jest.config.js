@@ -1,6 +1,5 @@
 module.exports = {
-  notify: true,
-  verbose: true,
+  verbose: false,
   testPathIgnorePatterns: [
     `<rootDir>/examples/`,
     `<rootDir>/lib/`,

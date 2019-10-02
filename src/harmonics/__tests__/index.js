@@ -3,8 +3,8 @@ import constituentTypes from '../constituent-types'
 import mockHarmonicConstituents from '../__mocks__/constituents'
 import moment from 'moment'
 
-const startDate = moment.unix(1569966078) //2019-10-01
-const endDate = moment.unix(1567346400) //2019-09-01
+const startDate = moment.unix(1567346400) //2019-09-01
+const endDate = moment.unix(1569966078) //2019-10-01
 
 test('constituentTypes has types defined', () => {
   expect(constituentTypes.M2).toBeDefined()
@@ -60,7 +60,15 @@ test('start and end times are set correctly', () => {
 
   timeErrorMessage = false
   try {
-    testHarmonics.setTimeSpan(moment(), moment())
+    testHarmonics.setTimeSpan(startDate, startDate)
+  } catch (error) {
+    timeErrorMessage = error
+  }
+  expect(timeErrorMessage).toBe('Start time must be before end time')
+
+  timeErrorMessage = false
+  try {
+    testHarmonics.setTimeSpan(startDate, endDate)
   } catch (error) {
     timeErrorMessage = error
   }
@@ -81,4 +89,13 @@ test('harmonics finds the correct start of year', () => {
   harmonicsTime.setTimeSpan(startDate, endDate)
 
   expect(harmonicsTime.getStartYear()).toBe(1546311600)
+})
+
+test('harmonics spreads time correctly', () => {
+  const seconds = 20 * 60
+  const harmonicsTime = new harmonics(mockHarmonicConstituents)
+  harmonicsTime.setTimeSpan(startDate, endDate)
+  const difference =
+    Math.round((endDate.unix() - startDate.unix()) / seconds) + 1
+  expect(harmonicsTime.timeline(seconds).length).toBe(difference)
 })
