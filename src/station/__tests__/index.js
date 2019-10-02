@@ -9,4 +9,5 @@ test('station setup and test valid harmonics', () => {
     stationCreated = false
   }
   expect(stationCreated).toBeTruthy()
+  expect(stationCreated.isSubordinate).toBeFalsy()
 })

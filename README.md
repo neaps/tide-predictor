@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/neaps/tide-predictor.svg?style=svg)](https://circleci.com/gh/neaps/tide-predictor)
+[![CircleCI](https://circleci.com/gh/neaps/tide-predictor.svg?style=svg)](https://circleci.com/gh/neaps/tide-predictor) [![Coverage Status](https://coveralls.io/repos/github/neaps/tide-predictor/badge.svg?branch=master)](https://coveralls.io/github/neaps/tide-predictor?branch=master)
 
 ## Tide predictor
 

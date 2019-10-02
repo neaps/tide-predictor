@@ -7,9 +7,11 @@ class station {
 
     if (stationInfo) {
       this.setHarmonicConstituents(stationInfo.HarmonicConstituents)
-      if (typeof stationInfo.isSubordinate !== 'undefined') {
-        this.setIsSubordinate(stationInfo.isSubordinate)
-      }
+      this.setIsSubordinate(
+        typeof stationInfo.isSubordinate !== 'undefined'
+          ? stationInfo.isSubordinate
+          : false
+      )
     }
   }
 
@@ -19,10 +21,6 @@ class station {
 
   setHarmonicConstituents(constituents) {
     this.harmonics = new harmonics(constituents)
-  }
-
-  getHarmonics() {
-    return this.harmonics
   }
 }
 

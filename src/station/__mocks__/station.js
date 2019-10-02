@@ -1,6 +1,7 @@
 export default {
   name: 'Test station',
   units: 'feet',
+  isSubordinate: false,
   HarmonicConstituents: [
     {
       number: 1,
