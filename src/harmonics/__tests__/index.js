@@ -88,7 +88,7 @@ test('harmonics finds the correct start of year', () => {
   const harmonicsTime = new harmonics(mockHarmonicConstituents)
   harmonicsTime.setTimeSpan(startDate, endDate)
 
-  expect(harmonicsTime.getStartYear()).toBe(1546311600)
+  expect(harmonicsTime.getStartYear()).toBe(moment('2019-01-01').unix())
 })
 
 test('harmonics creates timeline correctly', () => {
