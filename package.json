@@ -30,6 +30,7 @@
   },
   "scripts": {
     "test": "jest",
-    "coverage": "jest --coverage"
+    "coverage": "jest --coverage",
+    "circleci": "jest --ci --runInBand --reporters=default --reporters=jest-junit"
   }
 }

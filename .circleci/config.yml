@@ -7,9 +7,9 @@ jobs:
       - checkout
       - run:
           name: install
-          command: 'yarn install'
+          command: 'yarn install --production=false'
       - run:
           name: test
-          command: 'jest --ci --runInBand --reporters=default --reporters=jest-junit'
+          command: 'yarn run circleci'
           environment:
             JEST_JUNIT_OUTPUT: 'reports/junit/js-test-results.xml'
