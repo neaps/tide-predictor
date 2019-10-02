@@ -1,4 +1,4 @@
-## Tidely
+## Tide predictor
 
 A Javascript tide harmonic calculator.
 
