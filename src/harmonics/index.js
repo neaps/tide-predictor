@@ -1,6 +1,10 @@
 import moment from 'moment'
-import constituentTypes from './constituent-types'
+import nj from 'numjs'
+import prediction from './prediction'
 import { isNumber } from 'util'
+
+const d2r = Math.PI / 180.0
+const r2d = 180.0 / Math.PI
 
 class harmonics {
   /**
@@ -27,6 +31,8 @@ class harmonics {
         }
       })
     })
+
+    this.constituents = constituents
   }
 
   /**
@@ -71,8 +77,10 @@ class harmonics {
   }
 
   /**
-   * Returns an array of unix timestamps between start and end
+   * Returns unix timestamps between start and end
    * times, divided by number of seconds. Defaults to 10 minutes.
+   * Also returns an array of raw hours between those times for
+   * heruristic modeling.
    * @param {number} seconds
    */
   timeline(seconds) {
@@ -80,11 +88,30 @@ class harmonics {
     const timeline = []
     const end = this.end.unix()
     let lastTime = this.start.unix()
+    const hours = nj.arange((end - lastTime) / 60)
+
     while (lastTime <= end) {
       timeline.push(lastTime)
       lastTime += seconds
     }
-    if (lastTime) return timeline
+    if (lastTime < end) {
+      timeline.push(end)
+    }
+
+    return {
+      unixTimestamps: timeline,
+      hours: hours.tolist()
+    }
+  }
+
+  /**
+   * Returns a prediction class
+   */
+  getPrediction() {
+    return new prediction({
+      timeline: this.timeline(),
+      constituents: this.constituents
+    })
   }
 }
 

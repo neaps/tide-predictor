@@ -91,11 +91,15 @@ test('harmonics finds the correct start of year', () => {
   expect(harmonicsTime.getStartYear()).toBe(1546311600)
 })
 
-test('harmonics spreads time correctly', () => {
+test('harmonics creates timeline correctly', () => {
   const seconds = 20 * 60
   const harmonicsTime = new harmonics(mockHarmonicConstituents)
   harmonicsTime.setTimeSpan(startDate, endDate)
   const difference =
     Math.round((endDate.unix() - startDate.unix()) / seconds) + 1
-  expect(harmonicsTime.timeline(seconds).length).toBe(difference)
+  const { unixTimestamps, hours } = harmonicsTime.timeline(seconds)
+  expect(unixTimestamps.length).toBe(difference)
+  expect(hours.length).toBe(
+    Math.round((endDate.unix() - startDate.unix()) / 60) + 1
+  )
 })
