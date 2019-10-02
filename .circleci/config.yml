@@ -3,8 +3,8 @@ jobs:
   build:
     docker:
       - image: circleci/node:10.16.3
-  steps:
-    - checkout
-    - run:
-        name: test
-        command: 'grunt build'
+    steps:
+      - checkout
+      - run:
+          name: test
+          command: 'grunt build'
