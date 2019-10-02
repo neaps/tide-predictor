@@ -19,6 +19,7 @@
     "grunt-contrib-uglify": "^4.0.1",
     "grunt-contrib-watch": "^1.1.0",
     "grunt-exec": "^3.0.0",
+    "jest-junit": "^8.0.0",
     "moment": "^2.24.0",
     "numjs": "^0.16.0",
     "rollup-plugin-babel": "^4.3.3"

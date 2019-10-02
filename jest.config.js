@@ -1,5 +1,6 @@
 module.exports = {
   verbose: false,
+  reporters: ['default', 'jest-junit'],
   testPathIgnorePatterns: [
     `<rootDir>/examples/`,
     `<rootDir>/lib/`,
