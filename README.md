@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/neaps/tide-predictor.svg?style=svg)](https://circleci.com/gh/neaps/tide-predictor)
+
 ## Tide predictor
 
 A Javascript tide harmonic calculator.
