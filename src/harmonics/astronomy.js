@@ -25,7 +25,24 @@ const sexagesimalToDecimal = (
 
 //Evaluates a polynomial at argument
 const polynomial = (coefficients, argument) => {
-  // return sum([c * (argument ** i) for i,c in enumerate(coefficients)])
+  let result = []
+  coefficients.forEach((coefficient, index) => {
+    result.push(coefficient * Math.pow(argument, index))
+  })
+  return result.reduce((a, b) => {
+    return a + b
+  })
+}
+
+//Evaluates a derivative polynomial at argument
+const derivativePolynomial = (coefficients, argument) => {
+  let result = []
+  coefficients.forEach((coefficient, index) => {
+    result.push(coefficient * index * Math.pow(argument, index - 1))
+  })
+  return result.reduce((a, b) => {
+    return a + b
+  })
 }
 
 //Meeus formula 21.3
@@ -45,4 +62,9 @@ const terrestrialObliquityCoefficients = [
   return number * Math.pow(1e-2, index)
 })
 
-export { sexagesimalToDecimal, polynomial, terrestrialObliquityCoefficients }
+export {
+  sexagesimalToDecimal,
+  polynomial,
+  derivativePolynomial,
+  terrestrialObliquityCoefficients
+}
