@@ -1,7 +1,5 @@
 import nj from 'numjs'
-
-const d2r = Math.PI / 180.0
-const r2d = 180.0 / Math.PI
+import { d2r } from './constants'
 
 export default {
   unity() {

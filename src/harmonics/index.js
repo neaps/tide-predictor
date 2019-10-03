@@ -3,9 +3,6 @@ import nj from 'numjs'
 import prediction from './prediction'
 import { isNumber } from 'util'
 
-const d2r = Math.PI / 180.0
-const r2d = 180.0 / Math.PI
-
 class harmonics {
   /**
    * Sets up a new harmonics class.
