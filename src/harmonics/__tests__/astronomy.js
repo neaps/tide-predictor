@@ -4,7 +4,8 @@ import {
   derivativePolynomial,
   JD,
   T,
-  terrestrialObliquityCoefficients
+  terrestrialObliquityCoefficients,
+  _I
 } from '../astronomy'
 
 const sampleTime = {
@@ -36,6 +37,10 @@ describe('astronomy', () => {
 
   test('evaluates Meeus formula 11.1 (T) correctly', () => {
     expect(T(sampleTime)).toBeCloseTo(0.19756132, 2)
+  })
+
+  test('evaluates value for _I correctly', () => {
+    expect(_I(4, 10, 5)).toBeCloseTo(14.9918364991, 2)
   })
 
   test('calculates terrestrial oliquity coefficients rewritten to T', () => {
