@@ -45,6 +45,36 @@ const derivativePolynomial = (coefficients, argument) => {
   })
 }
 
+//Meeus formula 11.1
+const T = t => {
+  return (JD(t) - 2451545.0) / 36525
+}
+
+// Meeus formula 7.1
+const JD = t => {
+  const Y = t.year
+  const M = t.month
+  const D =
+    t.day +
+    t.hour / 24.0 +
+    t.minute / (24.0 * 60.0) +
+    t.second / (24.0 * 60.0 * 60.0) +
+    t.microsecond / (24.0 * 60.0 * 60.0 * 1e6)
+  if (M <= 2) {
+    Y = Y - 1
+    M = M + 12
+  }
+  const A = Math.floor(Y / 100.0)
+  const B = 2 - A + Math.floor(A / 4.0)
+  return (
+    Math.floor(365.25 * (Y + 4716)) +
+    Math.floor(30.6001 * (M + 1)) +
+    D +
+    B -
+    1524.5
+  )
+}
+
 //Meeus formula 21.3
 const terrestrialObliquityCoefficients = [
   sexagesimalToDecimal(23, 26, 21.448),
@@ -66,5 +96,7 @@ export {
   sexagesimalToDecimal,
   polynomial,
   derivativePolynomial,
-  terrestrialObliquityCoefficients
+  terrestrialObliquityCoefficients,
+  T,
+  JD
 }
