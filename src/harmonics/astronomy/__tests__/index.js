@@ -1,12 +1,4 @@
-import {
-  sexagesimalToDecimal,
-  polynomial,
-  derivativePolynomial,
-  JD,
-  T,
-  terrestrialObliquityCoefficients,
-  _I
-} from '../astronomy'
+import { polynomial, derivativePolynomial, JD, T, _I } from '../index'
 
 const sampleTime = {
   year: 2019,
@@ -19,10 +11,6 @@ const sampleTime = {
 }
 
 describe('astronomy', () => {
-  test('converts a sexagesimal angle into decimal degrees', () => {
-    expect(sexagesimalToDecimal(10, 10, 10, 10, 10)).toBe(10.169447225)
-  })
-
   test('evaluates a polynomial', () => {
     expect(polynomial([1, 2, 3], 3)).toBe(34)
   })
@@ -32,18 +20,19 @@ describe('astronomy', () => {
   })
 
   test('evaluates Meeus formula 7.1 (JD) correctly', () => {
+    sampleTime.month = 10
     expect(JD(sampleTime)).toBeCloseTo(2458760.92755, 2)
+    //Months of less than 2 go back a year
+    sampleTime.month = 1
+    expect(JD(sampleTime)).toBeCloseTo(2458487.92755, 2)
   })
 
   test('evaluates Meeus formula 11.1 (T) correctly', () => {
+    sampleTime.month = 10
     expect(T(sampleTime)).toBeCloseTo(0.19756132, 2)
   })
 
   test('evaluates value for _I correctly', () => {
     expect(_I(4, 10, 5)).toBeCloseTo(14.9918364991, 2)
-  })
-
-  test('calculates terrestrial oliquity coefficients rewritten to T', () => {
-    expect(terrestrialObliquityCoefficients[1]).toBe(-0.013002583333333335)
   })
 })
