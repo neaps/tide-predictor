@@ -54,7 +54,7 @@ const JD = t => {
 }
 
 /**
- * @todo - What's  with the array returned from the arccosAd?
+ * @todo - What's  with the array returned from the arccos?
  * @param {*} N
  * @param {*} i
  * @param {*} omega
@@ -65,13 +65,24 @@ const _I = (N, i, omega) => {
   omega = d2r * omega
   const cosI =
     Math.cos(i) * Math.cos(omega) - Math.sin(i) * Math.sin(omega) * Math.cos(N)
-  return (
-    r2d *
-    nj
-      .arccos(cosI)
-      .tolist()
-      .pop()
-  )
+  return r2d * Math.acos(cosI)
 }
 
-export { polynomial, derivativePolynomial, T, JD, _I }
+const _xi = (N, i, omega) => {
+  N = d2r * N
+  i = d2r * i
+  omega = d2r * omega
+  let e1 =
+    (Math.cos(0.5 * (omega - i)) / Math.cos(0.5 * (omega + i))) *
+    Math.tan(0.5 * N)
+  let e2 =
+    (Math.sin(0.5 * (omega - i)) / Math.sin(0.5 * (omega + i))) *
+    Math.tan(0.5 * N)
+  e1 = Math.atan(e1)
+  e2 = Math.atan(e2)
+  e1 = e1 - 0.5 * N
+  e2 = e2 - 0.5 * N
+  return -(e1 + e2) * r2d
+}
+
+export { polynomial, derivativePolynomial, T, JD, _I, _xi }

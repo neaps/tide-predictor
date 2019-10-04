@@ -1,4 +1,4 @@
-import { polynomial, derivativePolynomial, JD, T, _I } from '../index'
+import { polynomial, derivativePolynomial, JD, T, _I, _xi } from '../index'
 
 const sampleTime = {
   year: 2019,
@@ -34,5 +34,9 @@ describe('astronomy', () => {
 
   test('evaluates value for _I correctly', () => {
     expect(_I(4, 10, 5)).toBeCloseTo(14.9918364991, 2)
+  })
+
+  test('evaluates value for _xi correctly', () => {
+    expect(_xi(4, 3, 10)).toBeCloseTo(0.911946348144, 2)
   })
 })
