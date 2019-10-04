@@ -1,5 +1,5 @@
 import { d2r, r2d } from '../constants'
-import nj from 'numjs'
+import coefficients from './coefficients'
 
 //Evaluates a polynomial at argument
 const polynomial = (coefficients, argument) => {
@@ -125,4 +125,77 @@ const _nupp = (N, i, omega) => {
   return r2d * 0.5 * Math.atan(tan2nupp)
 }
 
+const modulus = (a, b) => {
+  return ((a % b) + b) % b
+}
+
+const astro = time => {
+  const result = {}
+  const polynomials = {
+    s: coefficients.lunarLongitude,
+    h: coefficients.solarLongitude,
+    p: coefficients.lunarPerigee,
+    N: coefficients.lunarNode,
+    pp: coefficients.solarPerigee,
+    '90': [90.0],
+    omega: coefficients.terrestrialObliquity,
+    i: coefficients.lunarInclination
+  }
+
+  // Polynomials are in T, that is Julian Centuries; we want our speeds to be
+  // in the more convenient unit of degrees per hour.
+  const dT_dHour = 1 / (24 * 365.25 * 100)
+  Object.keys(polynomials).forEach(name => {
+    result[name] = {
+      value: modulus(polynomial(polynomials[name], T(time)), 360.0),
+      speed: derivativePolynomial(polynomials[name], T(time)) * dT_dHour
+    }
+  })
+
+  // Some other parameters defined by Schureman which are dependent on the
+  // parameters N, i, omega for use in node factor calculations. We don't need
+  // their speeds.
+  const functions = {
+    I: _I,
+    xi: _xi,
+    nu: _nu,
+    nup: _nup,
+    nupp: _nupp
+  }
+  Object.keys(functions).forEach(name => {
+    const functionCall = functions[name]
+    result[name] = {
+      value: modulus(
+        functionCall(result.N.value, result.i.value, result.omega.value),
+        360.0
+      ),
+      speed: null
+    }
+  })
+
+  // We don't work directly with the T (hours) parameter, instead our spanning
+  // set for equilibrium arguments #is given by T+h-s, s, h, p, N, pp, 90.
+  // This is in line with convention.
+  const hour = {
+    value: (JD(time) - Math.floor(JD(time))) * 360.0,
+    speed: 15.0
+  }
+
+  result['T+h-s'] = {
+    value: hour.value + result.h.value - result.s.value,
+    speed: hour.speed + result.h.speed - result.s.speed
+  }
+
+  // It is convenient to calculate Schureman's P here since several node
+  // factors need it, although it could be argued that these
+  // (along with I, xi, nu etc) belong somewhere else.
+  result.P = {
+    value: result.p.value - (result.xi.value % 360.0),
+    speed: null
+  }
+
+  return result
+}
+
+export default astro
 export { polynomial, derivativePolynomial, T, JD, _I, _xi, _nu, _nup, _nupp }

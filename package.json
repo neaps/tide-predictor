@@ -9,6 +9,7 @@
   "module": "./lib/index.es6.js",
   "browser": "./dist/tidely.js",
   "dependencies": {
+    "complex-modulus": "^1.0.1",
     "grunt-coveralls": "^2.0.0",
     "moment": "^2.24.0",
     "numjs": "^0.16.0"
