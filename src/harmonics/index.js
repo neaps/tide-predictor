@@ -1,5 +1,4 @@
 import moment from 'moment'
-import nj from 'numjs'
 import prediction from './prediction'
 import { isNumber } from 'util'
 
@@ -85,8 +84,11 @@ class harmonics {
     const timeline = []
     const end = this.end.unix()
     let lastTime = this.start.unix()
-    const hours = nj.arange((end - lastTime) / 60)
-
+    const hours = []
+    const numberHours = (end - lastTime) / 60
+    for (let i = 0; i < numberHours; i++) {
+      hours.push(i)
+    }
     while (lastTime <= end) {
       timeline.push(lastTime)
       lastTime += seconds
@@ -97,7 +99,7 @@ class harmonics {
 
     return {
       unixTimestamps: timeline,
-      hours: hours.tolist()
+      hours: hours
     }
   }
 
