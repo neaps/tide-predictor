@@ -85,4 +85,44 @@ const _xi = (N, i, omega) => {
   return -(e1 + e2) * r2d
 }
 
-export { polynomial, derivativePolynomial, T, JD, _I, _xi }
+const _nu = (N, i, omega) => {
+  N = d2r * N
+  i = d2r * i
+  omega = d2r * omega
+  let e1 =
+    (Math.cos(0.5 * (omega - i)) / Math.cos(0.5 * (omega + i))) *
+    Math.tan(0.5 * N)
+  let e2 =
+    (Math.sin(0.5 * (omega - i)) / Math.sin(0.5 * (omega + i))) *
+    Math.tan(0.5 * N)
+  e1 = Math.atan(e1)
+  e2 = Math.atan(e2)
+  e1 = e1 - 0.5 * N
+  e2 = e2 - 0.5 * N
+  return (e1 - e2) * r2d
+}
+
+//Schureman equation 224
+const _nup = (N, i, omega) => {
+  const I = d2r * _I(N, i, omega)
+  const nu = d2r * _nu(N, i, omega)
+  return (
+    r2d *
+    Math.atan(
+      (Math.sin(2 * I) * Math.sin(nu)) /
+        (Math.sin(2 * I) * Math.cos(nu) + 0.3347)
+    )
+  )
+}
+
+//Schureman equation 232
+const _nupp = (N, i, omega) => {
+  const I = d2r * _I(N, i, omega)
+  const nu = d2r * _nu(N, i, omega)
+  const tan2nupp =
+    (Math.sin(I) ** 2 * Math.sin(2 * nu)) /
+    (Math.sin(I) ** 2 * Math.cos(2 * nu) + 0.0727)
+  return r2d * 0.5 * Math.atan(tan2nupp)
+}
+
+export { polynomial, derivativePolynomial, T, JD, _I, _xi, _nu, _nup, _nupp }
