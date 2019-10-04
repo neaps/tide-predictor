@@ -1,5 +1,5 @@
 import nj from 'numjs'
-import { d2r } from './constants'
+import { d2r } from '../constants'
 
 export default {
   unity() {
