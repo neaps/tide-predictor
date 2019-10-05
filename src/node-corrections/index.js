@@ -1,4 +1,4 @@
-import { d2r } from '../constants'
+import { d2r, r2d } from '../constants'
 
 export default {
   unity() {
@@ -145,24 +145,28 @@ export default {
 
   // Node factors u, see Table 2 of Schureman.
 
-  u_zero(a) {
-    return 0.0
-  },
+  u_zero: 0.0,
+
   u_Mf(a) {
     return -2.0 * a.xi.value
   },
+
   u_O1(a) {
     return 2.0 * a.xi.value - a.nu.value
   },
+
   u_J1(a) {
     return -a.nu.value
   },
+
   u_OO1(a) {
     return -2.0 * a.xi.value - a.nu.value
   },
+
   u_M2(a) {
     return 2.0 * a.xi.value - 2.0 * a.nu.value
   },
+
   u_K1(a) {
     return -a.nup.value
   },
@@ -173,25 +177,28 @@ export default {
     const P = d2r * a.P.value
     const R =
       r2d *
-      np.arctan(
+      Math.atan(
         Math.sin(2 * P) /
           ((1 / 6.0) * Math.pow(Math.tan(0.5 * I), -2) - Math.cos(2 * P))
       )
     return 2.0 * a.xi.value - 2.0 * a.nu.value - R
   },
+
   u_K2(a) {
     return -2.0 * a.nupp.value
   },
+
   //Schureman 202
   u_M1(a) {
-    I = d2r * a.I.value
-    P = d2r * a.P.value
-    Q =
+    const I = d2r * a.I.value
+    const P = d2r * a.P.value
+    const Q =
       r2d *
       Math.atan(((5 * Math.cos(I) - 1) / (7 * Math.cos(I) + 1)) * Math.tan(P))
     return a.xi.value - a.nu.value + Q
   },
+
   u_Modd(a, n) {
-    return (n / 2.0) * u_M2(a)
+    return (n / 2.0) * this.u_M2(a)
   }
 }

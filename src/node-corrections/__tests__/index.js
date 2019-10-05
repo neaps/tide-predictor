@@ -7,7 +7,12 @@ const testItems = {
   I: { value: 6 },
   omega: { value: 3 },
   nu: { value: 4 },
-  P: { value: 14 }
+  nup: { value: 4 },
+  nupp: { value: 2 },
+  P: { value: 14 },
+  xi: {
+    value: 4
+  }
 }
 
 describe('Node corrections', () => {
@@ -57,5 +62,53 @@ describe('Node corrections', () => {
 
   test('calculates e.g. Schureman equation 149 (f_Modd)', () => {
     expect(nodeCorrections.f_Modd(testItems, 3)).toBeCloseTo(0.999541466395, 4)
+  })
+
+  test('has a zero for u_zero', () => {
+    expect(nodeCorrections.u_zero).toBe(0.0)
+  })
+
+  test('calculates u_Mf', () => {
+    expect(nodeCorrections.u_Mf(testItems)).toBe(-8.0)
+  })
+
+  test('calculates u_O1', () => {
+    expect(nodeCorrections.u_O1(testItems)).toBe(4.0)
+  })
+
+  test('calculates u_J1', () => {
+    expect(nodeCorrections.u_J1(testItems)).toBe(-4)
+  })
+
+  test('calculates u_OO1', () => {
+    expect(nodeCorrections.u_OO1(testItems)).toBe(-12.0)
+  })
+
+  test('calculates u_M2', () => {
+    expect(nodeCorrections.u_M2(testItems)).toBe(0.0)
+  })
+
+  test('calculates u_K1', () => {
+    expect(nodeCorrections.u_K1(testItems)).toBe(-4)
+  })
+
+  test('calculates u_L2', () => {
+    expect(nodeCorrections.u_L2(testItems)).toBeCloseTo(-0.449812364499, 4)
+  })
+
+  test('calculates u_K2', () => {
+    expect(nodeCorrections.u_K2(testItems)).toBe(-4.0)
+  })
+
+  test('calculates u_K2', () => {
+    expect(nodeCorrections.u_K2(testItems)).toBe(-4.0)
+  })
+
+  test('calculates u_M1', () => {
+    expect(nodeCorrections.u_M1(testItems)).toBeCloseTo(7.09154172301, 4)
+  })
+
+  test('calculates u_Modd', () => {
+    expect(nodeCorrections.u_Modd(testItems, 3)).toBe(0)
   })
 })
