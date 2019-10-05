@@ -1,4 +1,4 @@
-import constituent from './constituent'
+import constituent from './index'
 
 class compoundConstituent extends constituent {}
 

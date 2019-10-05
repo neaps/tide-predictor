@@ -1,4 +1,4 @@
-import compoundConstituent from '../compount-constituent'
+import compoundConstituent from '../compound'
 
 describe('compund constituent', () => {
   test('it', () => {})

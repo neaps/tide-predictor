@@ -1,4 +1,4 @@
-import constituent, { extendedDoodson, sortedDoodson } from '../constituent'
+import constituent, { extendedDoodson, sortedDoodson } from '../index'
 
 describe('constituent', () => {
   test('it sorts Doodson numbers', () => {
