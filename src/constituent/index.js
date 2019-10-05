@@ -27,6 +27,21 @@ const extendedDoodson = {
   Z: 0
 }
 
+/**
+ * Computes the dot notation of two arrays
+ * @param {*} a
+ * @param {*} b
+ */
+const dotArray = (a, b) => {
+  const results = []
+  a.forEach((value, index) => {
+    results.push(value * b[index])
+  })
+  return results.reduce((total, value) => {
+    return total + value
+  })
+}
+
 const sortedDoodson = {}
 Object.keys(extendedDoodson).forEach(key => {
   sortedDoodson[extendedDoodson[key]] = key
@@ -38,9 +53,9 @@ class constituent {
       return false
     }
     if (!doodsonNumber && coefficients) {
-      this.cooeficients = coefficients
+      this.coefficients = coefficients
     } else {
-      this.cooeficients = this.doodsonNumberToCooeficient(doodsonNumber)
+      this.coefficients = this.doodsonNumberToCooeficient(doodsonNumber)
     }
   }
 
@@ -63,37 +78,50 @@ class constituent {
     return doodsonNumber.join('')
   }
 
-  V() {
-    //velociy?
-    //return np.dot(self.coefficients, self.astro_values(astro))
+  value(astro) {
+    return dotArray(this.coefficients, this.astronomicValues(astro))
   }
 
   speed(astro) {
-    //return np.dot(self.coefficients, self.astro_speeds(a))
+    return dotArray(this.coefficients, this.astronomicSpeed(astro))
   }
 
   astronimicDoodsonNumber(astro) {
-    //return [a['T+h-s'], a['s'], a['h'], a['p'], a['N'], a['pp'], a['90']]
+    return [
+      astro['T+h-s'],
+      astro['s'],
+      astro['h'],
+      astro['p'],
+      astro['N'],
+      astro['pp'],
+      astro['90']
+    ]
   }
 
   astronomicSpeed(astro) {
-    //return np.array([each.speed for each in self.astro_xdo(a)])
+    const results = []
+    this.astronimicDoodsonNumber(astro).forEach(number => {
+      results.push(number.speed)
+    })
+    return results
   }
 
   astronomicValues(astro) {
-    //return np.array([each.value for each in self.astro_xdo(a)])
+    const results = []
+    this.astronimicDoodsonNumber(astro).forEach(number => {
+      results.push(number.value)
+    })
+    return results
   }
-
+  //Consider two out of phase constituents which travel at the same speed to
+  // be identical
   isEqual(constituent) {
-    /*#Consider two out of phase constituents which travel at the same speed to
-	#be identical
-	def __eq__(self, c):
-		return np.all(self.coefficients[:-1] == c.coefficients[:-1])*/
+    return this.coefficients === constituent.coefficients
   }
 
   hash() {
     const hash = []
-    this.cooeficients.forEach(coefficient => {
+    this.coefficients.forEach(coefficient => {
       if (coefficient < 0) {
         hash.push(`m${coefficient * -1}`)
       } else {
