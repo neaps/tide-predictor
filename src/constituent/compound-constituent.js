@@ -1,7 +1,8 @@
 import constituent from './constituent'
 
 class compoundConstituent {
-  constructor(members) {
+  constructor(name, members) {
+    this.name = name
     this.members = members
     const coefficients = []
     members.forEach(({ constituent, factor }) => {
@@ -31,12 +32,22 @@ class compoundConstituent {
     return value
   }
 
-  u() {
-    return 0
+  u(astro) {
+    let u = 0
+    this.members.forEach(({ constituent, factor }) => {
+      u += constituent.u(astro) * factor
+    })
+    return u
   }
 
-  f() {
-    return 0
+  f(astro) {
+    let f = []
+    this.members.forEach(({ constituent, factor }) => {
+      f.push(Math.pow(constituent.f(astro), Math.abs(factor)))
+    })
+    return f.reduce((previous, value) => {
+      return previous * value
+    })
   }
 }
 

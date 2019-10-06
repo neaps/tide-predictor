@@ -1,7 +1,7 @@
 import { d2r, r2d } from '../constants'
 
 export default {
-  unity() {
+  f_unity() {
     return 1
   },
 
@@ -145,7 +145,9 @@ export default {
 
   // Node factors u, see Table 2 of Schureman.
 
-  u_zero: 0.0,
+  u_zero(a) {
+    return 0.0
+  },
 
   u_Mf(a) {
     return -2.0 * a.xi.value

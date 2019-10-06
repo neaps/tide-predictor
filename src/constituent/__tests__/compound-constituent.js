@@ -15,10 +15,10 @@ const sampleTime = {
 const testAstro = astro(sampleTime)
 
 //This is a made-up doodson number for a test coefficient
-const testConstituentA = new constituent('A AYZ ZZA')
-const testConstituentB = new constituent('Z AYZ ZZA')
+const testConstituentA = new constituent('testa', 'A AYZ ZZA')
+const testConstituentB = new constituent('testb', 'Z AYZ ZZA')
 
-const compoundTest = new compoundConstituent([
+const compoundTest = new compoundConstituent('test compound', [
   { constituent: testConstituentA, factor: 1 },
   { constituent: testConstituentB, factor: -1 }
 ])
@@ -33,5 +33,13 @@ describe('compund constituent', () => {
 
   test('it calculates value', () => {
     expect(compoundTest.value(testAstro)).toBeCloseTo(268.504355062, 4)
+  })
+
+  test('it returns u correctly', () => {
+    expect(compoundTest.u(testAstro)).toBe(0)
+  })
+
+  test('it returns f correctly', () => {
+    expect(compoundTest.f(testAstro)).toBe(1)
   })
 })

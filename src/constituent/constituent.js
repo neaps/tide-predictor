@@ -1,3 +1,5 @@
+import nodeCorrections from '../node-corrections'
+
 const extendedDoodson = {
   A: 1,
   B: 2,
@@ -48,7 +50,8 @@ Object.keys(extendedDoodson).forEach(key => {
 })
 
 class constituent {
-  constructor(doodsonNumber, coefficients) {
+  constructor(name, doodsonNumber, coefficients, u, f) {
+    this.name = name
     if (!doodsonNumber && !coefficients) {
       return false
     }
@@ -57,6 +60,8 @@ class constituent {
     } else {
       this.coefficients = this.doodsonNumberToCooeficient(doodsonNumber)
     }
+    this.u = typeof u !== 'undefined' ? u : nodeCorrections.u_zero
+    this.f = typeof f !== 'undefined' ? f : nodeCorrections.f_unity
   }
 
   doodsonNumberToCooeficient(doodsonNumber) {
@@ -129,14 +134,6 @@ class constituent {
       }
     })
     return hash.join('')
-  }
-
-  u() {
-    return 0
-  }
-
-  f() {
-    return 0
   }
 }
 

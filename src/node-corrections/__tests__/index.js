@@ -17,7 +17,7 @@ const testItems = {
 
 describe('Node corrections', () => {
   test('have correct unity', () => {
-    expect(nodeCorrections.unity()).toBe(1)
+    expect(nodeCorrections.f_unity()).toBe(1)
   })
 
   test('calculates Schureman equations 73, 65 (f_Mm)', () => {
@@ -65,7 +65,7 @@ describe('Node corrections', () => {
   })
 
   test('has a zero for u_zero', () => {
-    expect(nodeCorrections.u_zero).toBe(0.0)
+    expect(nodeCorrections.u_zero()).toBe(0.0)
   })
 
   test('calculates u_Mf', () => {

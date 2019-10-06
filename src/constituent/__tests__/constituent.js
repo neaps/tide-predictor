@@ -14,7 +14,7 @@ const sampleTime = {
 const testAstro = astro(sampleTime)
 
 //This is a made-up doodson number for a test coefficient
-const testConstituent = new constituent('A AYZ ZZA')
+const testConstituent = new constituent('test', 'A AYZ ZZA')
 
 describe('constituent', () => {
   test('it sorts Doodson numbers', () => {
@@ -23,13 +23,13 @@ describe('constituent', () => {
   })
 
   test('it converts Doodson numbers to cooeficient', () => {
-    const testCooefficient = new constituent(null, [])
+    const testCooefficient = new constituent('test', null, [])
     const coefficient = testCooefficient.doodsonNumberToCooeficient('A BZY ZZY')
     expect(coefficient).toEqual(expect.arrayContaining([1, 2, 0, -1, 0, 0, -1]))
   })
 
   test('it converts cooeficient to Doodson number', () => {
-    const testCooefficient = new constituent(null, [])
+    const testCooefficient = new constituent('test', null, [])
     const doodsonNumber = testCooefficient.cooeficientToDoodsonNumber([
       1,
       2,
@@ -43,7 +43,15 @@ describe('constituent', () => {
   })
 
   test('it creates cooeficient hashes', () => {
-    const testCooefficient = new constituent(null, [1, 2, 0, -1, 0, 0, -1])
+    const testCooefficient = new constituent('test', null, [
+      1,
+      2,
+      0,
+      -1,
+      0,
+      0,
+      -1
+    ])
     const hash = testCooefficient.hash()
     expect(hash).toEqual('120m100m1')
   })
@@ -69,5 +77,13 @@ describe('constituent', () => {
 
   test('it computes constituent speed', () => {
     expect(testConstituent.speed(testAstro)).toBe(15)
+  })
+
+  test('it returns u correctly', () => {
+    expect(testConstituent.u(testAstro)).toBe(0)
+  })
+
+  test('it returns f correctly', () => {
+    expect(testConstituent.f(testAstro)).toBe(1)
   })
 })
