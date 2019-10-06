@@ -57,7 +57,7 @@ class harmonics {
       return moment(time)
     }
     if (isNumber(time)) {
-      return moment(time)
+      return moment.unix(time)
     }
     throw 'Invalid date format, should be a moment object, Date object, or timestamp'
   }

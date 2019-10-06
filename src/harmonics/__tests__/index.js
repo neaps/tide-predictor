@@ -85,6 +85,19 @@ describe('harmonics', () => {
     expect(timeErrorMessage).toBe('Start date is not yet set')
   })
 
+  test('it parses dates correctly', () => {
+    const harmonicsTime = new harmonics(mockHarmonicConstituents)
+    const parsedMoment = harmonicsTime.getMomentFromDate(startDate)
+    expect(startDate.isSame(parsedMoment)).toBeTruthy()
+
+    const parsedUnixMoment = harmonicsTime.getMomentFromDate(startDate.unix())
+    expect(startDate.isSame(parsedUnixMoment)).toBeTruthy()
+
+    const testDate = new Date(startDate.valueOf())
+    const parsedDateMoment = harmonicsTime.getMomentFromDate(testDate)
+    expect(startDate.isSame(parsedDateMoment)).toBeTruthy()
+  })
+
   test('it finds the correct start of year', () => {
     const harmonicsTime = new harmonics(mockHarmonicConstituents)
     harmonicsTime.setTimeSpan(startDate, endDate)
