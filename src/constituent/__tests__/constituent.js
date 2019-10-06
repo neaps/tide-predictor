@@ -87,6 +87,13 @@ describe('constituent', () => {
     expect(testConstituent.value(testAstro)).toBeCloseTo(423.916666657, 4)
   })
 
+  test('it compares different constituents', () => {
+    const secondConstituent = new constituent('test the same', 'A AYZ ZZA')
+    const thirdConstituent = new constituent('test different', 'A ZYZ ZZA')
+    expect(testConstituent.isEqual(secondConstituent)).toBeTruthy()
+    expect(testConstituent.isEqual(thirdConstituent)).toBeFalsy()
+  })
+
   test('it computes constituent speed', () => {
     expect(testConstituent.speed(testAstro)).toBe(15)
   })

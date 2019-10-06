@@ -76,6 +76,8 @@ class constituent {
   }
 
   cooeficientToDoodsonNumber(coefficients) {
+    coefficients =
+      typeof coefficients !== 'undefined' ? coefficients : this.coefficients
     const doodsonNumber = []
     coefficients.forEach(coefficient => {
       doodsonNumber.push(sortedDoodson[coefficient])
@@ -121,7 +123,10 @@ class constituent {
   //Consider two out of phase constituents which travel at the same speed to
   // be identical
   isEqual(constituent) {
-    return this.coefficients === constituent.coefficients
+    return (
+      this.cooeficientToDoodsonNumber() ===
+      constituent.cooeficientToDoodsonNumber()
+    )
   }
 
   hash() {
