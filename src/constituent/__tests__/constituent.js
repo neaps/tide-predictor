@@ -1,6 +1,5 @@
-import constituent, { extendedDoodson, sortedDoodson } from '../index'
+import constituent, { extendedDoodson, sortedDoodson } from '../constituent'
 import astro from '../../astronomy'
-import nodalCorrections from '../../node-corrections'
 
 const sampleTime = {
   year: 2019,
