@@ -53,7 +53,7 @@ class constituent {
   constructor(name, doodsonNumber, coefficients, u, f) {
     this.name = name
     if (!doodsonNumber && !coefficients) {
-      return false
+      throw 'doodson or coefficient must be defined for a constituent'
     }
     if (!doodsonNumber && coefficients) {
       this.coefficients = coefficients

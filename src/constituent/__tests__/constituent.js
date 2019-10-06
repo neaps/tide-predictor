@@ -17,6 +17,18 @@ const testAstro = astro(sampleTime)
 const testConstituent = new constituent('test', 'A AYZ ZZA')
 
 describe('constituent', () => {
+  test('it throws error if missing coefficients', () => {
+    let errorMessage = false
+    try {
+      const a = new constituent('fail')
+    } catch (error) {
+      errorMessage = error
+    }
+    expect(errorMessage).toBe(
+      'doodson or coefficient must be defined for a constituent'
+    )
+  })
+
   test('it sorts Doodson numbers', () => {
     expect(extendedDoodson.K).toBe(11)
     expect(sortedDoodson[11]).toBe('K')
