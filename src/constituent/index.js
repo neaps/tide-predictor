@@ -47,10 +47,10 @@ constituents.M3 = new constituent(
   'C ZZZ ZZZ',
   false,
   a => {
-    nc.uModd(a, 3)
+    return nc.u_Modd(a, 3)
   },
   a => {
-    nc.fModd(a, 3)
+    return nc.f_Modd(a, 3)
   }
 )
 //Compound
