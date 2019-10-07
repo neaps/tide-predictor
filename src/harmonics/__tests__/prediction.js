@@ -39,7 +39,8 @@ describe('harmonic prediction', () => {
     const { baseValue, baseSpeed, u, f } = testPrediction.prepare()
     expect(baseValue.M2).toBeCloseTo(5.65816609, 4)
     expect(baseSpeed.M2).toBeCloseTo(0.50586805, 4)
-    //expect(u[0].M2).toBeCloseTo(6.2471702, 4)
-    //expect(f[0].M2).toBeCloseTo(1.00949147, 4)
+    expect(u[0].M2).toBeCloseTo(6.2471702, 4)
+    // @to-do this might be wrong
+    expect(f[0].M2).toBeCloseTo(1.0096589, 4)
   })
 })
