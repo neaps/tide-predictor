@@ -10,11 +10,10 @@ class prediction {
     this.timeline = timeline
     this.constituents = constituents
     this.start = start
-    this.phaseType = 'GMT'
+    this.setPhaseType('GMT')
   }
 
   setPhaseType(phaseType) {
-    phaseType = typeof phaseType !== 'undefined' ? phaseType : 'GMT'
     if (['local', 'GMT'].indexOf(phaseType) == -1) {
       throw 'phase type must be local or GMT'
     }

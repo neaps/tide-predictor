@@ -50,7 +50,6 @@ describe('harmonic prediction', () => {
     expect(baseValue.M2).toBeCloseTo(324.189036, 4)
     expect(baseSpeed.M2).toBeCloseTo(28.9841042, 4)
     expect(u[0].M2).toBeCloseTo(357.939049, 4)
-    // @to-do this might be wrong
     expect(f[0].M2).toBeCloseTo(1.0096589, 4)
   })
 
