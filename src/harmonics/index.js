@@ -89,17 +89,15 @@ class harmonics {
    * @param {number} seconds
    */
   timeline(seconds) {
-    seconds = typeof seconds !== 'undefined' ? seconds : 60 * 60
+    seconds = typeof seconds !== 'undefined' ? seconds : 10 * 60
     const timeline = []
     const end = this.end.unix()
     let lastTime = this.start.unix()
+    const startTime = lastTime
     const hours = []
-    const numberHours = (end - lastTime) / 60
-    for (let i = 0; i < numberHours; i++) {
-      hours.push(i)
-    }
     while (lastTime <= end) {
       timeline.push(moment.unix(lastTime))
+      hours.push((lastTime - startTime) / (60 * 60))
       lastTime += seconds
     }
 

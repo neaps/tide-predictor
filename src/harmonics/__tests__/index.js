@@ -113,8 +113,6 @@ describe('harmonics', () => {
       Math.round((endDate.unix() - startDate.unix()) / seconds) + 1
     const { items, hours } = harmonicsTime.timeline(seconds)
     expect(items.length).toBe(difference)
-    expect(hours.length).toBe(
-      Math.round((endDate.unix() - startDate.unix()) / 60) + 1
-    )
+    expect(hours.length).toBe(difference)
   })
 })

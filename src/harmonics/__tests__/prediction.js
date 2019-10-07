@@ -84,6 +84,6 @@ describe('harmonic prediction', () => {
     const testPrediction = getPrediction()
     const results = testPrediction.getTimelinePrediction()
     expect(results[0].level).toBeCloseTo(-1.40468181, 3)
-    expect(results[6].level).toBeCloseTo(2.60312343, 3)
+    expect(results.pop().level).toBeCloseTo(2.60312343, 3)
   })
 })
