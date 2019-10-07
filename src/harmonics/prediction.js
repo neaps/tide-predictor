@@ -36,6 +36,10 @@ class prediction {
       const itemAstro = astro(time)
       this.constituents.forEach(constituent => {
         const value = constituent._model.u(itemAstro)
+        if (constituent.name === 'M2' && u.length == 0) {
+          console.log(time.toObject())
+          console.log(value)
+        }
         uItem[constituent.name] = modulus(radians ? d2r * value : value, 360)
         fItem[constituent.name] = modulus(constituent._model.f(itemAstro), 360)
       })

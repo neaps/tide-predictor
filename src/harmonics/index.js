@@ -96,9 +96,6 @@ class harmonics {
       timeline.push(moment.unix(lastTime))
       lastTime += seconds
     }
-    if (lastTime < end) {
-      timeline.push(moment.unix(end))
-    }
 
     return {
       items: timeline,
