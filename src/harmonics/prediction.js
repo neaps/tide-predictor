@@ -5,13 +5,6 @@ const modulus = (a, b) => {
   return ((a % b) + b) % b
 }
 
-const mult = (a, b) => {
-  const r = []
-  a.forEach((value, index) => {
-    r.push(value * b[index])
-  })
-  return r
-}
 class prediction {
   constructor({ timeline, constituents, start }) {
     this.timeline = timeline
