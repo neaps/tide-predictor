@@ -1,5 +1,6 @@
 import moment from 'moment'
 import prediction from './prediction'
+import constituentModels from '../constituent'
 import { isNumber } from 'util'
 
 class harmonics {
@@ -19,16 +20,18 @@ class harmonics {
     if (!Array.isArray(constituents)) {
       throw 'Harmonic constituents are not an array'
     }
-
-    constituents.forEach(constituent => {
+    this.constituents = []
+    constituents.forEach((constituent, index) => {
       this.requiredFields.forEach(field => {
         if (typeof constituent[field] === 'undefined') {
           throw `Harmonic constituent entry missing field ${field}`
         }
       })
+      if (typeof constituentModels[constituent.name] !== 'undefined') {
+        constituent._model = constituentModels[constituent.name]
+        this.constituents.push(constituent)
+      }
     })
-
-    this.constituents = constituents
   }
 
   /**
@@ -90,15 +93,15 @@ class harmonics {
       hours.push(i)
     }
     while (lastTime <= end) {
-      timeline.push(lastTime)
+      timeline.push(moment.unix(lastTime))
       lastTime += seconds
     }
     if (lastTime < end) {
-      timeline.push(end)
+      timeline.push(moment.unix(end))
     }
 
     return {
-      unixTimestamps: timeline,
+      items: timeline,
       hours: hours
     }
   }
@@ -109,7 +112,8 @@ class harmonics {
   getPrediction() {
     return new prediction({
       timeline: this.timeline(),
-      constituents: this.constituents
+      constituents: this.constituents,
+      start: this.start
     })
   }
 }

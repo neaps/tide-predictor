@@ -1,6 +1,6 @@
 import { d2r, r2d } from '../constants'
 
-export default {
+const corrections = {
   f_unity() {
     return 1
   },
@@ -100,7 +100,7 @@ export default {
         36 * Math.pow(Math.tan(0.5 * I), 4),
       0.5
     )
-    return this.f_M2(a) * R_a_inv
+    return corrections.f_M2(a) * R_a_inv
   },
 
   // Schureman equations 235, 234, 71
@@ -135,12 +135,12 @@ export default {
         2.25 * Math.pow(Math.cos(I), 2) * Math.pow(Math.cos(0.5 * I), -4),
       0.5
     )
-    return this.f_O1(a) * Q_a_inv
+    return corrections.f_O1(a) * Q_a_inv
   },
 
   // See e.g. Schureman equation 149
   f_Modd(a, n) {
-    return Math.pow(this.f_M2(a), n / 2.0)
+    return Math.pow(corrections.f_M2(a), n / 2.0)
   },
 
   // Node factors u, see Table 2 of Schureman.
@@ -201,6 +201,8 @@ export default {
   },
 
   u_Modd(a, n) {
-    return (n / 2.0) * this.u_M2(a)
+    return (n / 2.0) * corrections.u_M2(a)
   }
 }
+
+export default corrections

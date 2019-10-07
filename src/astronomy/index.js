@@ -29,15 +29,16 @@ const T = t => {
 }
 
 // Meeus formula 7.1
-const JD = t => {
-  let Y = t.year
-  let M = t.month
+const JD = time => {
+  const t = time.toObject()
+  let Y = t.years
+  let M = t.months + 1
   const D =
-    t.day +
-    t.hour / 24.0 +
-    t.minute / (24.0 * 60.0) +
-    t.second / (24.0 * 60.0 * 60.0) +
-    t.microsecond / (24.0 * 60.0 * 60.0 * 1e6)
+    t.date +
+    t.hours / 24.0 +
+    t.minutes / (24.0 * 60.0) +
+    t.seconds / (24.0 * 60.0 * 60.0) +
+    t.milliseconds / (24.0 * 60.0 * 60.0 * 1e6)
   if (M <= 2) {
     Y = Y - 1
     M = M + 12

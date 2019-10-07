@@ -9,33 +9,18 @@ import astro, {
   _nup,
   _nupp
 } from '../index'
+import moment from 'moment'
 
-const sampleTime = {
-  year: 2019,
-  month: 10,
-  day: 4,
-  hour: 10,
-  minute: 15,
-  second: 40,
-  microsecond: 10
-}
+const sampleTime = moment({
+  years: 2019,
+  months: 9,
+  date: 4,
+  hours: 10,
+  minutes: 15,
+  seconds: 40,
+  milliseconds: 10
+})
 
-/*
-{'pp': AstronomicalParameter(value=283.27697979858613, speed=1.9612154426341654e-06)
-xi': AstronomicalParameter(value=11.989946298635664, speed=None)
-I': AstronomicalParameter(value=22.811296275568843, speed=None)
-P': AstronomicalParameter(value=155.24265065565865, speed=None)
-i': AstronomicalParameter(value=5.1449999999999996, speed=0.0)
-h': AstronomicalParameter(value=192.82639897760328, speed=0.041068640143510367)
-nup': AstronomicalParameter(value=8.8822458121169365, speed=None)
-N': AstronomicalParameter(value=102.93412065365243, speed=-0.0022064058456494804)
-T+h-s': AstronomicalParameter(value=268.50435506200392, speed=14.492052120843571)
-p': AstronomicalParameter(value=167.23259695429431, speed=0.0046418088415145454)
-s': AstronomicalParameter(value=258.23871057233191, speed=0.54901651929993922)
-nupp': AstronomicalParameter(value=8.8162480626605451, speed=None)
-90': AstronomicalParameter(value=90.0, speed=0.0)
-omega': AstronomicalParameter(value=23.436722306067253, speed=-1.4832917321024327e-08)
-nu': AstronomicalParameter(value=13.028571777192044, speed=None)}*/
 describe('astronomy', () => {
   test('complete astronomic calculation', () => {
     const result = astro(sampleTime)
@@ -79,15 +64,15 @@ describe('astronomy', () => {
   })
 
   test('evaluates Meeus formula 7.1 (JD) correctly', () => {
-    sampleTime.month = 10
+    sampleTime.set('months', 9)
     expect(JD(sampleTime)).toBeCloseTo(2458760.92755, 2)
     //Months of less than 2 go back a year
-    sampleTime.month = 1
+    sampleTime.set('months', 0)
     expect(JD(sampleTime)).toBeCloseTo(2458487.92755, 2)
   })
 
   test('evaluates Meeus formula 11.1 (T) correctly', () => {
-    sampleTime.month = 10
+    sampleTime.set('months', 9)
     expect(T(sampleTime)).toBeCloseTo(0.19756132, 2)
   })
 

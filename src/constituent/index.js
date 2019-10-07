@@ -4,43 +4,97 @@ import nc from '../node-corrections'
 
 const constituents = {}
 //Long Term
-constituents.Z0 = new constituent('Z0', 'Z ZZZ ZZZ', false, nc.uzero, nc.funity)
-constituents.Sa = new constituent('Sa', 'Z ZAZ ZZZ', false, nc.uzero, nc.funity)
+constituents.Z0 = new constituent(
+  'Z0',
+  'Z ZZZ ZZZ',
+  false,
+  nc.u_zero,
+  nc.f_unity
+)
+constituents.Sa = new constituent(
+  'Sa',
+  'Z ZAZ ZZZ',
+  false,
+  nc.u_zero,
+  nc.f_unity
+)
 constituents.Ssa = new constituent(
   'Ssa',
   'Z ZBZ ZZZ',
   false,
-  nc.uzero,
-  nc.funity
+  nc.u_zero,
+  nc.f_unity
 )
-constituents.Mm = new constituent('Mm', 'Z AZY ZZZ', false, nc.uzero, nc.fMm)
-constituents.Mf = new constituent('Mf', 'Z BZZ ZZZ', false, nc.uMf, nc.fMf)
+constituents.Mm = new constituent('Mm', 'Z AZY ZZZ', false, nc.u_zero, nc.f_Mm)
+constituents.Mf = new constituent('Mf', 'Z BZZ ZZZ', false, nc.u_Mf, nc.f_Mf)
 //Diurnals
-constituents.Q1 = new constituent('Q1', 'A XZA ZZA', false, nc.uO1, nc.fO1)
-constituents.O1 = new constituent('O1', 'A YZZ ZZA', false, nc.uO1, nc.fO1)
-constituents.K1 = new constituent('K1', 'A AZZ ZZY', false, nc.uK1, nc.fK1)
-constituents.J1 = new constituent('J1', 'A BZY ZZY', false, nc.uJ1, nc.fJ1)
-constituents.M1 = new constituent('M1', 'A ZZZ ZZA', false, nc.uM1, nc.fM1)
-constituents.P1 = new constituent('P1', 'A AXZ ZZA', false, nc.uzero, nc.funity)
-constituents.S1 = new constituent('S1', 'A AYZ ZZZ', false, nc.uzero, nc.funity)
-constituents.OO1 = new constituent('OO1', 'A CZZ ZZY', false, nc.uOO1, nc.fOO1)
+constituents.Q1 = new constituent('Q1', 'A XZA ZZA', false, nc.u_O1, nc.f_O1)
+constituents.O1 = new constituent('O1', 'A YZZ ZZA', false, nc.u_O1, nc.f_O1)
+constituents.K1 = new constituent('K1', 'A AZZ ZZY', false, nc.u_K1, nc.f_K1)
+constituents.J1 = new constituent('J1', 'A BZY ZZY', false, nc.u_J1, nc.f_J1)
+constituents.M1 = new constituent('M1', 'A ZZZ ZZA', false, nc.u_M1, nc.f_M1)
+constituents.P1 = new constituent(
+  'P1',
+  'A AXZ ZZA',
+  false,
+  nc.u_zero,
+  nc.f_unity
+)
+constituents.S1 = new constituent(
+  'S1',
+  'A AYZ ZZZ',
+  false,
+  nc.u_zero,
+  nc.f_unity
+)
+constituents.OO1 = new constituent(
+  'OO1',
+  'A CZZ ZZY',
+  false,
+  nc.u_OO1,
+  nc.f_OO1
+)
 //Semi diurnals
-constituents['2N2'] = new constituent('2N2', 'B XZB ZZZ', false, nc.uM2, nc.fM2)
-constituents.N2 = new constituent('N2', 'B YZA ZZZ', false, nc.uM2, nc.fM2)
-constituents.nu2 = new constituent('nu2', 'B YBY ZZZ', false, nc.uM2, nc.fM2)
-constituents.M2 = new constituent('M2', 'B ZZZ ZZZ', false, nc.uM2, nc.fM2)
+constituents['2N2'] = new constituent(
+  '2N2',
+  'B XZB ZZZ',
+  false,
+  nc.u_M2,
+  nc.f_M2
+)
+constituents.N2 = new constituent('N2', 'B YZA ZZZ', false, nc.u_M2, nc.f_M2)
+constituents.nu2 = new constituent('nu2', 'B YBY ZZZ', false, nc.u_M2, nc.f_M2)
+constituents.M2 = new constituent('M2', 'B ZZZ ZZZ', false, nc.u_M2, nc.f_M2)
 constituents.lambda2 = new constituent(
   'lambda2',
   'B AXA ZZB',
   false,
-  nc.uM2,
-  nc.fM2
+  nc.u_M2,
+  nc.f_M2
 )
-constituents.L2 = new constituent('L2', 'B AZY ZZB', false, nc.uL2, nc.fL2)
-constituents.T2 = new constituent('T2', 'B BWZ ZAZ', false, nc.uzero, nc.funity)
-constituents.S2 = new constituent('S2', 'B BXZ ZZZ', false, nc.uzero, nc.funity)
-constituents.R2 = new constituent('R2', 'B BYZ ZYB', false, nc.uzero, nc.funity)
-constituents.K2 = new constituent('K2', 'B BZZ ZZZ', false, nc.uK2, nc.fK2)
+constituents.L2 = new constituent('L2', 'B AZY ZZB', false, nc.u_L2, nc.f_L2)
+constituents.T2 = new constituent(
+  'T2',
+  'B BWZ ZAZ',
+  false,
+  nc.u_zero,
+  nc.f_unity
+)
+constituents.S2 = new constituent(
+  'S2',
+  'B BXZ ZZZ',
+  false,
+  nc.u_zero,
+  nc.f_unity
+)
+constituents.R2 = new constituent(
+  'R2',
+  'B BYZ ZYB',
+  false,
+  nc.u_zero,
+  nc.f_unity
+)
+constituents.K2 = new constituent('K2', 'B BZZ ZZZ', false, nc.u_K2, nc.f_K2)
 //Third diurnal
 constituents.M3 = new constituent(
   'M3',

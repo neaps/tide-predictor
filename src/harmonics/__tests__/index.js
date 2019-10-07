@@ -111,8 +111,8 @@ describe('harmonics', () => {
     harmonicsTime.setTimeSpan(startDate, endDate)
     const difference =
       Math.round((endDate.unix() - startDate.unix()) / seconds) + 1
-    const { unixTimestamps, hours } = harmonicsTime.timeline(seconds)
-    expect(unixTimestamps.length).toBe(difference)
+    const { items, hours } = harmonicsTime.timeline(seconds)
+    expect(items.length).toBe(difference)
     expect(hours.length).toBe(
       Math.round((endDate.unix() - startDate.unix()) / 60) + 1
     )

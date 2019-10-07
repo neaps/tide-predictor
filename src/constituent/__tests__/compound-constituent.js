@@ -1,16 +1,17 @@
 import compoundConstituent from '../compound-constituent'
 import constituent from '../constituent'
 import astro from '../../astronomy'
+import moment from 'moment'
 
-const sampleTime = {
-  year: 2019,
-  month: 10,
-  day: 4,
-  hour: 10,
-  minute: 15,
-  second: 40,
-  microsecond: 10
-}
+const sampleTime = moment({
+  years: 2019,
+  months: 9,
+  date: 4,
+  hours: 10,
+  minutes: 15,
+  seconds: 40,
+  milliseconds: 10
+})
 
 const testAstro = astro(sampleTime)
 

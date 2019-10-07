@@ -1,7 +1,57 @@
+import astro from '../astronomy'
+import { d2r, r2d } from '../constants'
+
+const modulus = (a, b) => {
+  return ((a % b) + b) % b
+}
 class prediction {
-  constructor({ timeline, constituents }) {
+  constructor({ timeline, constituents, start }) {
     this.timeline = timeline
     this.constituents = constituents
+    this.start = start
+  }
+
+  at(time) {
+    const a = astro(time.toObject())
+    const partition = 240.0
+  }
+
+  prepare(radians) {
+    radians = typeof radians !== 'undefined' ? radians : true
+    const baseAstro = astro(this.start)
+
+    let baseValue = {}
+    const baseSpeed = {}
+    const u = []
+    const f = []
+    this.constituents.forEach(constituent => {
+      const value = constituent._model.value(baseAstro)
+      const speed = constituent._model.speed(baseAstro)
+      baseValue[constituent.name] = radians ? d2r * value : value
+      baseSpeed[constituent.name] = radians ? d2r * speed : speed
+    })
+    this.timeline.items.forEach(time => {
+      const uItem = {}
+      const fItem = {}
+      const itemAstro = astro(time)
+      this.constituents.forEach(constituent => {
+        const value = constituent._model.u(itemAstro)
+        uItem[constituent.name] = modulus(radians ? d2r * value : value, 360)
+        fItem[constituent.name] = modulus(constituent._model.f(itemAstro), 360)
+      })
+      u.push(uItem)
+      f.push(fItem)
+    })
+
+    if (radians) {
+    }
+
+    return {
+      baseValue: baseValue,
+      baseSpeed: baseSpeed,
+      u: u,
+      f: f
+    }
   }
 }
 
