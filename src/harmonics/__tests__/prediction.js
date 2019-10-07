@@ -70,4 +70,11 @@ describe('harmonic prediction', () => {
     expect(Q1).not.toBeFalsy()
     expect(Q1._phase).toBeCloseTo(3.3999013828849542, 5)
   })
+
+  test('it creates a timeline prediction', () => {
+    const testPrediction = getPrediction()
+    const results = testPrediction.getTimelinePrediction()
+    expect(results[0].level).toBeCloseTo(-1.40468181, 3)
+    expect(results[6].level).toBeCloseTo(2.60312343, 3)
+  })
 })

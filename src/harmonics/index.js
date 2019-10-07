@@ -83,7 +83,7 @@ class harmonics {
    * @param {number} seconds
    */
   timeline(seconds) {
-    seconds = typeof seconds !== 'undefined' ? seconds : 10 * 60
+    seconds = typeof seconds !== 'undefined' ? seconds : 60 * 60
     const timeline = []
     const end = this.end.unix()
     let lastTime = this.start.unix()
