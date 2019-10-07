@@ -115,7 +115,7 @@ const corrections = {
     const mean = 0.5023 * sinsqIcos2nu_mean + 0.0365
     return (
       Math.pow(
-        0.2533 * Math.pow(Math.sin(I), 4) +
+        0.2523 * Math.pow(Math.sin(I), 4) +
           0.0367 * Math.pow(Math.sin(I), 2) * Math.cos(2 * nu) +
           0.0013,
         0.5
