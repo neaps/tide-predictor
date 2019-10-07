@@ -9,11 +9,28 @@ class prediction {
     this.timeline = timeline
     this.constituents = constituents
     this.start = start
+    this.phaseType = 'GMT'
   }
 
-  at(time) {
-    const a = astro(time.toObject())
-    const partition = 240.0
+  setPhaseType(phaseType) {
+    phaseType = typeof phaseType !== 'undefined' ? phaseType : 'GMT'
+    if (['local', 'GMT'].indexOf(phaseType) == -1) {
+      throw 'phase type must be local or GMT'
+    }
+    this.phaseType = phaseType
+  }
+
+  setConstituentPhases() {
+    const phaseKey = `phase_${this.phaseType}`
+    this.constituents = this.constituents.map(constituent => {
+      constituent._phase = d2r * constituent[phaseKey]
+      return constituent
+    })
+  }
+
+  get(phaseType) {
+    const { speed, u, f, V0 } = this.prepare()
+    this.setModelPhases()
   }
 
   prepare(radians) {

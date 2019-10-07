@@ -43,4 +43,31 @@ describe('harmonic prediction', () => {
     // @to-do this might be wrong
     expect(f[0].M2).toBeCloseTo(1.0096589, 4)
   })
+
+  test('it sets a correct phase type', () => {
+    const testPrediction = getPrediction()
+    expect(testPrediction.phaseType).toBe('GMT')
+    testPrediction.setPhaseType('local')
+    expect(testPrediction.phaseType).toBe('local')
+    let errorMessage = false
+    try {
+      testPrediction.setPhaseType('wrong')
+    } catch (error) {
+      errorMessage = error
+    }
+    expect(errorMessage).toBe('phase type must be local or GMT')
+  })
+
+  test('it defines phases in constituents by radians', () => {
+    const testPrediction = getPrediction()
+    testPrediction.setConstituentPhases()
+    let Q1 = false
+    testPrediction.constituents.forEach(constituent => {
+      if (constituent.name === 'Q1') {
+        Q1 = constituent
+      }
+    })
+    expect(Q1).not.toBeFalsy()
+    expect(Q1._phase).toBeCloseTo(3.3999013828849542, 5)
+  })
 })
