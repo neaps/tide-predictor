@@ -22,6 +22,23 @@ class station {
   setHarmonicConstituents(constituents) {
     this.harmonics = new harmonics(constituents)
   }
+
+  /**
+   * Sets the start & stop time to get data from.
+   * @param {moment, Date, unix timestamp} start
+   * @param {moment, Date, unix timestamp} end
+   */
+  setTimeSpan(start, end) {
+    this.harmonics.setTimeSpan(start, end)
+  }
+
+  getTimelinePrediction() {
+    if (!this.harmonics.timelineIsSet()) {
+      throw 'Start and end times not set'
+    }
+    const prediction = this.harmonics.getPrediction()
+    return prediction.getTimelinePrediction()
+  }
 }
 
 export default station

@@ -47,6 +47,12 @@ class harmonics {
     }
   }
 
+  timelineIsSet() {
+    return !(
+      typeof this.start === 'undefined' || typeof this.end === 'undefined'
+    )
+  }
+
   /**
    * Helper function to check that a date is valid,
    * returns an instance of Moment.
