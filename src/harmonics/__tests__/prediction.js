@@ -44,6 +44,16 @@ describe('harmonic prediction', () => {
     expect(f[0].M2).toBeCloseTo(1.0096589, 4)
   })
 
+  test('it prepares prediction values by degrees', () => {
+    const testPrediction = getPrediction()
+    const { baseValue, baseSpeed, u, f } = testPrediction.prepare(false)
+    expect(baseValue.M2).toBeCloseTo(324.189036, 4)
+    expect(baseSpeed.M2).toBeCloseTo(28.9841042, 4)
+    expect(u[0].M2).toBeCloseTo(357.939049, 4)
+    // @to-do this might be wrong
+    expect(f[0].M2).toBeCloseTo(1.0096589, 4)
+  })
+
   test('it sets a correct phase type', () => {
     const testPrediction = getPrediction()
     expect(testPrediction.phaseType).toBe('GMT')
