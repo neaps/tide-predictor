@@ -1,4 +1,5 @@
 [![CircleCI](https://circleci.com/gh/neaps/tide-predictor.svg?style=svg)](https://circleci.com/gh/neaps/tide-predictor) [![Coverage Status](https://coveralls.io/repos/github/neaps/tide-predictor/badge.svg?branch=master)](https://coveralls.io/github/neaps/tide-predictor?branch=master)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fneaps%2Ftide-predictor.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fneaps%2Ftide-predictor?ref=badge_shield)
 
 ## Tide predictor
 
@@ -17,3 +18,7 @@ The tide predictions do not factor events such as storms, surge, wind waves, upl
 ## Shout out
 
 All the really hard math is based on the excellent [Xtide](https://flaterco.com/xtide) and [pytides](https://github.com/sam-cox/pytides).
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fneaps%2Ftide-predictor.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fneaps%2Ftide-predictor?ref=badge_large)
