@@ -1,16 +1,14 @@
 import constituents from '../index'
 import astro from '../../astronomy'
-import moment from 'moment'
 
-const sampleTime = moment({
-  years: 2019,
-  months: 9,
-  date: 4,
-  hours: 10,
-  minutes: 15,
-  seconds: 40,
-  milliseconds: 10
-})
+const sampleTime = new Date()
+sampleTime.setFullYear(2019)
+sampleTime.setMonth(9)
+sampleTime.setDate(4)
+sampleTime.setHours(10)
+sampleTime.setMinutes(15)
+sampleTime.setSeconds(40)
+sampleTime.setMilliseconds(10)
 
 const testAstro = astro(sampleTime)
 

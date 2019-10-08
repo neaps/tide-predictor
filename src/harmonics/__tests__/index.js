@@ -1,10 +1,9 @@
 import harmonics from '../index'
 import constituentTypes from '../constituent-types'
 import mockHarmonicConstituents from '../__mocks__/constituents'
-import moment from 'moment'
 
-const startDate = moment.unix(1567346400) //2019-09-01
-const endDate = moment.unix(1569966078) //2019-10-01
+const startDate = new Date(1567346400 * 1000) //2019-09-01
+const endDate = new Date(1569966078 * 1000) //2019-10-01
 
 test('constituentTypes has types defined', () => {
   expect(constituentTypes.M2).toBeDefined()
@@ -56,7 +55,7 @@ describe('harmonics', () => {
       timeErrorMessage = error
     }
     expect(timeErrorMessage).toBe(
-      'Invalid date format, should be a moment object, Date object, or timestamp'
+      'Invalid date format, should be a Date object, or timestamp'
     )
 
     timeErrorMessage = false
@@ -74,35 +73,15 @@ describe('harmonics', () => {
       timeErrorMessage = error
     }
     expect(timeErrorMessage).toBeFalsy()
-
-    timeErrorMessage = false
-    try {
-      const harmonicsNoTime = new harmonics(mockHarmonicConstituents)
-      harmonicsNoTime.getStartYear()
-    } catch (error) {
-      timeErrorMessage = error
-    }
-    expect(timeErrorMessage).toBe('Start date is not yet set')
   })
 
   test('it parses dates correctly', () => {
     const harmonicsTime = new harmonics(mockHarmonicConstituents)
-    const parsedMoment = harmonicsTime.getMomentFromDate(startDate)
-    expect(startDate.isSame(parsedMoment)).toBeTruthy()
+    const parsedDate = harmonicsTime.getDate(startDate)
+    expect(parsedDate.getTime()).toBe(startDate.getTime())
 
-    const parsedUnixMoment = harmonicsTime.getMomentFromDate(startDate.unix())
-    expect(startDate.isSame(parsedUnixMoment)).toBeTruthy()
-
-    const testDate = new Date(startDate.valueOf())
-    const parsedDateMoment = harmonicsTime.getMomentFromDate(testDate)
-    expect(startDate.isSame(parsedDateMoment)).toBeTruthy()
-  })
-
-  test('it finds the correct start of year', () => {
-    const harmonicsTime = new harmonics(mockHarmonicConstituents)
-    harmonicsTime.setTimeSpan(startDate, endDate)
-
-    expect(harmonicsTime.getStartYear()).toBe(moment('2019-01-01').unix())
+    const parsedUnixDate = harmonicsTime.getDate(startDate.getTime() / 1000)
+    expect(parsedUnixDate.getTime()).toBe(startDate.getTime())
   })
 
   test('it creates timeline correctly', () => {
@@ -110,7 +89,9 @@ describe('harmonics', () => {
     const harmonicsTime = new harmonics(mockHarmonicConstituents)
     harmonicsTime.setTimeSpan(startDate, endDate)
     const difference =
-      Math.round((endDate.unix() - startDate.unix()) / seconds) + 1
+      Math.round(
+        (endDate.getTime() / 1000 - startDate.getTime() / 1000) / seconds
+      ) + 1
     const { items, hours } = harmonicsTime.timeline(seconds)
     expect(items.length).toBe(difference)
     expect(hours.length).toBe(difference)

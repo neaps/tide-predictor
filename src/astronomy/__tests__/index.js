@@ -9,17 +9,15 @@ import astro, {
   _nup,
   _nupp
 } from '../index'
-import moment from 'moment'
 
-const sampleTime = moment({
-  years: 2019,
-  months: 9,
-  date: 4,
-  hours: 10,
-  minutes: 15,
-  seconds: 40,
-  milliseconds: 10
-})
+const sampleTime = new Date()
+sampleTime.setFullYear(2019)
+sampleTime.setMonth(9)
+sampleTime.setDate(4)
+sampleTime.setHours(10)
+sampleTime.setMinutes(15)
+sampleTime.setSeconds(40)
+sampleTime.setMilliseconds(10)
 
 describe('astronomy', () => {
   test('complete astronomic calculation', () => {
@@ -64,15 +62,15 @@ describe('astronomy', () => {
   })
 
   test('evaluates Meeus formula 7.1 (JD) correctly', () => {
-    sampleTime.set('months', 9)
+    sampleTime.setMonth(9)
     expect(JD(sampleTime)).toBeCloseTo(2458760.92755, 2)
     //Months of less than 2 go back a year
-    sampleTime.set('months', 0)
+    sampleTime.setMonth(0)
     expect(JD(sampleTime)).toBeCloseTo(2458487.92755, 2)
   })
 
   test('evaluates Meeus formula 11.1 (T) correctly', () => {
-    sampleTime.set('months', 9)
+    sampleTime.setMonth(9)
     expect(T(sampleTime)).toBeCloseTo(0.19756132, 2)
   })
 

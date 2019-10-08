@@ -28,6 +28,8 @@ class prediction {
     })
   }
 
+  getTidalExtremePrediction() {}
+
   getTimelinePrediction() {
     const { baseSpeed, u, f, baseValue } = this.prepare()
     this.setConstituentPhases()
@@ -48,7 +50,7 @@ class prediction {
   getLevel(hour, modelBaseSpeed, modelU, modelF, modelBaseValue) {
     const amplitudes = []
     let result = 0
-    //amplitude*f*np.cos(speed*t + (V0 + u) - phase
+
     this.constituents.forEach(constituent => {
       const amplitude = constituent.amplitude
       const phase = constituent._phase

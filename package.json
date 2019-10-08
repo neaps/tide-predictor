@@ -11,7 +11,6 @@
   "dependencies": {
     "complex-modulus": "^1.0.1",
     "grunt-coveralls": "^2.0.0",
-    "moment": "^2.24.0",
     "static-eval": "^2.0.0"
   },
   "devDependencies": {

@@ -25,8 +25,8 @@ class station {
 
   /**
    * Sets the start & stop time to get data from.
-   * @param {moment, Date, unix timestamp} start
-   * @param {moment, Date, unix timestamp} end
+   * @param {Date, unix timestamp} start
+   * @param {Date, unix timestamp} end
    */
   setTimeSpan(start, end) {
     this.harmonics.setTimeSpan(start, end)

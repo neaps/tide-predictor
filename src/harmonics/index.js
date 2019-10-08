@@ -1,4 +1,3 @@
-import moment from 'moment'
 import prediction from './prediction'
 import constituentModels from '../constituent'
 import { isNumber } from 'util'
@@ -36,13 +35,13 @@ class harmonics {
 
   /**
    * Sets the start & stop time to get data from.
-   * @param {moment, Date, unix timestamp} start
-   * @param {moment, Date, unix timestamp} end
+   * @param {Date, unix timestamp} start
+   * @param {Date, unix timestamp} end
    */
   setTimeSpan(start, end) {
-    this.start = this.getMomentFromDate(start)
-    this.end = this.getMomentFromDate(end)
-    if (this.start.isSameOrAfter(this.end)) {
+    this.start = this.getDate(start)
+    this.end = this.getDate(end)
+    if (this.start.getTime() >= this.end.getTime()) {
       throw 'Start time must be before end time'
     }
   }
@@ -55,30 +54,17 @@ class harmonics {
 
   /**
    * Helper function to check that a date is valid,
-   * returns an instance of Moment.
-   * @param {moment, Date, unix timestamp} time
+   * returns an instance of Date.
+   * @param {Date, unix timestamp} time
    */
-  getMomentFromDate(time) {
-    if (moment.isMoment(time)) {
+  getDate(time) {
+    if (time instanceof Date) {
       return time
     }
-    if (time instanceof Date) {
-      return moment(time)
-    }
     if (isNumber(time)) {
-      return moment.unix(time)
+      return new Date(time * 1000)
     }
-    throw 'Invalid date format, should be a moment object, Date object, or timestamp'
-  }
-
-  /**
-   * Returns the timestamp of the start year
-   */
-  getStartYear() {
-    if (!this.start || !moment.isMoment(this.start)) {
-      throw 'Start date is not yet set'
-    }
-    return moment(`${this.start.year()}-01-01`, 'YYYY-MM-DD').unix()
+    throw 'Invalid date format, should be a Date object, or timestamp'
   }
 
   /**
@@ -91,12 +77,12 @@ class harmonics {
   timeline(seconds) {
     seconds = typeof seconds !== 'undefined' ? seconds : 10 * 60
     const timeline = []
-    const end = this.end.unix()
-    let lastTime = this.start.unix()
+    const end = this.end.getTime() / 1000
+    let lastTime = this.start.getTime() / 1000
     const startTime = lastTime
     const hours = []
     while (lastTime <= end) {
-      timeline.push(moment.unix(lastTime))
+      timeline.push(new Date(lastTime * 1000))
       hours.push((lastTime - startTime) / (60 * 60))
       lastTime += seconds
     }
