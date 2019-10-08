@@ -84,4 +84,21 @@ describe('harmonic prediction', () => {
     expect(results[0].level).toBeCloseTo(-1.40468181, 3)
     expect(results.pop().level).toBeCloseTo(2.60312343, 3)
   })
+
+  test('it finds high and low tides', () => {
+    const extremesEndDate = new Date()
+    endDate.setFullYear(2019)
+    endDate.setMonth(8)
+    endDate.setDate(3)
+    endDate.setHours(0)
+    endDate.setMinutes(0)
+    endDate.setSeconds(0)
+    endDate.setMilliseconds(0)
+
+    const harmonic = new harmonics(mockHarmonicConstituents)
+    harmonic.setTimeSpan(startDate, extremesEndDate)
+    const testPrediction = harmonic.getPrediction()
+    const results = testPrediction.getExtremesPrediction()
+    expect(results[0].level).toBeCloseTo(-1.6146877, 4)
+  })
 })

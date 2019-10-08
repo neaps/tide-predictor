@@ -28,12 +28,70 @@ class prediction {
     })
   }
 
-  getTidalExtremePrediction() {}
-
-  getTimelinePrediction() {
+  getExtremesPrediction() {
+    const results = []
     const { baseSpeed, u, f, baseValue } = this.prepare()
     this.setConstituentPhases()
+    let goingUp = false
+    let goingDown = false
+    let slack = false
+    let lastLevel = this.getLevel(0, baseSpeed, u[0], f[0], baseValue)
+    this.timeline.items.forEach((time, index) => {
+      const hour = this.timeline.hours[index]
+      const level = this.getLevel(
+        hour,
+        baseSpeed,
+        u[index],
+        f[index],
+        baseValue
+      )
+      //Compare this level to the last one, if we
+      //are changing angle, then the last one was high or low
+      if (level > lastLevel && goingDown) {
+        results.push({
+          time: this.timeline.items[index - 1],
+          hour: this.timeline.hours[index - 1],
+          level: lastLevel,
+          high: false,
+          low: true,
+          label: this.getExtremeLabel('high')
+        })
+      }
+      if (level < lastLevel && goingUp) {
+        results.push({
+          time: this.timeline.items[index - 1],
+          hour: this.timeline.hours[index - 1],
+          level: lastLevel,
+          high: true,
+          low: false,
+          label: this.getExtremeLabel('low')
+        })
+      }
+      if (level > lastLevel) {
+        goingUp = true
+        goingDown = false
+      }
+      if (level < lastLevel) {
+        goingUp = false
+        goingDown = true
+      }
+      lastLevel = level
+    })
+    return results
+  }
+  // here for i18n
+  getExtremeLabel(label) {
+    const labels = {
+      high: 'High',
+      low: 'Low'
+    }
+    return labels[label]
+  }
+
+  getTimelinePrediction() {
     const results = []
+    const { baseSpeed, u, f, baseValue } = this.prepare()
+    this.setConstituentPhases()
     this.timeline.items.forEach((time, index) => {
       const hour = this.timeline.hours[index]
       const prediction = {
