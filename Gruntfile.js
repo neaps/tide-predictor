@@ -67,13 +67,17 @@ module.exports = function(grunt) {
       coverage: {
         src: 'coverage/lcov.info'
       }
+    },
+    eslint: {
+      target: ['src/**/*.js']
     }
   })
   this.registerTask(
     'build',
     'Builds a distributable version of the current project',
-    ['exec:test', 'babel', 'exec:rollup']
+    ['eslint', 'exec:test', 'babel', 'exec:rollup']
   )
+  grunt.loadNpmTasks('grunt-eslint')
   grunt.loadNpmTasks('grunt-contrib-clean')
   grunt.loadNpmTasks('grunt-contrib-copy')
   grunt.loadNpmTasks('grunt-contrib-uglify')

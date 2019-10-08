@@ -49,19 +49,21 @@ Object.keys(extendedDoodson).forEach(key => {
   sortedDoodson[extendedDoodson[key]] = key
 })
 
-class constituent {
+class Constituent {
   constructor(name, doodsonNumber, coefficients, u, f) {
     this.name = name
     if (!doodsonNumber && !coefficients) {
-      throw 'doodson or coefficient must be defined for a constituent'
+      throw new Error(
+        'Doodson or coefficient must be defined for a constituent'
+      )
     }
     if (!doodsonNumber && coefficients) {
       this.coefficients = coefficients
     } else {
       this.coefficients = this.doodsonNumberToCooeficient(doodsonNumber)
     }
-    this.u = typeof u !== 'undefined' ? u : nodeCorrections.u_zero
-    this.f = typeof f !== 'undefined' ? f : nodeCorrections.f_unity
+    this.u = typeof u !== 'undefined' ? u : nodeCorrections.uZero
+    this.f = typeof f !== 'undefined' ? f : nodeCorrections.fUnity
   }
 
   doodsonNumberToCooeficient(doodsonNumber) {
@@ -96,11 +98,11 @@ class constituent {
   astronimicDoodsonNumber(astro) {
     return [
       astro['T+h-s'],
-      astro['s'],
-      astro['h'],
-      astro['p'],
-      astro['N'],
-      astro['pp'],
+      astro.s,
+      astro.h,
+      astro.p,
+      astro.N,
+      astro.pp,
       astro['90']
     ]
   }
@@ -120,7 +122,8 @@ class constituent {
     })
     return results
   }
-  //Consider two out of phase constituents which travel at the same speed to
+
+  // Consider two out of phase constituents which travel at the same speed to
   // be identical
   isEqual(constituent) {
     return (
@@ -142,5 +145,5 @@ class constituent {
   }
 }
 
-export default constituent
+export default Constituent
 export { extendedDoodson, sortedDoodson }

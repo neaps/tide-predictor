@@ -64,7 +64,7 @@ describe('astronomy', () => {
   test('evaluates Meeus formula 7.1 (JD) correctly', () => {
     sampleTime.setMonth(9)
     expect(JD(sampleTime)).toBeCloseTo(2458760.92755, 2)
-    //Months of less than 2 go back a year
+    // Months of less than 2 go back a year
     sampleTime.setMonth(0)
     expect(JD(sampleTime)).toBeCloseTo(2458487.92755, 2)
   })

@@ -1,11 +1,11 @@
 import astro from '../astronomy'
-import { d2r, r2d } from '../constants'
+import { d2r } from '../constants'
 
 const modulus = (a, b) => {
   return ((a % b) + b) % b
 }
 
-class prediction {
+class Prediction {
   constructor({ timeline, constituents, start }) {
     this.timeline = timeline
     this.constituents = constituents
@@ -14,8 +14,8 @@ class prediction {
   }
 
   setPhaseType(phaseType) {
-    if (['local', 'GMT'].indexOf(phaseType) == -1) {
-      throw 'phase type must be local or GMT'
+    if (['local', 'GMT'].indexOf(phaseType) === -1) {
+      throw new Error('phase type must be local or GMT')
     }
     this.phaseType = phaseType
   }
@@ -34,7 +34,6 @@ class prediction {
     this.setConstituentPhases()
     let goingUp = false
     let goingDown = false
-    let slack = false
     let lastLevel = this.getLevel(0, baseSpeed, u[0], f[0], baseValue)
     this.timeline.items.forEach((time, index) => {
       const hour = this.timeline.hours[index]
@@ -45,8 +44,8 @@ class prediction {
         f[index],
         baseValue
       )
-      //Compare this level to the last one, if we
-      //are changing angle, then the last one was high or low
+      // Compare this level to the last one, if we
+      // are changing angle, then the last one was high or low
       if (level > lastLevel && goingDown) {
         results.push({
           time: this.timeline.items[index - 1],
@@ -79,6 +78,7 @@ class prediction {
     })
     return results
   }
+
   // here for i18n
   getExtremeLabel(label) {
     const labels = {
@@ -118,7 +118,7 @@ class prediction {
       const V0 = modelBaseValue[constituent.name]
       amplitudes.push(amplitude * f * Math.cos(speed * hour + (V0 + u) - phase))
     })
-    //sum up each row
+    // sum up each row
     amplitudes.forEach(item => {
       result += item
     })
@@ -129,7 +129,7 @@ class prediction {
     radians = typeof radians !== 'undefined' ? radians : true
     const baseAstro = astro(this.start)
 
-    let baseValue = {}
+    const baseValue = {}
     const baseSpeed = {}
     const u = []
     const f = []
@@ -162,4 +162,4 @@ class prediction {
   }
 }
 
-export default prediction
+export default Prediction

@@ -1,9 +1,9 @@
-import harmonics from '../index'
+import Harmonics from '../index'
 import constituentTypes from '../constituent-types'
 import mockHarmonicConstituents from '../__mocks__/constituents'
 
-const startDate = new Date(1567346400 * 1000) //2019-09-01
-const endDate = new Date(1569966078 * 1000) //2019-10-01
+const startDate = new Date(1567346400 * 1000) // 2019-09-01
+const endDate = new Date(1569966078 * 1000) // 2019-10-01
 
 test('constituentTypes has types defined', () => {
   expect(constituentTypes.M2).toBeDefined()
@@ -13,17 +13,18 @@ test('constituentTypes has types defined', () => {
 describe('harmonics', () => {
   test('it checks constituents', () => {
     let errorMessage = false
+    let testHarmonics = {} // eslint-disable-line
     try {
-      let testHarmonics = new harmonics('not array')
+      testHarmonics = new Harmonics('not array')
     } catch (error) {
       errorMessage = error
     }
-    expect(errorMessage).toBe('Harmonic constituents are not an array')
+    expect(errorMessage.message).toBe('Harmonic constituents are not an array')
 
     errorMessage = false
 
     try {
-      let testHarmonics = new harmonics([
+      testHarmonics = new Harmonics([
         {
           name: 'M2',
           description: 'Principal lunar semidiurnal constituent',
@@ -43,18 +44,20 @@ describe('harmonics', () => {
     } catch (error) {
       errorMessage = error
     }
-    expect(errorMessage).toBe('Harmonic constituent entry missing field speed')
+    expect(errorMessage.message).toBe(
+      'Harmonic constituent entry missing field speed'
+    )
   })
 
   test('it checks start and end times', () => {
-    const testHarmonics = new harmonics(mockHarmonicConstituents)
+    const testHarmonics = new Harmonics(mockHarmonicConstituents)
     let timeErrorMessage = false
     try {
       testHarmonics.setTimeSpan('lkjsdlf', 'sdfklj')
     } catch (error) {
       timeErrorMessage = error
     }
-    expect(timeErrorMessage).toBe(
+    expect(timeErrorMessage.message).toBe(
       'Invalid date format, should be a Date object, or timestamp'
     )
 
@@ -64,7 +67,7 @@ describe('harmonics', () => {
     } catch (error) {
       timeErrorMessage = error
     }
-    expect(timeErrorMessage).toBe('Start time must be before end time')
+    expect(timeErrorMessage.message).toBe('Start time must be before end time')
 
     timeErrorMessage = false
     try {
@@ -72,11 +75,11 @@ describe('harmonics', () => {
     } catch (error) {
       timeErrorMessage = error
     }
-    expect(timeErrorMessage).toBeFalsy()
+    expect(timeErrorMessage.message).toBeFalsy()
   })
 
   test('it parses dates correctly', () => {
-    const harmonicsTime = new harmonics(mockHarmonicConstituents)
+    const harmonicsTime = new Harmonics(mockHarmonicConstituents)
     const parsedDate = harmonicsTime.getDate(startDate)
     expect(parsedDate.getTime()).toBe(startDate.getTime())
 
@@ -86,7 +89,7 @@ describe('harmonics', () => {
 
   test('it creates timeline correctly', () => {
     const seconds = 20 * 60
-    const harmonicsTime = new harmonics(mockHarmonicConstituents)
+    const harmonicsTime = new Harmonics(mockHarmonicConstituents)
     harmonicsTime.setTimeSpan(startDate, endDate)
     const difference =
       Math.round(

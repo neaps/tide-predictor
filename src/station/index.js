@@ -1,6 +1,6 @@
-import harmonics from '../harmonics'
+import Harmonics from '../harmonics'
 
-class station {
+class Station {
   constructor(stationInfo) {
     this.harmonics = []
     this.isSubordinate = false
@@ -20,7 +20,7 @@ class station {
   }
 
   setHarmonicConstituents(constituents) {
-    this.harmonics = new harmonics(constituents)
+    this.harmonics = new Harmonics(constituents)
   }
 
   /**
@@ -34,11 +34,11 @@ class station {
 
   getTimelinePrediction() {
     if (!this.harmonics.timelineIsSet()) {
-      throw 'Start and end times not set'
+      throw new Error('Start and end times not set')
     }
     const prediction = this.harmonics.getPrediction()
     return prediction.getTimelinePrediction()
   }
 }
 
-export default station
+export default Station

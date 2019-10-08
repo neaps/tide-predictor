@@ -1,9 +1,9 @@
 import { d2r, r2d } from '../constants'
 import coefficients from './coefficients'
 
-//Evaluates a polynomial at argument
+// Evaluates a polynomial at argument
 const polynomial = (coefficients, argument) => {
-  let result = []
+  const result = []
   coefficients.forEach((coefficient, index) => {
     result.push(coefficient * Math.pow(argument, index))
   })
@@ -12,9 +12,9 @@ const polynomial = (coefficients, argument) => {
   })
 }
 
-//Evaluates a derivative polynomial at argument
+// Evaluates a derivative polynomial at argument
 const derivativePolynomial = (coefficients, argument) => {
-  let result = []
+  const result = []
   coefficients.forEach((coefficient, index) => {
     result.push(coefficient * index * Math.pow(argument, index - 1))
   })
@@ -23,7 +23,7 @@ const derivativePolynomial = (coefficients, argument) => {
   })
 }
 
-//Meeus formula 11.1
+// Meeus formula 11.1
 const T = t => {
   return (JD(t) - 2451545.0) / 36525
 }
@@ -102,7 +102,7 @@ const _nu = (N, i, omega) => {
   return (e1 - e2) * r2d
 }
 
-//Schureman equation 224
+// Schureman equation 224
 const _nup = (N, i, omega) => {
   const I = d2r * _I(N, i, omega)
   const nu = d2r * _nu(N, i, omega)
@@ -115,7 +115,7 @@ const _nup = (N, i, omega) => {
   )
 }
 
-//Schureman equation 232
+// Schureman equation 232
 const _nupp = (N, i, omega) => {
   const I = d2r * _I(N, i, omega)
   const nu = d2r * _nu(N, i, omega)
@@ -137,18 +137,18 @@ const astro = time => {
     p: coefficients.lunarPerigee,
     N: coefficients.lunarNode,
     pp: coefficients.solarPerigee,
-    '90': [90.0],
+    90: [90.0],
     omega: coefficients.terrestrialObliquity,
     i: coefficients.lunarInclination
   }
 
   // Polynomials are in T, that is Julian Centuries; we want our speeds to be
   // in the more convenient unit of degrees per hour.
-  const dT_dHour = 1 / (24 * 365.25 * 100)
+  const dTdHour = 1 / (24 * 365.25 * 100)
   Object.keys(polynomials).forEach(name => {
     result[name] = {
       value: modulus(polynomial(polynomials[name], T(time)), 360.0),
-      speed: derivativePolynomial(polynomials[name], T(time)) * dT_dHour
+      speed: derivativePolynomial(polynomials[name], T(time)) * dTdHour
     }
   })
 

@@ -1,8 +1,7 @@
-import prediction from './prediction'
-import constituentModels from '../constituent'
-import { isNumber } from 'util'
+import Prediction from './prediction'
+import constituentModels from '../constituent/index'
 
-class harmonics {
+class Harmonics {
   /**
    * Sets up a new harmonics class.
    * @constructor
@@ -17,13 +16,13 @@ class harmonics {
     ]
 
     if (!Array.isArray(constituents)) {
-      throw 'Harmonic constituents are not an array'
+      throw new Error('Harmonic constituents are not an array')
     }
     this.constituents = []
     constituents.forEach((constituent, index) => {
       this.requiredFields.forEach(field => {
         if (typeof constituent[field] === 'undefined') {
-          throw `Harmonic constituent entry missing field ${field}`
+          throw new Error(`Harmonic constituent entry missing field ${field}`)
         }
       })
       if (typeof constituentModels[constituent.name] !== 'undefined') {
@@ -42,7 +41,7 @@ class harmonics {
     this.start = this.getDate(start)
     this.end = this.getDate(end)
     if (this.start.getTime() >= this.end.getTime()) {
-      throw 'Start time must be before end time'
+      throw new Error('Start time must be before end time')
     }
   }
 
@@ -61,10 +60,12 @@ class harmonics {
     if (time instanceof Date) {
       return time
     }
-    if (isNumber(time)) {
+    if (typeof time === 'number') {
       return new Date(time * 1000)
     }
-    throw 'Invalid date format, should be a Date object, or timestamp'
+    throw new Error(
+      'Invalid date format, should be a Date object, or timestamp'
+    )
   }
 
   /**
@@ -97,7 +98,7 @@ class harmonics {
    * Returns a prediction class
    */
   getPrediction() {
-    return new prediction({
+    return new Prediction({
       timeline: this.timeline(),
       constituents: this.constituents,
       start: this.start
@@ -105,4 +106,4 @@ class harmonics {
   }
 }
 
-export default harmonics
+export default Harmonics

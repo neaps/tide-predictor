@@ -1,12 +1,12 @@
 import { d2r, r2d } from '../constants'
 
 const corrections = {
-  f_unity() {
+  fUnity() {
     return 1
   },
 
-  //// Schureman equations 73, 65
-  f_Mm(a) {
+  // Schureman equations 73, 65
+  fMm(a) {
     const omega = d2r * a.omega.value
     const i = d2r * a.i.value
     const I = d2r * a.I.value
@@ -16,8 +16,8 @@ const corrections = {
     return (2 / 3.0 - Math.pow(Math.sin(I), 2)) / mean
   },
 
-  //Schureman equations 74, 66
-  f_Mf(a) {
+  // Schureman equations 74, 66
+  fMf(a) {
     const omega = d2r * a.omega.value
     const i = d2r * a.i.value
     const I = d2r * a.I.value
@@ -26,7 +26,7 @@ const corrections = {
   },
 
   // Schureman equations 75, 67
-  f_O1(a) {
+  fO1(a) {
     const omega = d2r * a.omega.value
     const i = d2r * a.i.value
     const I = d2r * a.I.value
@@ -37,8 +37,8 @@ const corrections = {
     return (Math.sin(I) * Math.pow(Math.cos(0.5 * I), 2)) / mean
   },
 
-  //Schureman equations 76, 68
-  f_J1(a) {
+  // Schureman equations 76, 68
+  fJ1(a) {
     const omega = d2r * a.omega.value
     const i = d2r * a.i.value
     const I = d2r * a.I.value
@@ -48,7 +48,7 @@ const corrections = {
   },
 
   // Schureman equations 77, 69
-  f_OO1(a) {
+  fOO1(a) {
     const omega = d2r * a.omega.value
     const i = d2r * a.i.value
     const I = d2r * a.I.value
@@ -60,7 +60,7 @@ const corrections = {
   },
 
   // Schureman equations 78, 70
-  f_M2(a) {
+  fM2(a) {
     const omega = d2r * a.omega.value
     const i = d2r * a.i.value
     const I = d2r * a.I.value
@@ -71,14 +71,14 @@ const corrections = {
 
   // Schureman equations 227, 226, 68
   // Should probably eventually include the derivations of the magic numbers (0.5023 etc).
-  f_K1(a) {
+  fK1(a) {
     const omega = d2r * a.omega.value
     const i = d2r * a.i.value
     const I = d2r * a.I.value
     const nu = d2r * a.nu.value
-    const sin2Icosnu_mean =
+    const sin2IcosnuMean =
       Math.sin(2 * omega) * (1 - (3 / 2.0) * Math.pow(Math.sin(i), 2))
-    const mean = 0.5023 * sin2Icosnu_mean + 0.1681
+    const mean = 0.5023 * sin2IcosnuMean + 0.1681
     return (
       Math.pow(
         0.2523 * Math.pow(Math.sin(2 * I), 2) +
@@ -91,28 +91,28 @@ const corrections = {
 
   // Schureman equations 215, 213, 204
   // It can be (and has been) confirmed that the exponent for R_a reads 1/2 via Schureman Table 7
-  f_L2(a) {
+  fL2(a) {
     const P = d2r * a.P.value
     const I = d2r * a.I.value
-    const R_a_inv = Math.pow(
+    const rAInv = Math.pow(
       1 -
         12 * Math.pow(Math.tan(0.5 * I), 2) * Math.cos(2 * P) +
         36 * Math.pow(Math.tan(0.5 * I), 4),
       0.5
     )
-    return corrections.f_M2(a) * R_a_inv
+    return corrections.fM2(a) * rAInv
   },
 
   // Schureman equations 235, 234, 71
   // Again, magic numbers
-  f_K2(a) {
+  fK2(a) {
     const omega = d2r * a.omega.value
     const i = d2r * a.i.value
     const I = d2r * a.I.value
     const nu = d2r * a.nu.value
-    const sinsqIcos2nu_mean =
+    const sinsqIcos2nuMean =
       Math.sin(omega) ** 2 * (1 - (3 / 2.0) * Math.sin(i) ** 2)
-    const mean = 0.5023 * sinsqIcos2nu_mean + 0.0365
+    const mean = 0.5023 * sinsqIcos2nuMean + 0.0365
     return (
       Math.pow(
         0.2523 * Math.pow(Math.sin(I), 4) +
@@ -123,10 +123,10 @@ const corrections = {
     )
   },
   // Schureman equations 206, 207, 195
-  f_M1(a) {
+  fM1(a) {
     const P = d2r * a.P.value
     const I = d2r * a.I.value
-    const Q_a_inv = Math.pow(
+    const qAInv = Math.pow(
       0.25 +
         1.5 *
           Math.cos(I) *
@@ -135,46 +135,46 @@ const corrections = {
         2.25 * Math.pow(Math.cos(I), 2) * Math.pow(Math.cos(0.5 * I), -4),
       0.5
     )
-    return corrections.f_O1(a) * Q_a_inv
+    return corrections.fO1(a) * qAInv
   },
 
   // See e.g. Schureman equation 149
-  f_Modd(a, n) {
-    return Math.pow(corrections.f_M2(a), n / 2.0)
+  fModd(a, n) {
+    return Math.pow(corrections.fM2(a), n / 2.0)
   },
 
   // Node factors u, see Table 2 of Schureman.
 
-  u_zero(a) {
+  uZero(a) {
     return 0.0
   },
 
-  u_Mf(a) {
+  uMf(a) {
     return -2.0 * a.xi.value
   },
 
-  u_O1(a) {
+  uO1(a) {
     return 2.0 * a.xi.value - a.nu.value
   },
 
-  u_J1(a) {
+  uJ1(a) {
     return -a.nu.value
   },
 
-  u_OO1(a) {
+  uOO1(a) {
     return -2.0 * a.xi.value - a.nu.value
   },
 
-  u_M2(a) {
+  uM2(a) {
     return 2.0 * a.xi.value - 2.0 * a.nu.value
   },
 
-  u_K1(a) {
+  uK1(a) {
     return -a.nup.value
   },
 
-  //Schureman 214
-  u_L2(a) {
+  // Schureman 214
+  uL2(a) {
     const I = d2r * a.I.value
     const P = d2r * a.P.value
     const R =
@@ -186,12 +186,12 @@ const corrections = {
     return 2.0 * a.xi.value - 2.0 * a.nu.value - R
   },
 
-  u_K2(a) {
+  uK2(a) {
     return -2.0 * a.nupp.value
   },
 
-  //Schureman 202
-  u_M1(a) {
+  // Schureman 202
+  uM1(a) {
     const I = d2r * a.I.value
     const P = d2r * a.P.value
     const Q =
@@ -200,8 +200,8 @@ const corrections = {
     return a.xi.value - a.nu.value + Q
   },
 
-  u_Modd(a, n) {
-    return (n / 2.0) * corrections.u_M2(a)
+  uModd(a, n) {
+    return (n / 2.0) * corrections.uM2(a)
   }
 }
 

@@ -1,5 +1,3 @@
-import constituent from './constituent'
-
 class compoundConstituent {
   constructor(name, members) {
     this.name = name
@@ -41,7 +39,7 @@ class compoundConstituent {
   }
 
   f(astro) {
-    let f = []
+    const f = []
     this.members.forEach(({ constituent, factor }) => {
       f.push(Math.pow(constituent.f(astro), Math.abs(factor)))
     })

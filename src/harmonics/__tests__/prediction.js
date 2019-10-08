@@ -1,6 +1,6 @@
-import harmonics from '../index'
+import Harmonics from '../index'
 import mockHarmonicConstituents from '../__mocks__/constituents'
-import prediction from '../prediction'
+import Prediction from '../prediction'
 
 const startDate = new Date()
 startDate.setFullYear(2019)
@@ -21,7 +21,7 @@ endDate.setSeconds(0)
 endDate.setMilliseconds(0)
 
 const getPrediction = () => {
-  const harmonic = new harmonics(mockHarmonicConstituents)
+  const harmonic = new Harmonics(mockHarmonicConstituents)
   harmonic.setTimeSpan(startDate, endDate)
   return harmonic.getPrediction()
 }
@@ -29,7 +29,7 @@ const getPrediction = () => {
 describe('harmonic prediction', () => {
   test('it creates a prediction', () => {
     const testPrediction = getPrediction()
-    expect(testPrediction).toBeInstanceOf(prediction)
+    expect(testPrediction).toBeInstanceOf(Prediction)
   })
 
   test('it prepares prediction values', () => {
@@ -62,7 +62,7 @@ describe('harmonic prediction', () => {
     } catch (error) {
       errorMessage = error
     }
-    expect(errorMessage).toBe('phase type must be local or GMT')
+    expect(errorMessage.message).toBe('phase type must be local or GMT')
   })
 
   test('it defines phases in constituents by radians', () => {
@@ -95,7 +95,7 @@ describe('harmonic prediction', () => {
     endDate.setSeconds(0)
     endDate.setMilliseconds(0)
 
-    const harmonic = new harmonics(mockHarmonicConstituents)
+    const harmonic = new Harmonics(mockHarmonicConstituents)
     harmonic.setTimeSpan(startDate, extremesEndDate)
     const testPrediction = harmonic.getPrediction()
     const results = testPrediction.getExtremesPrediction()

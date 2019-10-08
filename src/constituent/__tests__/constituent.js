@@ -1,4 +1,4 @@
-import constituent, { extendedDoodson, sortedDoodson } from '../constituent'
+import Constituent, { extendedDoodson, sortedDoodson } from '../constituent'
 import astro from '../../astronomy'
 
 const sampleTime = new Date()
@@ -12,19 +12,19 @@ sampleTime.setMilliseconds(10)
 
 const testAstro = astro(sampleTime)
 
-//This is a made-up doodson number for a test coefficient
-const testConstituent = new constituent('test', 'A AYZ ZZA')
+// This is a made-up doodson number for a test coefficient
+const testConstituent = new Constituent('test', 'A AYZ ZZA')
 
 describe('constituent', () => {
   test('it throws error if missing coefficients', () => {
     let errorMessage = false
     try {
-      const a = new constituent('fail')
+      const a = new Constituent('fail') // eslint-disable-line
     } catch (error) {
       errorMessage = error
     }
-    expect(errorMessage).toBe(
-      'doodson or coefficient must be defined for a constituent'
+    expect(errorMessage.message).toBe(
+      'Doodson or coefficient must be defined for a constituent'
     )
   })
 
@@ -34,13 +34,13 @@ describe('constituent', () => {
   })
 
   test('it converts Doodson numbers to cooeficient', () => {
-    const testCooefficient = new constituent('test', null, [])
+    const testCooefficient = new Constituent('test', null, [])
     const coefficient = testCooefficient.doodsonNumberToCooeficient('A BZY ZZY')
     expect(coefficient).toEqual(expect.arrayContaining([1, 2, 0, -1, 0, 0, -1]))
   })
 
   test('it converts cooeficient to Doodson number', () => {
-    const testCooefficient = new constituent('test', null, [])
+    const testCooefficient = new Constituent('test', null, [])
     const doodsonNumber = testCooefficient.cooeficientToDoodsonNumber([
       1,
       2,
@@ -54,7 +54,7 @@ describe('constituent', () => {
   })
 
   test('it creates cooeficient hashes', () => {
-    const testCooefficient = new constituent('test', null, [
+    const testCooefficient = new Constituent('test', null, [
       1,
       2,
       0,
@@ -87,8 +87,8 @@ describe('constituent', () => {
   })
 
   test('it compares different constituents', () => {
-    const secondConstituent = new constituent('test the same', 'A AYZ ZZA')
-    const thirdConstituent = new constituent('test different', 'A ZYZ ZZA')
+    const secondConstituent = new Constituent('test the same', 'A AYZ ZZA')
+    const thirdConstituent = new Constituent('test different', 'A ZYZ ZZA')
     expect(testConstituent.isEqual(secondConstituent)).toBeTruthy()
     expect(testConstituent.isEqual(thirdConstituent)).toBeFalsy()
   })
