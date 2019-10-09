@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import './App.css'
 import Tide from './tides/index'
+import { VictoryChart, VictoryTheme, VictoryLine } from 'victory'
 
 function App() {
   const [tides, setTides] = useState([])
+
   useEffect(() => {
     fetch(
       'https://tidesandcurrents.noaa.gov/mdapi/v1.0/webapi/stations/9413450/harcon.json'
@@ -14,10 +16,10 @@ function App() {
       .then(stationInfo => {
         const tideStation = new Tide().station(stationInfo)
         const today = new Date()
-        const threeDaysFromNow = new Date(
-          today.getTime() + 3 * 24 * 60 * 60 * 1000
+        const twoDaysFromNow = new Date(
+          today.getTime() + 2 * 24 * 60 * 60 * 1000
         )
-        tideStation.setTimeSpan(today, threeDaysFromNow)
+        tideStation.setTimeSpan(today, twoDaysFromNow)
         const tideLevels = tideStation.getExtremesPrediction()
         setTides(tideLevels)
       })
@@ -26,6 +28,15 @@ function App() {
     <div className="App">
       <header className="App-header"></header>
       <div className="App-content">
+        <VictoryChart theme={VictoryTheme.material}>
+          <VictoryLine
+            data={tides}
+            interpolation="cardinal"
+            x="time"
+            y="level"
+            labels={() => null}
+          />
+        </VictoryChart>
         {tides.length ? (
           <>
             <table>
