@@ -30,6 +30,16 @@ describe('Tidal station', () => {
     }
     expect(stationCreated).toBeTruthy()
     expect(testStation.isSubordinate).toBeFalsy()
+
+    testStation = {}
+    mockStation.isSubordinate = true
+    try {
+      testStation = new Station(mockStation)
+    } catch (e) {
+      stationCreated = false
+    }
+    expect(stationCreated).toBeTruthy()
+    expect(testStation.isSubordinate).toBeTruthy()
   })
 
   test('it sets timespan', () => {
@@ -52,6 +62,14 @@ describe('Tidal station', () => {
       timeError = error
     }
     expect(timeError.message).toBe('Start and end times not set')
+
+    timeError = false
+    try {
+      testStation.getExtremesPrediction()
+    } catch (error) {
+      timeError = error
+    }
+    expect(timeError.message).toBe('Start and end times not set')
   })
 
   test('it predicts the tides in a timeline', () => {
@@ -60,5 +78,12 @@ describe('Tidal station', () => {
     const results = testStation.getTimelinePrediction()
     expect(results[0].level).toBeCloseTo(-1.40468181, 3)
     expect(results.pop().level).toBeCloseTo(2.60312343, 3)
+  })
+
+  test('it predicts the tidal extremes', () => {
+    const testStation = new Station(mockStation)
+    testStation.setTimeSpan(startDate, endDate)
+    const results = testStation.getExtremesPrediction()
+    expect(results[0].level).toBeCloseTo(-1.6146877, 4)
   })
 })
