@@ -1,4 +1,4 @@
-import astro from '../astronomy'
+import astro from '../astronomy/index'
 import { d2r } from '../constants'
 
 const modulus = (a, b) => {
@@ -49,21 +49,19 @@ class Prediction {
       if (level > lastLevel && goingDown) {
         results.push({
           time: this.timeline.items[index - 1],
-          hour: this.timeline.hours[index - 1],
           level: lastLevel,
           high: false,
           low: true,
-          label: this.getExtremeLabel('high')
+          label: this.getExtremeLabel('low')
         })
       }
       if (level < lastLevel && goingUp) {
         results.push({
           time: this.timeline.items[index - 1],
-          hour: this.timeline.hours[index - 1],
           level: lastLevel,
           high: true,
           low: false,
-          label: this.getExtremeLabel('low')
+          label: this.getExtremeLabel('high')
         })
       }
       if (level > lastLevel) {

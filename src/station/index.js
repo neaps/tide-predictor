@@ -1,4 +1,4 @@
-import Harmonics from '../harmonics'
+import Harmonics from '../harmonics/index'
 
 class Station {
   constructor(stationInfo) {
@@ -38,6 +38,14 @@ class Station {
     }
     const prediction = this.harmonics.getPrediction()
     return prediction.getTimelinePrediction()
+  }
+
+  getExtremesPrediction() {
+    if (!this.harmonics.timelineIsSet()) {
+      throw new Error('Start and end times not set')
+    }
+    const prediction = this.harmonics.getPrediction()
+    return prediction.getExtremesPrediction()
   }
 }
 

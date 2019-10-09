@@ -1,3 +1,9 @@
-import harmonics from './harmonics/index'
+import Station from './station/index'
 
-export { harmonics }
+class Tide {
+  station(stationInfo) {
+    return new Station(stationInfo)
+  }
+}
+
+export default Tide

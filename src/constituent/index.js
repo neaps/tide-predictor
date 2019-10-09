@@ -1,6 +1,6 @@
 import Constituent from './constituent'
 import CompoundConstituent from './compound-constituent'
-import nc from '../node-corrections'
+import nc from '../node-corrections/index'
 
 const constituents = {}
 // Long Term

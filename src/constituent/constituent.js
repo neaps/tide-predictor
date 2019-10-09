@@ -1,4 +1,4 @@
-import nodeCorrections from '../node-corrections'
+import nodeCorrections from '../node-corrections/index'
 
 const extendedDoodson = {
   A: 1,

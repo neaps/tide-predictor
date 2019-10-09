@@ -6,7 +6,7 @@ A Javascript tide harmonic calculator.
 
 ## Warning
 
-**Do not use calculations from this project for navigation, or depend on them in any situation where inaccuracies could result to the harm of a person or property.**
+**Do not use calculations from this project for navigation, or depend on them in any situation where inaccuracies could result in harm to a person or property.**
 
 This project is **very much** in-progress, and even when it is finished, it is provided with no warantee of accuracy.
 
