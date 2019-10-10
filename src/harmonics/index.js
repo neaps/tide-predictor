@@ -32,6 +32,15 @@ class Harmonics {
     })
   }
 
+  setOffset(offset) {
+    this.constituents.push({
+      name: 'Z0',
+      _model: constituentModels.Z0,
+      _offsetPhase: 0,
+      amplitude: offset
+    })
+  }
+
   /**
    * Sets the start & stop time to get data from.
    * @param {Date, unix timestamp} start

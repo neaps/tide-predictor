@@ -4,15 +4,13 @@ class Station {
   constructor(stationInfo) {
     this.harmonics = []
     this.isSubordinate = false
-
-    if (stationInfo) {
-      this.setHarmonicConstituents(stationInfo.HarmonicConstituents)
-      this.setIsSubordinate(
-        typeof stationInfo.isSubordinate !== 'undefined'
-          ? stationInfo.isSubordinate
-          : false
-      )
-    }
+    this.stationInfo = stationInfo
+    this.setHarmonicConstituents(stationInfo.HarmonicConstituents)
+    this.setIsSubordinate(
+      typeof stationInfo.isSubordinate !== 'undefined'
+        ? stationInfo.isSubordinate
+        : false
+    )
   }
 
   setIsSubordinate(isSubordinate) {
@@ -21,6 +19,10 @@ class Station {
 
   setHarmonicConstituents(constituents) {
     this.harmonics = new Harmonics(constituents)
+  }
+
+  setOffset(offset) {
+    this.harmonics.setOffset(offset)
   }
 
   /**
@@ -46,6 +48,13 @@ class Station {
     }
     const prediction = this.harmonics.getPrediction()
     return prediction.getExtremesPrediction()
+  }
+
+  getWaterLevelAtTime(time) {
+    const harmonic = new Harmonics(this.stationInfo.HarmonicConstituents)
+    const endDate = new Date(time.getTime() + 10 * 60 * 1000)
+    harmonic.setTimeSpan(time, endDate)
+    return harmonic.getPrediction().getTimelinePrediction()[0]
   }
 }
 

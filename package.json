@@ -32,6 +32,7 @@
     "grunt-exec": "^3.0.0",
     "jest": "^24.9.0",
     "jest-junit": "^8.0.0",
+    "node-fetch": "^2.6.0",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-node-resolve": "^5.2.0"
   },

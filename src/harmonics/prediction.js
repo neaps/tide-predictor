@@ -23,7 +23,10 @@ class Prediction {
   setConstituentPhases() {
     const phaseKey = `phase_${this.phaseType}`
     this.constituents = this.constituents.map(constituent => {
-      constituent._phase = d2r * constituent[phaseKey]
+      constituent._phase =
+        typeof constituent._offsetPhase !== 'undefined'
+          ? d2r * constituent._offsetPhase
+          : d2r * constituent[phaseKey]
       return constituent
     })
   }
