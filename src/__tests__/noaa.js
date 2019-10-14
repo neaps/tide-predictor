@@ -7,7 +7,7 @@ if (!fs.existsSync('./.test-cache')) {
   fs.mkdirSync('./.test-cache')
 }
 
-const stations = ['9413450', '9411340', '2695535', '8761724']
+const stations = ['9413450', '9411340', '2695535', '8761724', '8410140']
 
 const getStation = (station, callback) => {
   const filePath = `./.test-cache/${station}.json`
