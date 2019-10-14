@@ -1060,7 +1060,7 @@
     }
   }
 
-  class Station {
+  class TidePrediction {
     constructor(stationInfo) {
       this.harmonics = [];
       this.isSubordinate = false;
@@ -1118,16 +1118,6 @@
     }
   }
 
-  class Tide {
-    constructor() {
-      this._station = true;
-    }
-
-    station(stationInfo) {
-      return new Station(stationInfo)
-    }
-  }
-
-  return Tide;
+  return TidePrediction;
 
 }));

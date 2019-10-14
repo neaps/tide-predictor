@@ -1,5 +1,5 @@
 import astro from '../astronomy/index'
-import { d2r } from '../constants'
+import { d2r } from '../astronomy/constants'
 
 const modulus = (a, b) => {
   return ((a % b) + b) % b

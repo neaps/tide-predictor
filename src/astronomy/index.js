@@ -1,4 +1,4 @@
-import { d2r, r2d } from '../constants'
+import { d2r, r2d } from './constants'
 import coefficients from './coefficients'
 
 // Evaluates a polynomial at argument

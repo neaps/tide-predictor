@@ -1,5 +1,5 @@
 import mockStation from '../__mocks__/station'
-import Station from '../index'
+import TidePrediction from '../index.js'
 
 const startDate = new Date()
 startDate.setFullYear(2019)
@@ -24,7 +24,7 @@ describe('Tidal station', () => {
     let stationCreated = true
     let testStation = {}
     try {
-      testStation = new Station(mockStation)
+      testStation = new TidePrediction(mockStation)
     } catch (e) {
       stationCreated = false
     }
@@ -34,7 +34,7 @@ describe('Tidal station', () => {
     testStation = {}
     mockStation.isSubordinate = true
     try {
-      testStation = new Station(mockStation)
+      testStation = new TidePrediction(mockStation)
     } catch (e) {
       stationCreated = false
     }
@@ -44,7 +44,7 @@ describe('Tidal station', () => {
 
   test('it sets timespan', () => {
     let timeErrorMessage = false
-    const testStation = new Station(mockStation)
+    const testStation = new TidePrediction(mockStation)
     try {
       testStation.setTimeSpan(startDate, endDate)
     } catch (error) {
@@ -54,7 +54,7 @@ describe('Tidal station', () => {
   })
 
   test('it throws error if times are not set', () => {
-    const testStation = new Station(mockStation)
+    const testStation = new TidePrediction(mockStation)
     let timeError = false
     try {
       testStation.getTimelinePrediction()
@@ -73,7 +73,7 @@ describe('Tidal station', () => {
   })
 
   test('it predicts the tides in a timeline', () => {
-    const testStation = new Station(mockStation)
+    const testStation = new TidePrediction(mockStation)
     testStation.setTimeSpan(startDate, endDate)
     const results = testStation.getTimelinePrediction()
     expect(results[0].level).toBeCloseTo(-1.34712509, 3)
@@ -81,20 +81,20 @@ describe('Tidal station', () => {
   })
 
   test('it predicts the tidal extremes', () => {
-    const testStation = new Station(mockStation)
+    const testStation = new TidePrediction(mockStation)
     testStation.setTimeSpan(startDate, endDate)
     const results = testStation.getExtremesPrediction()
     expect(results[0].level).toBeCloseTo(-1.565033, 4)
   })
 
   test('it fetches a single water level', () => {
-    const testStation = new Station(mockStation)
+    const testStation = new TidePrediction(mockStation)
     const result = testStation.getWaterLevelAtTime(startDate)
     expect(result.level).toBeCloseTo(-1.34712509, 4)
   })
 
   test('it adds offset phases', () => {
-    const testStation = new Station(mockStation)
+    const testStation = new TidePrediction(mockStation)
     testStation.setOffset(3)
     testStation.setTimeSpan(startDate, endDate)
     const results = testStation.getExtremesPrediction()

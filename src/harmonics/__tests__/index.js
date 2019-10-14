@@ -1,14 +1,8 @@
 import Harmonics from '../index'
-import constituentTypes from '../constituent-types'
 import mockHarmonicConstituents from '../__mocks__/constituents'
 
 const startDate = new Date(1567346400 * 1000) // 2019-09-01
 const endDate = new Date(1569966078 * 1000) // 2019-10-01
-
-test('constituentTypes has types defined', () => {
-  expect(constituentTypes.M2).toBeDefined()
-  expect(constituentTypes.M3).toBe('Lunar terdiurnal constituent')
-})
 
 describe('harmonics', () => {
   test('it checks constituents', () => {
