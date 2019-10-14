@@ -81,8 +81,8 @@ describe('harmonic prediction', () => {
   test('it creates a timeline prediction', () => {
     const testPrediction = getPrediction()
     const results = testPrediction.getTimelinePrediction()
-    expect(results[0].level).toBeCloseTo(-1.40468181, 3)
-    expect(results.pop().level).toBeCloseTo(2.60312343, 3)
+    expect(results[0].level).toBeCloseTo(-1.347125, 3)
+    expect(results.pop().level).toBeCloseTo(2.85263589, 3)
   })
 
   test('it finds high and low tides', () => {
@@ -99,6 +99,6 @@ describe('harmonic prediction', () => {
     harmonic.setTimeSpan(startDate, extremesEndDate)
     const testPrediction = harmonic.getPrediction()
     const results = testPrediction.getExtremesPrediction()
-    expect(results[0].level).toBeCloseTo(-1.6146877, 4)
+    expect(results[0].level).toBeCloseTo(-1.5650332, 4)
   })
 })

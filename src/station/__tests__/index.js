@@ -76,21 +76,21 @@ describe('Tidal station', () => {
     const testStation = new Station(mockStation)
     testStation.setTimeSpan(startDate, endDate)
     const results = testStation.getTimelinePrediction()
-    expect(results[0].level).toBeCloseTo(-1.40468181, 3)
-    expect(results.pop().level).toBeCloseTo(2.60312343, 3)
+    expect(results[0].level).toBeCloseTo(-1.34712509, 3)
+    expect(results.pop().level).toBeCloseTo(2.85263589, 3)
   })
 
   test('it predicts the tidal extremes', () => {
     const testStation = new Station(mockStation)
     testStation.setTimeSpan(startDate, endDate)
     const results = testStation.getExtremesPrediction()
-    expect(results[0].level).toBeCloseTo(-1.6146877, 4)
+    expect(results[0].level).toBeCloseTo(-1.565033, 4)
   })
 
   test('it fetches a single water level', () => {
     const testStation = new Station(mockStation)
     const result = testStation.getWaterLevelAtTime(startDate)
-    expect(result.level).toBeCloseTo(-1.404611, 4)
+    expect(result.level).toBeCloseTo(-1.34712509, 4)
   })
 
   test('it adds offset phases', () => {
@@ -98,6 +98,6 @@ describe('Tidal station', () => {
     testStation.setOffset(3)
     testStation.setTimeSpan(startDate, endDate)
     const results = testStation.getExtremesPrediction()
-    expect(results[0].level).toBeCloseTo(1.38531228, 4)
+    expect(results[0].level).toBeCloseTo(1.43496678, 4)
   })
 })

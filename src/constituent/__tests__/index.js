@@ -13,12 +13,12 @@ sampleTime.setMilliseconds(10)
 const testAstro = astro(sampleTime)
 
 describe('Base constituent definitions', () => {
-  test('it prepared constituent Sa', () => {
-    expect(constituents.Sa.value(testAstro)).toBeCloseTo(192.826398978, 4)
+  test('it prepared constituent SA', () => {
+    expect(constituents.SA.value(testAstro)).toBeCloseTo(192.826398978, 4)
   })
 
-  test('it prepared constituent Ssa', () => {
-    expect(constituents.Ssa.value(testAstro)).toBeCloseTo(385.652797955, 4)
+  test('it prepared constituent SSA', () => {
+    expect(constituents.SSA.value(testAstro)).toBeCloseTo(385.652797955, 4)
   })
 
   test('it prepared constituent M2', () => {
