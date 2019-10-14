@@ -2,3 +2,4 @@ node_modules
 .local
 coverage
 junit.xml
+.test-cache
