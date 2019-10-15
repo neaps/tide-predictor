@@ -14,7 +14,6 @@
     "@babel/preset-env": "^7.6.2",
     "babel-jest": "^24.9.0",
     "babel-preset-env": "^1.7.0",
-    "cypress": "^3.4.1",
     "eslint": "^6.5.1",
     "eslint-config-standard": "^14.1.0",
     "eslint-plugin-import": "^2.18.2",
