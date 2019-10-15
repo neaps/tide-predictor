@@ -70,28 +70,15 @@ module.exports = function(grunt) {
     },
     eslint: {
       target: ['src/**/*.js']
-    },
-    copy: {
-      main: {
-        files: [
-          {
-            expand: false,
-            src: ['dist/neaps-tides.js'],
-            dest: 'examples/browser/src/',
-            filter: 'isFile'
-          }
-        ]
-      }
     }
   })
   this.registerTask(
     'build',
     'Builds a distributable version of the current project',
-    ['clean', 'eslint', 'exec:test', 'babel', 'exec:rollup', 'copy']
+    ['clean', 'eslint', 'exec:test', 'babel', 'exec:rollup']
   )
   grunt.loadNpmTasks('grunt-eslint')
   grunt.loadNpmTasks('grunt-contrib-clean')
-  grunt.loadNpmTasks('grunt-contrib-copy')
   grunt.loadNpmTasks('grunt-contrib-uglify')
   grunt.loadNpmTasks('grunt-contrib-watch')
   grunt.loadNpmTasks('grunt-babel')
