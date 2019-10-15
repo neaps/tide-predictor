@@ -32,13 +32,13 @@ describe('Tidal station', () => {
     expect(testStation.isSubordinate).toBeFalsy()
 
     testStation = {}
-    mockStation.isSubordinate = true
     try {
       testStation = new TidePrediction(mockStation)
     } catch (e) {
       stationCreated = false
     }
     expect(stationCreated).toBeTruthy()
+    testStation.setIsSubordinate(true)
     expect(testStation.isSubordinate).toBeTruthy()
   })
 

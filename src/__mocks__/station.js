@@ -1,8 +1,4 @@
-export default {
-  name: 'Test station',
-  units: 'feet',
-  isSubordinate: false,
-  HarmonicConstituents: [
+export default [
     {
       number: 1,
       name: 'M2',
@@ -336,7 +332,4 @@ export default {
       phase_local: 152.1,
       speed: 58.984104
     }
-  ],
-  self:
-    'https://tidesandcurrents.noaa.gov/mdapi/v1.0/webapi/stations/9413450/harcon.json'
-}
+  ]

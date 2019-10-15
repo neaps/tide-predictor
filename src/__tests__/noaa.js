@@ -54,7 +54,7 @@ describe('Results compare to NOAA', () => {
   stations.forEach(station => {
     test(`it compares with station ${station}`, done => {
       getStation(station, ({ harmonics, levels, info }) => {
-        const tideStation = new TidePrediction(harmonics)
+        const tideStation = new TidePrediction(harmonics.HarmonicConstituents)
 
         let mtl = 0
         let mllw = 0
