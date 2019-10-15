@@ -14,7 +14,7 @@ function App() {
         return response.json()
       })
       .then(stationInfo => {
-        const tideStation = new Tide().station(stationInfo)
+        const tideStation = new Tide().station(stationInfo.HarmonicConstituent)
         const today = new Date()
         const twoDaysFromNow = new Date(
           today.getTime() + 2 * 24 * 60 * 60 * 1000

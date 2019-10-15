@@ -56,7 +56,7 @@ module.exports = function(grunt) {
         },
 
         files: ['src/**/*.js', 'test/**/*.js'],
-        tasks: ['exec:test']
+        tasks: ['eslint', 'exec:test']
       }
     },
     coveralls: {

@@ -1,8 +1,8 @@
-import fs, { stat } from 'fs'
+import fs from 'fs'
 import fetch from 'node-fetch'
 import TidePrediction from '..'
 
-//Create a directory for test cache
+// Create a directory for test cache
 if (!fs.existsSync('./.test-cache')) {
   fs.mkdirSync('./.test-cache')
 }
@@ -13,6 +13,9 @@ const getStation = (station, callback) => {
   const filePath = `./.test-cache/${station}.json`
   if (fs.existsSync(filePath)) {
     fs.readFile(filePath, (err, data) => {
+      if (err) {
+        throw new Error('Cannot access test cache')
+      }
       callback(JSON.parse(data))
     })
     return
@@ -45,6 +48,9 @@ const getStation = (station, callback) => {
     .then(info => {
       stationData.info = info
       fs.writeFile(filePath, JSON.stringify(stationData), error => {
+        if (error) {
+          throw new Error('Cannot write to test cache')
+        }
         callback(stationData)
       })
     })
@@ -67,7 +73,6 @@ describe('Results compare to NOAA', () => {
           }
         })
         tideStation.setOffset(mtl - mllw)
-        const results = []
         levels.predictions.forEach(prediction => {
           const neapsPrediction = tideStation.getWaterLevelAtTime(
             new Date(prediction.t)

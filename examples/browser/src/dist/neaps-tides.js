@@ -1061,16 +1061,11 @@
   }
 
   class TidePrediction {
-    constructor(stationInfo) {
+    constructor(harmonicConstituents) {
       this.harmonics = [];
       this.isSubordinate = false;
-      this.stationInfo = stationInfo;
-      this.setHarmonicConstituents(stationInfo.HarmonicConstituents);
-      this.setIsSubordinate(
-        typeof stationInfo.isSubordinate !== 'undefined'
-          ? stationInfo.isSubordinate
-          : false
-      );
+      this.harmonicConstituents = harmonicConstituents;
+      this.setHarmonicConstituents(harmonicConstituents);
     }
 
     setIsSubordinate(isSubordinate) {
@@ -1111,7 +1106,7 @@
     }
 
     getWaterLevelAtTime(time) {
-      const harmonic = new Harmonics(this.stationInfo.HarmonicConstituents);
+      const harmonic = new Harmonics(this.harmonicConstituents);
       const endDate = new Date(time.getTime() + 10 * 60 * 1000);
       harmonic.setTimeSpan(time, endDate);
       return harmonic.getPrediction().getTimelinePrediction()[0]
