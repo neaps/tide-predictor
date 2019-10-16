@@ -1,5 +1,6 @@
 import prediction from './prediction'
 import constituentModels from '../constituent/index'
+import { d2r } from '../astronomy/constants'
 
 const getDate = time => {
   if (time instanceof Date) {
@@ -30,7 +31,7 @@ const getTimeline = (start, end, seconds) => {
   }
 }
 
-const harmonicsFactory = (harmonicConstituents, offset) => {
+const harmonicsFactory = (harmonicConstituents, phaseKey, offset) => {
   if (!Array.isArray(harmonicConstituents)) {
     throw new Error('Harmonic constituents are not an array')
   }
@@ -41,15 +42,16 @@ const harmonicsFactory = (harmonicConstituents, offset) => {
     }
     if (typeof constituentModels[constituent.name] !== 'undefined') {
       constituent._model = constituentModels[constituent.name]
+      constituent._phase = d2r * constituent[phaseKey]
       constituents.push(constituent)
     }
   })
 
-  if (typeof offset !== 'undefined') {
+  if (offset !== false) {
     constituents.push({
       name: 'Z0',
       _model: constituentModels.Z0,
-      _offsetPhase: 0,
+      _phase: 0,
       amplitude: offset
     })
   }

@@ -5,26 +5,12 @@ const modulus = (a, b) => {
   return ((a % b) + b) % b
 }
 
-const setConstituentPhases = (constituents, phaseKey) => {
-  return constituents.map(constituent => {
-    constituent._phase =
-      typeof constituent._offsetPhase !== 'undefined'
-        ? d2r * constituent._offsetPhase
-        : d2r * constituent[phaseKey]
-    return constituent
-  })
-}
-
 const predictionFactory = ({
   timeline,
   constituents,
   start,
-  phaseKey,
   extremeLabels
 }) => {
-  phaseKey = typeof phaseKey !== 'undefined' ? phaseKey : 'phase_GMT'
-  constituents = setConstituentPhases(constituents, phaseKey)
-
   const getExtremeLabel = label => {
     if (
       typeof extremeLabels !== 'undefined' &&
@@ -159,4 +145,3 @@ const predictionFactory = ({
 }
 
 export default predictionFactory
-export { setConstituentPhases }

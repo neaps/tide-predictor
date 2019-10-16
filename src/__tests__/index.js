@@ -65,10 +65,9 @@ describe('Tidal station', () => {
   })
 
   test('it adds offset phases', () => {
-    const results = tidePrediction(mockStation, 3).getExtremesPrediction(
-      startDate,
-      endDate
-    )
+    const results = tidePrediction(mockStation, {
+      offset: 3
+    }).getExtremesPrediction(startDate, endDate)
 
     expect(results[0].level).toBeCloseTo(1.43496678, 4)
   })
