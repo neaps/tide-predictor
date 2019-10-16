@@ -5,18 +5,13 @@ const modulus = (a, b) => {
   return ((a % b) + b) % b
 }
 
-const predictionFactory = ({
-  timeline,
-  constituents,
-  start,
-  extremeLabels
-}) => {
-  const getExtremeLabel = label => {
+const predictionFactory = ({ timeline, constituents, start }) => {
+  const getExtremeLabel = (label, highLowLabels) => {
     if (
-      typeof extremeLabels !== 'undefined' &&
-      typeof extremeLabels[label] !== 'undefined'
+      typeof highLowLabels !== 'undefined' &&
+      typeof highLowLabels[label] !== 'undefined'
     ) {
-      return extremeLabels[label]
+      return highLowLabels[label]
     }
     const labels = {
       high: 'High',
@@ -47,7 +42,7 @@ const predictionFactory = ({
 
   const prediction = {}
 
-  prediction.getExtremesPrediction = () => {
+  prediction.getExtremesPrediction = highLowLabels => {
     const results = []
     const { baseSpeed, u, f, baseValue } = prepare()
     let goingUp = false
@@ -64,7 +59,7 @@ const predictionFactory = ({
           level: lastLevel,
           high: false,
           low: true,
-          label: getExtremeLabel('low')
+          label: getExtremeLabel('low', highLowLabels)
         })
       }
       if (level < lastLevel && goingUp) {
@@ -73,7 +68,7 @@ const predictionFactory = ({
           level: lastLevel,
           high: true,
           low: false,
-          label: getExtremeLabel('high')
+          label: getExtremeLabel('high', highLowLabels)
         })
       }
       if (level > lastLevel) {
@@ -105,8 +100,7 @@ const predictionFactory = ({
     return results
   }
 
-  const prepare = radians => {
-    radians = typeof radians !== 'undefined' ? radians : true
+  const prepare = () => {
     const baseAstro = astro(start)
 
     const baseValue = {}
@@ -116,8 +110,8 @@ const predictionFactory = ({
     constituents.forEach(constituent => {
       const value = constituent._model.value(baseAstro)
       const speed = constituent._model.speed(baseAstro)
-      baseValue[constituent.name] = radians ? d2r * value : value
-      baseSpeed[constituent.name] = radians ? d2r * speed : speed
+      baseValue[constituent.name] = d2r * value
+      baseSpeed[constituent.name] = d2r * speed
     })
     timeline.items.forEach(time => {
       const uItem = {}
@@ -126,7 +120,7 @@ const predictionFactory = ({
       constituents.forEach(constituent => {
         const constituentU = modulus(constituent._model.u(itemAstro), 360)
 
-        uItem[constituent.name] = radians ? d2r * constituentU : constituentU
+        uItem[constituent.name] = d2r * constituentU
         fItem[constituent.name] = modulus(constituent._model.f(itemAstro), 360)
       })
       u.push(uItem)

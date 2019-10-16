@@ -66,5 +66,16 @@ describe('harmonic prediction', () => {
       .prediction()
       .getExtremesPrediction()
     expect(results[0].level).toBeCloseTo(-1.5650332, 4)
+
+    const customLabels = {
+      high: 'Super high',
+      low: 'Wayyy low'
+    }
+
+    const labelResults = harmonics(mockHarmonicConstituents, 'phase_GMT', false)
+      .setTimeSpan(startDate, extremesEndDate)
+      .prediction()
+      .getExtremesPrediction(customLabels)
+    expect(labelResults[0].label).toBe(customLabels.low)
   })
 })

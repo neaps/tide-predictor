@@ -17,11 +17,11 @@ const tidePredictionFactory = (constituents, options) => {
         .getTimelinePrediction()
     },
 
-    getExtremesPrediction: (start, end) => {
+    getExtremesPrediction: (start, end, highLowLabels) => {
       return harmonics(constituents, phaseKey, offset)
         .setTimeSpan(start, end)
         .prediction()
-        .getExtremesPrediction()
+        .getExtremesPrediction(highLowLabels)
     },
 
     getWaterLevelAtTime: time => {
