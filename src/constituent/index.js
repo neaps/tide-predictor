@@ -1,101 +1,46 @@
-import Constituent from './constituent'
-import CompoundConstituent from './compound-constituent'
+import constituent from './constituent'
+import compoundConstituent from './compound-constituent'
 import nc from '../node-corrections/index'
 
 const constituents = {}
 // Long Term
-constituents.Z0 = new Constituent(
-  'Z0',
-  [0, 0, 0, 0, 0, 0, 0],
-  nc.uZero,
-  nc.fUnity
-)
-constituents.SA = new Constituent(
-  'Sa',
-  [0, 0, 1, 0, 0, 0, 0],
-  nc.uZero,
-  nc.fUnity
-)
-constituents.SSA = new Constituent(
+constituents.Z0 = constituent('Z0', [0, 0, 0, 0, 0, 0, 0], nc.uZero, nc.fUnity)
+constituents.SA = constituent('Sa', [0, 0, 1, 0, 0, 0, 0], nc.uZero, nc.fUnity)
+constituents.SSA = constituent(
   'Ssa',
   [0, 0, 2, 0, 0, 0, 0],
   nc.uZero,
   nc.fUnity
 )
-constituents.MM = new Constituent(
-  'MM',
-  [0, 1, 0, -1, 0, 0, 0],
-  nc.uZero,
-  nc.fMm
-)
-constituents.MF = new Constituent('MF', [0, 2, 0, 0, 0, 0, 0], nc.uMf, nc.fMf)
+constituents.MM = constituent('MM', [0, 1, 0, -1, 0, 0, 0], nc.uZero, nc.fMm)
+constituents.MF = constituent('MF', [0, 2, 0, 0, 0, 0, 0], nc.uMf, nc.fMf)
 // Diurnals
-constituents.Q1 = new Constituent('Q1', [1, -2, 0, 1, 0, 0, 1], nc.uO1, nc.fO1)
-constituents.O1 = new Constituent('O1', [1, -1, 0, 0, 0, 0, 1], nc.uO1, nc.fO1)
-constituents.K1 = new Constituent('K1', [1, 1, 0, 0, 0, 0, -1], nc.uK1, nc.fK1)
-constituents.J1 = new Constituent('J1', [1, 2, 0, -1, 0, 0, -1], nc.uJ1, nc.fJ1)
-constituents.M1 = new Constituent('M1', [1, 0, 0, 0, 0, 0, 1], nc.uM1, nc.fM1)
-constituents.P1 = new Constituent(
-  'P1',
-  [1, 1, -2, 0, 0, 0, 1],
-  nc.uZero,
-  nc.fUnity
-)
-constituents.S1 = new Constituent(
-  'S1',
-  [1, 1, -1, 0, 0, 0, 0],
-  nc.uZero,
-  nc.fUnity
-)
-constituents.OO1 = new Constituent(
-  'OO1',
-  [1, 3, 0, 0, 0, 0, -1],
-  nc.uOO1,
-  nc.fOO1
-)
+constituents.Q1 = constituent('Q1', [1, -2, 0, 1, 0, 0, 1], nc.uO1, nc.fO1)
+constituents.O1 = constituent('O1', [1, -1, 0, 0, 0, 0, 1], nc.uO1, nc.fO1)
+constituents.K1 = constituent('K1', [1, 1, 0, 0, 0, 0, -1], nc.uK1, nc.fK1)
+constituents.J1 = constituent('J1', [1, 2, 0, -1, 0, 0, -1], nc.uJ1, nc.fJ1)
+constituents.M1 = constituent('M1', [1, 0, 0, 0, 0, 0, 1], nc.uM1, nc.fM1)
+constituents.P1 = constituent('P1', [1, 1, -2, 0, 0, 0, 1], nc.uZero, nc.fUnity)
+constituents.S1 = constituent('S1', [1, 1, -1, 0, 0, 0, 0], nc.uZero, nc.fUnity)
+constituents.OO1 = constituent('OO1', [1, 3, 0, 0, 0, 0, -1], nc.uOO1, nc.fOO1)
 // Semi diurnals
-constituents['2N2'] = new Constituent(
-  '2N2',
-  [2, -2, 0, 2, 0, 0, 0],
-  nc.uM2,
-  nc.fM2
-)
-constituents.N2 = new Constituent('N2', [2, -1, 0, 1, 0, 0, 0], nc.uM2, nc.fM2)
-constituents.NU2 = new Constituent(
-  'NU2',
-  [2, -1, 2, -1, 0, 0, 0],
-  nc.uM2,
-  nc.fM2
-)
-constituents.M2 = new Constituent('M2', [2, 0, 0, 0, 0, 0, 0], nc.uM2, nc.fM2)
-constituents.LAM2 = new Constituent(
-  'LAM2',
-  [2, 1, -2, 1, 0, 0, 2],
-  nc.uM2,
-  nc.fM2
-)
-constituents.L2 = new Constituent('L2', [2, 1, 0, -1, 0, 0, 2], nc.uL2, nc.fL2)
-constituents.T2 = new Constituent(
-  'T2',
-  [2, 2, -3, 0, 0, 1, 0],
-  nc.uZero,
-  nc.fUnity
-)
-constituents.S2 = new Constituent(
-  'S2',
-  [2, 2, -2, 0, 0, 0, 0],
-  nc.uZero,
-  nc.fUnity
-)
-constituents.R2 = new Constituent(
+constituents['2N2'] = constituent('2N2', [2, -2, 0, 2, 0, 0, 0], nc.uM2, nc.fM2)
+constituents.N2 = constituent('N2', [2, -1, 0, 1, 0, 0, 0], nc.uM2, nc.fM2)
+constituents.NU2 = constituent('NU2', [2, -1, 2, -1, 0, 0, 0], nc.uM2, nc.fM2)
+constituents.M2 = constituent('M2', [2, 0, 0, 0, 0, 0, 0], nc.uM2, nc.fM2)
+constituents.LAM2 = constituent('LAM2', [2, 1, -2, 1, 0, 0, 2], nc.uM2, nc.fM2)
+constituents.L2 = constituent('L2', [2, 1, 0, -1, 0, 0, 2], nc.uL2, nc.fL2)
+constituents.T2 = constituent('T2', [2, 2, -3, 0, 0, 1, 0], nc.uZero, nc.fUnity)
+constituents.S2 = constituent('S2', [2, 2, -2, 0, 0, 0, 0], nc.uZero, nc.fUnity)
+constituents.R2 = constituent(
   'R2',
   [2, 2, -1, 0, 0, -1, 2],
   nc.uZero,
   nc.fUnity
 )
-constituents.K2 = new Constituent('K2', [2, 2, 0, 0, 0, 0, 0], nc.uK2, nc.fK2)
+constituents.K2 = constituent('K2', [2, 2, 0, 0, 0, 0, 0], nc.uK2, nc.fK2)
 // Third diurnal
-constituents.M3 = new Constituent(
+constituents.M3 = constituent(
   'M3',
   [3, 0, 0, 0, 0, 0, 0],
   a => {
@@ -106,68 +51,68 @@ constituents.M3 = new Constituent(
   }
 )
 // Compound
-constituents.MSF = new CompoundConstituent('MSF', [
+constituents.MSF = compoundConstituent('MSF', [
   { constituent: constituents.S2, factor: 1 },
   { constituent: constituents.M2, factor: -1 }
 ])
 
 // Diurnal
-constituents['2Q1'] = new CompoundConstituent('2Q1', [
+constituents['2Q1'] = compoundConstituent('2Q1', [
   { constituent: constituents.N2, factor: 1 },
   { constituent: constituents.J1, factor: -1 }
 ])
-constituents.RHO = new CompoundConstituent('RHO', [
+constituents.RHO = compoundConstituent('RHO', [
   { constituent: constituents.NU2, factor: 1 },
   { constituent: constituents.K1, factor: -1 }
 ])
 
 // Semi-Diurnal
 
-constituents.MU2 = new CompoundConstituent('MU2', [
+constituents.MU2 = compoundConstituent('MU2', [
   { constituent: constituents.M2, factor: 2 },
   { constituent: constituents.S2, factor: -1 }
 ])
-constituents['2SM2'] = new CompoundConstituent('2SM2', [
+constituents['2SM2'] = compoundConstituent('2SM2', [
   { constituent: constituents.S2, factor: 2 },
   { constituent: constituents.M2, factor: -1 }
 ])
 
 // Third-Diurnal
-constituents['2MK3'] = new CompoundConstituent('2MK3', [
+constituents['2MK3'] = compoundConstituent('2MK3', [
   { constituent: constituents.M2, factor: 1 },
   { constituent: constituents.O1, factor: 1 }
 ])
-constituents.MK3 = new CompoundConstituent('MK3', [
+constituents.MK3 = compoundConstituent('MK3', [
   { constituent: constituents.M2, factor: 1 },
   { constituent: constituents.K1, factor: 1 }
 ])
 
 // Quarter-Diurnal
-constituents.MN4 = new CompoundConstituent('MN4', [
+constituents.MN4 = compoundConstituent('MN4', [
   { constituent: constituents.M2, factor: 1 },
   { constituent: constituents.N2, factor: 1 }
 ])
-constituents.M4 = new CompoundConstituent('M4', [
+constituents.M4 = compoundConstituent('M4', [
   { constituent: constituents.M2, factor: 2 }
 ])
-constituents.MS4 = new CompoundConstituent('MS4', [
+constituents.MS4 = compoundConstituent('MS4', [
   { constituent: constituents.M2, factor: 1 },
   { constituent: constituents.S2, factor: 1 }
 ])
-constituents.S4 = new CompoundConstituent('S4', [
+constituents.S4 = compoundConstituent('S4', [
   { constituent: constituents.S2, factor: 2 }
 ])
 
 // Sixth-Diurnal
-constituents.M6 = new CompoundConstituent('M6', [
+constituents.M6 = compoundConstituent('M6', [
   { constituent: constituents.M2, factor: 3 }
 ])
-constituents.S6 = new CompoundConstituent('S6', [
+constituents.S6 = compoundConstituent('S6', [
   { constituent: constituents.S2, factor: 3 }
 ])
 
 // Eighth-Diurnals
-constituents.M8 = new CompoundConstituent('M8', [
+constituents.M8 = compoundConstituent('M8', [
   { constituent: constituents.M2, factor: 4 }
 ])
 

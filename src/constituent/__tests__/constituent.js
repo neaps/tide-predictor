@@ -1,4 +1,8 @@
-import Constituent from '../constituent'
+import constituent, {
+  astronimicDoodsonNumber,
+  astronomicSpeed,
+  astronomicValues
+} from '../constituent'
 import astro from '../../astronomy'
 
 const sampleTime = new Date()
@@ -13,13 +17,13 @@ sampleTime.setMilliseconds(10)
 const testAstro = astro(sampleTime)
 
 // This is a made-up doodson number for a test coefficient
-const testConstituent = new Constituent('test', [1, 1, -1, 0, 0, 0, 1])
+const testConstituent = constituent('test', [1, 1, -1, 0, 0, 0, 1])
 
 describe('constituent', () => {
   test('it throws error if missing coefficients', () => {
     let errorMessage = false
     try {
-      const a = new Constituent('fail') // eslint-disable-line
+      const a = constituent('fail') // eslint-disable-line
     } catch (error) {
       errorMessage = error
     }
@@ -29,17 +33,17 @@ describe('constituent', () => {
   })
 
   test('it fetches astronimic Doodson Number values', () => {
-    const values = testConstituent.astronimicDoodsonNumber(testAstro)
+    const values = astronimicDoodsonNumber(testAstro)
     expect(values[0].value).toBe(testAstro['T+h-s'].value)
   })
 
   test('it fetches astronimic speed', () => {
-    const values = testConstituent.astronomicSpeed(testAstro)
+    const values = astronomicSpeed(testAstro)
     expect(values[0]).toBe(testAstro['T+h-s'].speed)
   })
 
   test('it fetches astronimic values', () => {
-    const values = testConstituent.astronomicValues(testAstro)
+    const values = astronomicValues(testAstro)
     expect(values[0]).toBe(testAstro['T+h-s'].value)
   })
 

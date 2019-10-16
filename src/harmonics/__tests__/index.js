@@ -1,4 +1,4 @@
-import Harmonics from '../index'
+import harmonics, { getDate, getTimeline } from '../index'
 import mockHarmonicConstituents from '../__mocks__/constituents'
 
 const startDate = new Date(1567346400 * 1000) // 2019-09-01
@@ -9,7 +9,7 @@ describe('harmonics', () => {
     let errorMessage = false
     let testHarmonics = {} // eslint-disable-line
     try {
-      testHarmonics = new Harmonics('not array')
+      testHarmonics = harmonics('not array')
     } catch (error) {
       errorMessage = error
     }
@@ -18,7 +18,7 @@ describe('harmonics', () => {
     errorMessage = false
 
     try {
-      testHarmonics = new Harmonics([
+      testHarmonics = harmonics([
         {
           name: 'M2',
           description: 'Principal lunar semidiurnal constituent',
@@ -28,7 +28,6 @@ describe('harmonics', () => {
           speed: 28.984104
         },
         {
-          name: 'S2',
           description: 'Principal solar semidiurnal constituent',
           amplitude: 0.43,
           phase_GMT: 180.1,
@@ -39,12 +38,12 @@ describe('harmonics', () => {
       errorMessage = error
     }
     expect(errorMessage.message).toBe(
-      'Harmonic constituent entry missing field speed'
+      'Harmonic constituents must have a name property'
     )
   })
 
   test('it checks start and end times', () => {
-    const testHarmonics = new Harmonics(mockHarmonicConstituents)
+    const testHarmonics = harmonics(mockHarmonicConstituents)
     let timeErrorMessage = false
     try {
       testHarmonics.setTimeSpan('lkjsdlf', 'sdfklj')
@@ -73,23 +72,20 @@ describe('harmonics', () => {
   })
 
   test('it parses dates correctly', () => {
-    const harmonicsTime = new Harmonics(mockHarmonicConstituents)
-    const parsedDate = harmonicsTime.getDate(startDate)
+    const parsedDate = getDate(startDate)
     expect(parsedDate.getTime()).toBe(startDate.getTime())
 
-    const parsedUnixDate = harmonicsTime.getDate(startDate.getTime() / 1000)
+    const parsedUnixDate = getDate(startDate.getTime() / 1000)
     expect(parsedUnixDate.getTime()).toBe(startDate.getTime())
   })
 
   test('it creates timeline correctly', () => {
     const seconds = 20 * 60
-    const harmonicsTime = new Harmonics(mockHarmonicConstituents)
-    harmonicsTime.setTimeSpan(startDate, endDate)
     const difference =
       Math.round(
         (endDate.getTime() / 1000 - startDate.getTime() / 1000) / seconds
       ) + 1
-    const { items, hours } = harmonicsTime.timeline(seconds)
+    const { items, hours } = getTimeline(startDate, endDate, seconds)
     expect(items.length).toBe(difference)
     expect(hours.length).toBe(difference)
   })

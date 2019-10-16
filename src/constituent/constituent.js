@@ -15,53 +15,60 @@ const dotArray = (a, b) => {
   })
 }
 
-class Constituent {
-  constructor(name, coefficients, u, f) {
-    this.name = name
-    if (!coefficients) {
-      throw new Error('Coefficient must be defined for a constituent')
-    }
-    this.coefficients = coefficients
-
-    this.u = typeof u !== 'undefined' ? u : nodeCorrections.uZero
-    this.f = typeof f !== 'undefined' ? f : nodeCorrections.fUnity
-  }
-
-  value(astro) {
-    return dotArray(this.coefficients, this.astronomicValues(astro))
-  }
-
-  speed(astro) {
-    return dotArray(this.coefficients, this.astronomicSpeed(astro))
-  }
-
-  astronimicDoodsonNumber(astro) {
-    return [
-      astro['T+h-s'],
-      astro.s,
-      astro.h,
-      astro.p,
-      astro.N,
-      astro.pp,
-      astro['90']
-    ]
-  }
-
-  astronomicSpeed(astro) {
-    const results = []
-    this.astronimicDoodsonNumber(astro).forEach(number => {
-      results.push(number.speed)
-    })
-    return results
-  }
-
-  astronomicValues(astro) {
-    const results = []
-    this.astronimicDoodsonNumber(astro).forEach(number => {
-      results.push(number.value)
-    })
-    return results
-  }
+const astronimicDoodsonNumber = astro => {
+  return [
+    astro['T+h-s'],
+    astro.s,
+    astro.h,
+    astro.p,
+    astro.N,
+    astro.pp,
+    astro['90']
+  ]
 }
 
-export default Constituent
+const astronomicSpeed = astro => {
+  const results = []
+  astronimicDoodsonNumber(astro).forEach(number => {
+    results.push(number.speed)
+  })
+  return results
+}
+
+const astronomicValues = astro => {
+  const results = []
+  astronimicDoodsonNumber(astro).forEach(number => {
+    results.push(number.value)
+  })
+  return results
+}
+
+const constituentFactory = (name, coefficients, u, f) => {
+  if (!coefficients) {
+    throw new Error('Coefficient must be defined for a constituent')
+  }
+
+  const constituent = {
+    name: name,
+
+    coefficients: coefficients,
+
+    value: astro => {
+      return dotArray(coefficients, astronomicValues(astro))
+    },
+
+    speed(astro) {
+      return dotArray(coefficients, astronomicSpeed(astro))
+    },
+
+    u: typeof u !== 'undefined' ? u : nodeCorrections.uZero,
+
+    f: typeof f !== 'undefined' ? f : nodeCorrections.fUnity
+  }
+
+  return Object.freeze(constituent)
+}
+
+export default constituentFactory
+
+export { astronimicDoodsonNumber, astronomicSpeed, astronomicValues }

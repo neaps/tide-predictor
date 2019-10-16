@@ -1,4 +1,4 @@
-import CompoundConstituent from '../compound-constituent'
+import compoundConstituent from '../compound-constituent'
 import Constituent from '../constituent'
 import astro from '../../astronomy'
 
@@ -17,7 +17,7 @@ const testAstro = astro(sampleTime)
 const testConstituentA = new Constituent('testa', [1, 1, -1, 0, 0, 0, 1])
 const testConstituentB = new Constituent('testb', [0, 1, -1, 0, 0, 0, 1])
 
-const compoundTest = new CompoundConstituent('test compound', [
+const compoundTest = compoundConstituent('test compound', [
   { constituent: testConstituentA, factor: 1 },
   { constituent: testConstituentB, factor: -1 }
 ])

@@ -1,5 +1,5 @@
 // Convert a sexagesimal angle into decimal degrees
-export const sexagesimalToDecimal = (degrees, arcmins, arcsecs, mas, muas) => {
+const sexagesimalToDecimal = (degrees, arcmins, arcsecs, mas, muas) => {
   arcmins = typeof arcmins !== 'undefined' ? arcmins : 0
   arcsecs = typeof arcsecs !== 'undefined' ? arcsecs : 0
   mas = typeof mas !== 'undefined' ? mas : 0
@@ -14,7 +14,7 @@ export const sexagesimalToDecimal = (degrees, arcmins, arcsecs, mas, muas) => {
   )
 }
 
-export default {
+const coefficients = {
   // Meeus formula 21.3
   terrestrialObliquity: [
     sexagesimalToDecimal(23, 26, 21.448),
@@ -66,3 +66,7 @@ export default {
     1 / 18999000.0
   ]
 }
+
+export default coefficients
+
+export { sexagesimalToDecimal }

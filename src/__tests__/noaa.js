@@ -1,6 +1,6 @@
 import fs from 'fs'
 import fetch from 'node-fetch'
-import TidePrediction from '..'
+import tidePrediction from '..'
 
 // Create a directory for test cache
 if (!fs.existsSync('./.test-cache')) {
@@ -60,8 +60,6 @@ describe('Results compare to NOAA', () => {
   stations.forEach(station => {
     test(`it compares with station ${station}`, done => {
       getStation(station, ({ harmonics, levels, info }) => {
-        const tideStation = new TidePrediction(harmonics.HarmonicConstituents)
-
         let mtl = 0
         let mllw = 0
         info.datums.forEach(datum => {
@@ -72,7 +70,10 @@ describe('Results compare to NOAA', () => {
             mllw = datum.value
           }
         })
-        tideStation.setOffset(mtl - mllw)
+        const tideStation = tidePrediction(
+          harmonics.HarmonicConstituents,
+          mtl - mllw
+        )
         levels.predictions.forEach(prediction => {
           const neapsPrediction = tideStation.getWaterLevelAtTime(
             new Date(prediction.t)

@@ -1,56 +1,37 @@
-import Harmonics from './harmonics/index'
+import harmonics from './harmonics/index'
 
-class TidePrediction {
-  constructor(harmonicConstituents) {
-    this.harmonics = []
-    this.isSubordinate = false
-    this.harmonicConstituents = harmonicConstituents
-    this.setHarmonicConstituents(harmonicConstituents)
-  }
+const tidePredictionFactory = (constituents, offset) => {
+  const tidePrediction = {
+    isSubordinate: false,
+    getTimelinePrediction: (start, end) => {
+      return harmonics(constituents, offset)
+        .setTimeSpan(start, end)
+        .prediction()
+        .getTimelinePrediction()
+    },
 
-  setIsSubordinate(isSubordinate) {
-    this.isSubordinate = isSubordinate
-  }
+    getExtremesPrediction: (start, end) => {
+      return harmonics(constituents, offset)
+        .setTimeSpan(start, end)
+        .prediction()
+        .getExtremesPrediction()
+    },
 
-  setHarmonicConstituents(constituents) {
-    this.harmonics = new Harmonics(constituents)
-  }
-
-  setOffset(offset) {
-    this.harmonics.setOffset(offset)
-  }
-
-  /**
-   * Sets the start & stop time to get data from.
-   * @param {Date, unix timestamp} start
-   * @param {Date, unix timestamp} end
-   */
-  setTimeSpan(start, end) {
-    this.harmonics.setTimeSpan(start, end)
-  }
-
-  getTimelinePrediction() {
-    if (!this.harmonics.timelineIsSet()) {
-      throw new Error('Start and end times not set')
+    getWaterLevelAtTime: time => {
+      const endDate = new Date(time.getTime() + 10 * 60 * 1000)
+      return harmonics(constituents)
+        .setTimeSpan(time, endDate)
+        .prediction()
+        .getTimelinePrediction()[0]
     }
-    const prediction = this.harmonics.getPrediction()
-    return prediction.getTimelinePrediction()
   }
 
-  getExtremesPrediction() {
-    if (!this.harmonics.timelineIsSet()) {
-      throw new Error('Start and end times not set')
-    }
-    const prediction = this.harmonics.getPrediction()
-    return prediction.getExtremesPrediction()
+  tidePrediction.setIsSubordinate = newStatus => {
+    tidePrediction.isSubordinate = newStatus
+    return tidePrediction
   }
 
-  getWaterLevelAtTime(time) {
-    const harmonic = new Harmonics(this.harmonicConstituents)
-    const endDate = new Date(time.getTime() + 10 * 60 * 1000)
-    harmonic.setTimeSpan(time, endDate)
-    return harmonic.getPrediction().getTimelinePrediction()[0]
-  }
+  return tidePrediction
 }
 
-export default TidePrediction
+export default tidePredictionFactory

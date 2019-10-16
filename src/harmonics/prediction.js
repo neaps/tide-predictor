@@ -5,83 +5,33 @@ const modulus = (a, b) => {
   return ((a % b) + b) % b
 }
 
-class Prediction {
-  constructor({ timeline, constituents, start }) {
-    this.timeline = timeline
-    this.constituents = constituents
-    this.start = start
-    this.setPhaseType('GMT')
-  }
+const setConstituentPhases = (constituents, phaseKey) => {
+  return constituents.map(constituent => {
+    constituent._phase =
+      typeof constituent._offsetPhase !== 'undefined'
+        ? d2r * constituent._offsetPhase
+        : d2r * constituent[phaseKey]
+    return constituent
+  })
+}
 
-  setPhaseType(phaseType) {
-    if (['local', 'GMT'].indexOf(phaseType) === -1) {
-      throw new Error('phase type must be local or GMT')
+const predictionFactory = ({
+  timeline,
+  constituents,
+  start,
+  phaseKey,
+  extremeLabels
+}) => {
+  phaseKey = typeof phaseKey !== 'undefined' ? phaseKey : 'phase_GMT'
+  constituents = setConstituentPhases(constituents, phaseKey)
+
+  const getExtremeLabel = label => {
+    if (
+      typeof extremeLabels !== 'undefined' &&
+      typeof extremeLabels[label] !== 'undefined'
+    ) {
+      return extremeLabels[label]
     }
-    this.phaseType = phaseType
-  }
-
-  setConstituentPhases() {
-    const phaseKey = `phase_${this.phaseType}`
-    this.constituents = this.constituents.map(constituent => {
-      constituent._phase =
-        typeof constituent._offsetPhase !== 'undefined'
-          ? d2r * constituent._offsetPhase
-          : d2r * constituent[phaseKey]
-      return constituent
-    })
-  }
-
-  getExtremesPrediction() {
-    const results = []
-    const { baseSpeed, u, f, baseValue } = this.prepare()
-    this.setConstituentPhases()
-    let goingUp = false
-    let goingDown = false
-    let lastLevel = this.getLevel(0, baseSpeed, u[0], f[0], baseValue)
-    this.timeline.items.forEach((time, index) => {
-      const hour = this.timeline.hours[index]
-      const level = this.getLevel(
-        hour,
-        baseSpeed,
-        u[index],
-        f[index],
-        baseValue
-      )
-      // Compare this level to the last one, if we
-      // are changing angle, then the last one was high or low
-      if (level > lastLevel && goingDown) {
-        results.push({
-          time: this.timeline.items[index - 1],
-          level: lastLevel,
-          high: false,
-          low: true,
-          label: this.getExtremeLabel('low')
-        })
-      }
-      if (level < lastLevel && goingUp) {
-        results.push({
-          time: this.timeline.items[index - 1],
-          level: lastLevel,
-          high: true,
-          low: false,
-          label: this.getExtremeLabel('high')
-        })
-      }
-      if (level > lastLevel) {
-        goingUp = true
-        goingDown = false
-      }
-      if (level < lastLevel) {
-        goingUp = false
-        goingDown = true
-      }
-      lastLevel = level
-    })
-    return results
-  }
-
-  // here for i18n
-  getExtremeLabel(label) {
     const labels = {
       high: 'High',
       low: 'Low'
@@ -89,28 +39,11 @@ class Prediction {
     return labels[label]
   }
 
-  getTimelinePrediction() {
-    const results = []
-    const { baseSpeed, u, f, baseValue } = this.prepare()
-    this.setConstituentPhases()
-    this.timeline.items.forEach((time, index) => {
-      const hour = this.timeline.hours[index]
-      const prediction = {
-        time: time,
-        hour: hour,
-        level: this.getLevel(hour, baseSpeed, u[index], f[index], baseValue)
-      }
-
-      results.push(prediction)
-    })
-    return results
-  }
-
-  getLevel(hour, modelBaseSpeed, modelU, modelF, modelBaseValue) {
+  const getLevel = (hour, modelBaseSpeed, modelU, modelF, modelBaseValue) => {
     const amplitudes = []
     let result = 0
 
-    this.constituents.forEach(constituent => {
+    constituents.forEach(constituent => {
       const amplitude = constituent.amplitude
       const phase = constituent._phase
       const f = modelF[constituent.name]
@@ -126,25 +59,85 @@ class Prediction {
     return result
   }
 
-  prepare(radians) {
+  const prediction = {}
+
+  prediction.getExtremesPrediction = () => {
+    const results = []
+    const { baseSpeed, u, f, baseValue } = prepare()
+    let goingUp = false
+    let goingDown = false
+    let lastLevel = getLevel(0, baseSpeed, u[0], f[0], baseValue)
+    timeline.items.forEach((time, index) => {
+      const hour = timeline.hours[index]
+      const level = getLevel(hour, baseSpeed, u[index], f[index], baseValue)
+      // Compare this level to the last one, if we
+      // are changing angle, then the last one was high or low
+      if (level > lastLevel && goingDown) {
+        results.push({
+          time: timeline.items[index - 1],
+          level: lastLevel,
+          high: false,
+          low: true,
+          label: getExtremeLabel('low')
+        })
+      }
+      if (level < lastLevel && goingUp) {
+        results.push({
+          time: timeline.items[index - 1],
+          level: lastLevel,
+          high: true,
+          low: false,
+          label: getExtremeLabel('high')
+        })
+      }
+      if (level > lastLevel) {
+        goingUp = true
+        goingDown = false
+      }
+      if (level < lastLevel) {
+        goingUp = false
+        goingDown = true
+      }
+      lastLevel = level
+    })
+    return results
+  }
+
+  prediction.getTimelinePrediction = () => {
+    const results = []
+    const { baseSpeed, u, f, baseValue } = prepare()
+    timeline.items.forEach((time, index) => {
+      const hour = timeline.hours[index]
+      const prediction = {
+        time: time,
+        hour: hour,
+        level: getLevel(hour, baseSpeed, u[index], f[index], baseValue)
+      }
+
+      results.push(prediction)
+    })
+    return results
+  }
+
+  const prepare = radians => {
     radians = typeof radians !== 'undefined' ? radians : true
-    const baseAstro = astro(this.start)
+    const baseAstro = astro(start)
 
     const baseValue = {}
     const baseSpeed = {}
     const u = []
     const f = []
-    this.constituents.forEach(constituent => {
+    constituents.forEach(constituent => {
       const value = constituent._model.value(baseAstro)
       const speed = constituent._model.speed(baseAstro)
       baseValue[constituent.name] = radians ? d2r * value : value
       baseSpeed[constituent.name] = radians ? d2r * speed : speed
     })
-    this.timeline.items.forEach(time => {
+    timeline.items.forEach(time => {
       const uItem = {}
       const fItem = {}
       const itemAstro = astro(time)
-      this.constituents.forEach(constituent => {
+      constituents.forEach(constituent => {
         const constituentU = modulus(constituent._model.u(itemAstro), 360)
 
         uItem[constituent.name] = radians ? d2r * constituentU : constituentU
@@ -161,6 +154,9 @@ class Prediction {
       f: f
     }
   }
+
+  return Object.freeze(prediction)
 }
 
-export default Prediction
+export default predictionFactory
+export { setConstituentPhases }
