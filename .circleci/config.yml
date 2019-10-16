@@ -5,6 +5,10 @@ jobs:
       - image: circleci/node:10.16.3
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - test-cache-{{ .Branch }}-
+            - test-cache-
       - run:
           name: install
           command: 'yarn install --production=false'
@@ -16,3 +20,7 @@ jobs:
       - run:
           name: coverage
           command: 'yarn run coverage'
+      - save_cache:
+          key: test-cache-{{ .Branch }}
+          paths:
+            - '.test-cache'
