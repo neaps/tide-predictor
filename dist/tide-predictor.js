@@ -1,7 +1,7 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
   typeof define === 'function' && define.amd ? define(factory) :
-  (global = global || self, global.TidePredictor = factory());
+  (global = global || self, global.tidePredictor = factory());
 }(this, function () { 'use strict';
 
   const d2r = Math.PI / 180.0;

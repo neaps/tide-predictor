@@ -5,7 +5,7 @@ export default {
   input: './src/index.js',
   output: [
     {
-      name: 'TidePredictor',
+      name: 'tidePredictor',
       file: pkg.browser,
       format: 'umd'
     },

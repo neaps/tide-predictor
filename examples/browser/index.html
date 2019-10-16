@@ -30,12 +30,11 @@
         .then(response => {
           return response.json()
         }).then(harmonics => {
-          console.log(harmonics)
-          const predictor = new TidePredictor(harmonics.HarmonicConstituents)
           const start = new Date()
           const end = new Date(start.getTime() + (10 * 24 * 60 * 60 * 1000))
-          predictor.setTimeSpan(start, end)
-          const highLow = predictor.getExtremesPrediction()
+
+          const highLow = tidePredictor(harmonics.HarmonicConstituents).getExtremesPrediction(start, end)
+          
           highLow.forEach(level => {
             const tableRow = document.createElement('tr')
             tableRow.innerHTML = `
