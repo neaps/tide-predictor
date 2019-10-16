@@ -14,8 +14,8 @@ sampleTime.setMilliseconds(10)
 const testAstro = astro(sampleTime)
 
 // This is a made-up doodson number for a test coefficient
-const testConstituentA = new Constituent('testa', 'A AYZ ZZA')
-const testConstituentB = new Constituent('testb', 'Z AYZ ZZA')
+const testConstituentA = new Constituent('testa', [1, 1, -1, 0, 0, 0, 1])
+const testConstituentB = new Constituent('testb', [0, 1, -1, 0, 0, 0, 1])
 
 const compoundTest = new CompoundConstituent('test compound', [
   { constituent: testConstituentA, factor: 1 },

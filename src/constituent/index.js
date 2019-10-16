@@ -4,42 +4,100 @@ import nc from '../node-corrections/index'
 
 const constituents = {}
 // Long Term
-constituents.Z0 = new Constituent('Z0', 'Z ZZZ ZZZ', false, nc.uZero, nc.fUnity)
-constituents.SA = new Constituent('Sa', 'Z ZAZ ZZZ', false, nc.uZero, nc.fUnity)
-constituents.SSA = new Constituent(
-  'Ssa',
-  'Z ZBZ ZZZ',
-  false,
+constituents.Z0 = new Constituent(
+  'Z0',
+  [0, 0, 0, 0, 0, 0, 0],
   nc.uZero,
   nc.fUnity
 )
-constituents.MM = new Constituent('MM', 'Z AZY ZZZ', false, nc.uZero, nc.fMm)
-constituents.MF = new Constituent('MF', 'Z BZZ ZZZ', false, nc.uMf, nc.fMf)
+constituents.SA = new Constituent(
+  'Sa',
+  [0, 0, 1, 0, 0, 0, 0],
+  nc.uZero,
+  nc.fUnity
+)
+constituents.SSA = new Constituent(
+  'Ssa',
+  [0, 0, 2, 0, 0, 0, 0],
+  nc.uZero,
+  nc.fUnity
+)
+constituents.MM = new Constituent(
+  'MM',
+  [0, 1, 0, -1, 0, 0, 0],
+  nc.uZero,
+  nc.fMm
+)
+constituents.MF = new Constituent('MF', [0, 2, 0, 0, 0, 0, 0], nc.uMf, nc.fMf)
 // Diurnals
-constituents.Q1 = new Constituent('Q1', 'A XZA ZZA', false, nc.uO1, nc.fO1)
-constituents.O1 = new Constituent('O1', 'A YZZ ZZA', false, nc.uO1, nc.fO1)
-constituents.K1 = new Constituent('K1', 'A AZZ ZZY', false, nc.uK1, nc.fK1)
-constituents.J1 = new Constituent('J1', 'A BZY ZZY', false, nc.uJ1, nc.fJ1)
-constituents.M1 = new Constituent('M1', 'A ZZZ ZZA', false, nc.uM1, nc.fM1)
-constituents.P1 = new Constituent('P1', 'A AXZ ZZA', false, nc.uZero, nc.fUnity)
-constituents.S1 = new Constituent('S1', 'A AYZ ZZZ', false, nc.uZero, nc.fUnity)
-constituents.OO1 = new Constituent('OO1', 'A CZZ ZZY', false, nc.uOO1, nc.fOO1)
+constituents.Q1 = new Constituent('Q1', [1, -2, 0, 1, 0, 0, 1], nc.uO1, nc.fO1)
+constituents.O1 = new Constituent('O1', [1, -1, 0, 0, 0, 0, 1], nc.uO1, nc.fO1)
+constituents.K1 = new Constituent('K1', [1, 1, 0, 0, 0, 0, -1], nc.uK1, nc.fK1)
+constituents.J1 = new Constituent('J1', [1, 2, 0, -1, 0, 0, -1], nc.uJ1, nc.fJ1)
+constituents.M1 = new Constituent('M1', [1, 0, 0, 0, 0, 0, 1], nc.uM1, nc.fM1)
+constituents.P1 = new Constituent(
+  'P1',
+  [1, 1, -2, 0, 0, 0, 1],
+  nc.uZero,
+  nc.fUnity
+)
+constituents.S1 = new Constituent(
+  'S1',
+  [1, 1, -1, 0, 0, 0, 0],
+  nc.uZero,
+  nc.fUnity
+)
+constituents.OO1 = new Constituent(
+  'OO1',
+  [1, 3, 0, 0, 0, 0, -1],
+  nc.uOO1,
+  nc.fOO1
+)
 // Semi diurnals
-constituents['2N2'] = new Constituent('2N2', 'B XZB ZZZ', false, nc.uM2, nc.fM2)
-constituents.N2 = new Constituent('N2', 'B YZA ZZZ', false, nc.uM2, nc.fM2)
-constituents.NU2 = new Constituent('NU2', 'B YBY ZZZ', false, nc.uM2, nc.fM2)
-constituents.M2 = new Constituent('M2', 'B ZZZ ZZZ', false, nc.uM2, nc.fM2)
-constituents.LAM2 = new Constituent('LAM2', 'B AXA ZZB', false, nc.uM2, nc.fM2)
-constituents.L2 = new Constituent('L2', 'B AZY ZZB', false, nc.uL2, nc.fL2)
-constituents.T2 = new Constituent('T2', 'B BWZ ZAZ', false, nc.uZero, nc.fUnity)
-constituents.S2 = new Constituent('S2', 'B BXZ ZZZ', false, nc.uZero, nc.fUnity)
-constituents.R2 = new Constituent('R2', 'B BYZ ZYB', false, nc.uZero, nc.fUnity)
-constituents.K2 = new Constituent('K2', 'B BZZ ZZZ', false, nc.uK2, nc.fK2)
+constituents['2N2'] = new Constituent(
+  '2N2',
+  [2, -2, 0, 2, 0, 0, 0],
+  nc.uM2,
+  nc.fM2
+)
+constituents.N2 = new Constituent('N2', [2, -1, 0, 1, 0, 0, 0], nc.uM2, nc.fM2)
+constituents.NU2 = new Constituent(
+  'NU2',
+  [2, -1, 2, -1, 0, 0, 0],
+  nc.uM2,
+  nc.fM2
+)
+constituents.M2 = new Constituent('M2', [2, 0, 0, 0, 0, 0, 0], nc.uM2, nc.fM2)
+constituents.LAM2 = new Constituent(
+  'LAM2',
+  [2, 1, -2, 1, 0, 0, 2],
+  nc.uM2,
+  nc.fM2
+)
+constituents.L2 = new Constituent('L2', [2, 1, 0, -1, 0, 0, 2], nc.uL2, nc.fL2)
+constituents.T2 = new Constituent(
+  'T2',
+  [2, 2, -3, 0, 0, 1, 0],
+  nc.uZero,
+  nc.fUnity
+)
+constituents.S2 = new Constituent(
+  'S2',
+  [2, 2, -2, 0, 0, 0, 0],
+  nc.uZero,
+  nc.fUnity
+)
+constituents.R2 = new Constituent(
+  'R2',
+  [2, 2, -1, 0, 0, -1, 2],
+  nc.uZero,
+  nc.fUnity
+)
+constituents.K2 = new Constituent('K2', [2, 2, 0, 0, 0, 0, 0], nc.uK2, nc.fK2)
 // Third diurnal
 constituents.M3 = new Constituent(
   'M3',
-  'C ZZZ ZZZ',
-  false,
+  [3, 0, 0, 0, 0, 0, 0],
   a => {
     return nc.uModd(a, 3)
   },

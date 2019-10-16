@@ -1,4 +1,4 @@
-import Constituent, { extendedDoodson, sortedDoodson } from '../constituent'
+import Constituent from '../constituent'
 import astro from '../../astronomy'
 
 const sampleTime = new Date()
@@ -13,7 +13,7 @@ sampleTime.setMilliseconds(10)
 const testAstro = astro(sampleTime)
 
 // This is a made-up doodson number for a test coefficient
-const testConstituent = new Constituent('test', 'A AYZ ZZA')
+const testConstituent = new Constituent('test', [1, 1, -1, 0, 0, 0, 1])
 
 describe('constituent', () => {
   test('it throws error if missing coefficients', () => {
@@ -24,47 +24,8 @@ describe('constituent', () => {
       errorMessage = error
     }
     expect(errorMessage.message).toBe(
-      'Doodson or coefficient must be defined for a constituent'
+      'Coefficient must be defined for a constituent'
     )
-  })
-
-  test('it sorts Doodson numbers', () => {
-    expect(extendedDoodson.K).toBe(11)
-    expect(sortedDoodson[11]).toBe('K')
-  })
-
-  test('it converts Doodson numbers to cooeficient', () => {
-    const testCooefficient = new Constituent('test', null, [])
-    const coefficient = testCooefficient.doodsonNumberToCooeficient('A BZY ZZY')
-    expect(coefficient).toEqual(expect.arrayContaining([1, 2, 0, -1, 0, 0, -1]))
-  })
-
-  test('it converts cooeficient to Doodson number', () => {
-    const testCooefficient = new Constituent('test', null, [])
-    const doodsonNumber = testCooefficient.cooeficientToDoodsonNumber([
-      1,
-      2,
-      0,
-      -1,
-      0,
-      0,
-      -1
-    ])
-    expect(doodsonNumber).toEqual('ABZYZZY')
-  })
-
-  test('it creates cooeficient hashes', () => {
-    const testCooefficient = new Constituent('test', null, [
-      1,
-      2,
-      0,
-      -1,
-      0,
-      0,
-      -1
-    ])
-    const hash = testCooefficient.hash()
-    expect(hash).toEqual('120m100m1')
   })
 
   test('it fetches astronimic Doodson Number values', () => {
@@ -84,13 +45,6 @@ describe('constituent', () => {
 
   test('it computes constituent value', () => {
     expect(testConstituent.value(testAstro)).toBeCloseTo(423.916666657, 4)
-  })
-
-  test('it compares different constituents', () => {
-    const secondConstituent = new Constituent('test the same', 'A AYZ ZZA')
-    const thirdConstituent = new Constituent('test different', 'A ZYZ ZZA')
-    expect(testConstituent.isEqual(secondConstituent)).toBeTruthy()
-    expect(testConstituent.isEqual(thirdConstituent)).toBeFalsy()
   })
 
   test('it computes constituent speed', () => {
