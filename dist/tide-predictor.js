@@ -276,18 +276,13 @@
     return ((a % b) + b) % b
   };
 
-  const predictionFactory = ({
-    timeline,
-    constituents,
-    start,
-    extremeLabels
-  }) => {
-    const getExtremeLabel = label => {
+  const predictionFactory = ({ timeline, constituents, start }) => {
+    const getExtremeLabel = (label, highLowLabels) => {
       if (
-        typeof extremeLabels !== 'undefined' &&
-        typeof extremeLabels[label] !== 'undefined'
+        typeof highLowLabels !== 'undefined' &&
+        typeof highLowLabels[label] !== 'undefined'
       ) {
-        return extremeLabels[label]
+        return highLowLabels[label]
       }
       const labels = {
         high: 'High',
@@ -318,7 +313,7 @@
 
     const prediction = {};
 
-    prediction.getExtremesPrediction = () => {
+    prediction.getExtremesPrediction = highLowLabels => {
       const results = [];
       const { baseSpeed, u, f, baseValue } = prepare();
       let goingUp = false;
@@ -335,7 +330,7 @@
             level: lastLevel,
             high: false,
             low: true,
-            label: getExtremeLabel('low')
+            label: getExtremeLabel('low', highLowLabels)
           });
         }
         if (level < lastLevel && goingUp) {
@@ -344,7 +339,7 @@
             level: lastLevel,
             high: true,
             low: false,
-            label: getExtremeLabel('high')
+            label: getExtremeLabel('high', highLowLabels)
           });
         }
         if (level > lastLevel) {
@@ -376,8 +371,7 @@
       return results
     };
 
-    const prepare = radians => {
-      radians = typeof radians !== 'undefined' ? radians : true;
+    const prepare = () => {
       const baseAstro = astro(start);
 
       const baseValue = {};
@@ -387,8 +381,8 @@
       constituents.forEach(constituent => {
         const value = constituent._model.value(baseAstro);
         const speed = constituent._model.speed(baseAstro);
-        baseValue[constituent.name] = radians ? d2r * value : value;
-        baseSpeed[constituent.name] = radians ? d2r * speed : speed;
+        baseValue[constituent.name] = d2r * value;
+        baseSpeed[constituent.name] = d2r * speed;
       });
       timeline.items.forEach(time => {
         const uItem = {};
@@ -397,7 +391,7 @@
         constituents.forEach(constituent => {
           const constituentU = modulus$1(constituent._model.u(itemAstro), 360);
 
-          uItem[constituent.name] = radians ? d2r * constituentU : constituentU;
+          uItem[constituent.name] = d2r * constituentU;
           fItem[constituent.name] = modulus$1(constituent._model.f(itemAstro), 360);
         });
         u.push(uItem);
@@ -953,11 +947,11 @@
           .getTimelinePrediction()
       },
 
-      getExtremesPrediction: (start, end) => {
+      getExtremesPrediction: (start, end, highLowLabels) => {
         return harmonicsFactory(constituents, phaseKey, offset)
           .setTimeSpan(start, end)
           .prediction()
-          .getExtremesPrediction()
+          .getExtremesPrediction(highLowLabels)
       },
 
       getWaterLevelAtTime: time => {

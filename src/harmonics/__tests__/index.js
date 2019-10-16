@@ -40,6 +40,31 @@ describe('harmonics', () => {
     expect(errorMessage.message).toBe(
       'Harmonic constituents must have a name property'
     )
+
+    errorMessage = false
+
+    try {
+      testHarmonics = harmonics([
+        {
+          name: 'not a name',
+          description: 'Principal lunar semidiurnal constituent',
+          amplitude: 1.61,
+          phase_GMT: 181.3,
+          phase_local: 309.4,
+          speed: 28.984104
+        },
+        {
+          name: 'M2',
+          description: 'Principal solar semidiurnal constituent',
+          amplitude: 0.43,
+          phase_GMT: 180.1,
+          phase_local: 309.4
+        }
+      ])
+    } catch (error) {
+      errorMessage = error
+    }
+    expect(errorMessage.message).toBeFalsy()
   })
 
   test('it checks start and end times', () => {
