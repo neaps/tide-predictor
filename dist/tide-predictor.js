@@ -276,26 +276,12 @@
     return ((a % b) + b) % b
   };
 
-  const setConstituentPhases = (constituents, phaseKey) => {
-    return constituents.map(constituent => {
-      constituent._phase =
-        typeof constituent._offsetPhase !== 'undefined'
-          ? d2r * constituent._offsetPhase
-          : d2r * constituent[phaseKey];
-      return constituent
-    })
-  };
-
   const predictionFactory = ({
     timeline,
     constituents,
     start,
-    phaseKey,
     extremeLabels
   }) => {
-    phaseKey = typeof phaseKey !== 'undefined' ? phaseKey : 'phase_GMT';
-    constituents = setConstituentPhases(constituents, phaseKey);
-
     const getExtremeLabel = label => {
       if (
         typeof extremeLabels !== 'undefined' &&
@@ -900,7 +886,7 @@
     }
   };
 
-  const harmonicsFactory = (harmonicConstituents, offset) => {
+  const harmonicsFactory = (harmonicConstituents, phaseKey, offset) => {
     if (!Array.isArray(harmonicConstituents)) {
       throw new Error('Harmonic constituents are not an array')
     }
@@ -911,15 +897,16 @@
       }
       if (typeof constituents[constituent.name] !== 'undefined') {
         constituent._model = constituents[constituent.name];
+        constituent._phase = d2r * constituent[phaseKey];
         constituents$1.push(constituent);
       }
     });
 
-    if (typeof offset !== 'undefined') {
+    if (offset !== false) {
       constituents$1.push({
         name: 'Z0',
         _model: constituents.Z0,
-        _offsetPhase: 0,
+        _phase: 0,
         amplitude: offset
       });
     }
@@ -949,18 +936,25 @@
     return Object.freeze(harmonics)
   };
 
-  const tidePredictionFactory = (constituents, offset) => {
+  const tidePredictionFactory = (constituents, options) => {
+    let phaseKey = 'phase_GMT';
+    let offset = false;
+    if (typeof options !== 'undefined') {
+      phaseKey =
+        typeof options.phaseKey !== 'undefined' ? options.phaseKey : 'phase_GMT';
+      offset = typeof options.offset !== 'undefined' ? options.offset : false;
+    }
     const tidePrediction = {
       isSubordinate: false,
       getTimelinePrediction: (start, end) => {
-        return harmonicsFactory(constituents, offset)
+        return harmonicsFactory(constituents, phaseKey, offset)
           .setTimeSpan(start, end)
           .prediction()
           .getTimelinePrediction()
       },
 
       getExtremesPrediction: (start, end) => {
-        return harmonicsFactory(constituents, offset)
+        return harmonicsFactory(constituents, phaseKey, offset)
           .setTimeSpan(start, end)
           .prediction()
           .getExtremesPrediction()
@@ -968,7 +962,7 @@
 
       getWaterLevelAtTime: time => {
         const endDate = new Date(time.getTime() + 10 * 60 * 1000);
-        return harmonicsFactory(constituents)
+        return harmonicsFactory(constituents, phaseKey, offset)
           .setTimeSpan(time, endDate)
           .prediction()
           .getTimelinePrediction()[0]
