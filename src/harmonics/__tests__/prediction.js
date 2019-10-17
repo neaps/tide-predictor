@@ -109,7 +109,6 @@ describe('Secondary stations', () => {
       .prediction()
       .getExtremesPrediction({ offsets: mockSecondaryStation })
 
-    // Check that heights are offset
     offsetResults.forEach((offsetResult, index) => {
       if (offsetResult.low) {
         expect(offsetResult.level).toBeCloseTo(
