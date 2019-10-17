@@ -11,7 +11,7 @@ module.exports = function(grunt) {
     clean: ['lib', 'dist'],
     exec: {
       rollup: {
-        command: 'rollup -c'
+        command: 'BABEL_ENV=build rollup -c'
       },
       test: {
         command: 'yarn run test'
@@ -43,7 +43,7 @@ module.exports = function(grunt) {
           {
             cwd: 'src/',
             expand: true,
-            src: '**/*.js',
+            src: ['**/*.js', '!**/__tests__/**', '!**/__mocks__/**'],
             dest: 'lib/'
           }
         ]
