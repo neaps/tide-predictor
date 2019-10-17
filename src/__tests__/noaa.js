@@ -75,9 +75,9 @@ describe('Results compare to NOAA', () => {
           mtl - mllw
         )
         levels.predictions.forEach(prediction => {
-          const neapsPrediction = tideStation.getWaterLevelAtTime(
-            new Date(prediction.t)
-          )
+          const neapsPrediction = tideStation.getWaterLevelAtTime({
+            time: new Date(prediction.t)
+          })
           expect(parseFloat(prediction.v)).toBeCloseTo(neapsPrediction.level, 1)
         })
         done()

@@ -5,21 +5,44 @@ const modulus = (a, b) => {
   return ((a % b) + b) % b
 }
 
-const predictionFactory = ({ timeline, constituents, start }) => {
-  const getExtremeLabel = (label, highLowLabels) => {
-    if (
-      typeof highLowLabels !== 'undefined' &&
-      typeof highLowLabels[label] !== 'undefined'
-    ) {
-      return highLowLabels[label]
-    }
-    const labels = {
-      high: 'High',
-      low: 'Low'
-    }
-    return labels[label]
+const addExtremesOffsets = (extreme, offsets) => {
+  if (typeof offsets === 'undefined' || !offsets) {
+    return extreme
   }
+  if (extreme.high && offsets.height_offset && offsets.height_offset.high) {
+    extreme.level *= offsets.height_offset.high
+  }
+  if (extreme.low && offsets.height_offset && offsets.height_offset.low) {
+    extreme.level *= offsets.height_offset.low
+  }
+  if (extreme.high && offsets.time_offset && offsets.time_offset.high) {
+    extreme.time = new Date(
+      extreme.time.getTime() + offsets.time_offset.high * 60 * 1000
+    )
+  }
+  if (extreme.low && offsets.time_offset && offsets.time_offset.low) {
+    extreme.time = new Date(
+      extreme.time.getTime() + offsets.time_offset.low * 60 * 1000
+    )
+  }
+  return extreme
+}
 
+const getExtremeLabel = (label, highLowLabels) => {
+  if (
+    typeof highLowLabels !== 'undefined' &&
+    typeof highLowLabels[label] !== 'undefined'
+  ) {
+    return highLowLabels[label]
+  }
+  const labels = {
+    high: 'High',
+    low: 'Low'
+  }
+  return labels[label]
+}
+
+const predictionFactory = ({ timeline, constituents, start }) => {
   const getLevel = (hour, modelBaseSpeed, modelU, modelF, modelBaseValue) => {
     const amplitudes = []
     let result = 0
@@ -42,7 +65,8 @@ const predictionFactory = ({ timeline, constituents, start }) => {
 
   const prediction = {}
 
-  prediction.getExtremesPrediction = highLowLabels => {
+  prediction.getExtremesPrediction = options => {
+    const { labels, offsets } = typeof options !== 'undefined' ? options : {}
     const results = []
     const { baseSpeed, u, f, baseValue } = prepare()
     let goingUp = false
@@ -54,22 +78,32 @@ const predictionFactory = ({ timeline, constituents, start }) => {
       // Compare this level to the last one, if we
       // are changing angle, then the last one was high or low
       if (level > lastLevel && goingDown) {
-        results.push({
-          time: timeline.items[index - 1],
-          level: lastLevel,
-          high: false,
-          low: true,
-          label: getExtremeLabel('low', highLowLabels)
-        })
+        results.push(
+          addExtremesOffsets(
+            {
+              time: timeline.items[index - 1],
+              level: lastLevel,
+              high: false,
+              low: true,
+              label: getExtremeLabel('low', labels)
+            },
+            offsets
+          )
+        )
       }
       if (level < lastLevel && goingUp) {
-        results.push({
-          time: timeline.items[index - 1],
-          level: lastLevel,
-          high: true,
-          low: false,
-          label: getExtremeLabel('high', highLowLabels)
-        })
+        results.push(
+          addExtremesOffsets(
+            {
+              time: timeline.items[index - 1],
+              level: lastLevel,
+              high: true,
+              low: false,
+              label: getExtremeLabel('high', labels)
+            },
+            offsets
+          )
+        )
       }
       if (level > lastLevel) {
         goingUp = true

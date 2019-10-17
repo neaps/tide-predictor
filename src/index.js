@@ -4,8 +4,7 @@ const tidePredictionFactory = (constituents, options) => {
   const harmonicsOptions = {
     harmonicConstituents: constituents,
     phaseKey: 'phase_GMT',
-    offset: false,
-    isSecondary: false
+    offset: false
   }
 
   if (typeof options !== 'undefined') {
@@ -17,21 +16,21 @@ const tidePredictionFactory = (constituents, options) => {
   }
 
   const tidePrediction = {
-    getTimelinePrediction: (start, end) => {
+    getTimelinePrediction: ({ start, end }) => {
       return harmonics(harmonicsOptions)
         .setTimeSpan(start, end)
         .prediction()
         .getTimelinePrediction()
     },
 
-    getExtremesPrediction: (start, end, highLowLabels) => {
+    getExtremesPrediction: ({ start, end, labels, offsets }) => {
       return harmonics(harmonicsOptions)
         .setTimeSpan(start, end)
         .prediction()
-        .getExtremesPrediction(highLowLabels)
+        .getExtremesPrediction(labels, offsets)
     },
 
-    getWaterLevelAtTime: time => {
+    getWaterLevelAtTime: ({ time }) => {
       const endDate = new Date(time.getTime() + 10 * 60 * 1000)
       return harmonics(harmonicsOptions)
         .setTimeSpan(time, endDate)
