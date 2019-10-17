@@ -1,5 +1,5 @@
 import harmonics from '../index'
-import mockHarmonicConstituents from '../__mocks__/constituents'
+import mockHarmonicConstituents from '../../__mocks__/constituents'
 import mockSecondaryStation from '../../__mocks__/secondary-station'
 
 const startDate = new Date()

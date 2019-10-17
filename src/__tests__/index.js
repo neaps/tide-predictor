@@ -1,4 +1,4 @@
-import mockStation from '../__mocks__/station'
+import mockConstituents from '../__mocks__/constituents'
 import tidePrediction from '../index.js'
 
 const startDate = new Date()
@@ -24,7 +24,7 @@ describe('Tidal station', () => {
     let stationCreated = true
     let testStation = {} // eslint-disable-line
     try {
-      testStation = tidePrediction(mockStation)
+      testStation = tidePrediction(mockConstituents)
     } catch (e) {
       stationCreated = false
     }
@@ -32,7 +32,7 @@ describe('Tidal station', () => {
 
     testStation = {}
     try {
-      testStation = tidePrediction(mockStation)
+      testStation = tidePrediction(mockConstituents)
     } catch (e) {
       stationCreated = false
     }
@@ -40,7 +40,7 @@ describe('Tidal station', () => {
   })
 
   test('it predicts the tides in a timeline', () => {
-    const results = tidePrediction(mockStation).getTimelinePrediction({
+    const results = tidePrediction(mockConstituents).getTimelinePrediction({
       start: startDate,
       end: endDate
     })
@@ -49,7 +49,7 @@ describe('Tidal station', () => {
   })
 
   test('it predicts the tidal extremes', () => {
-    const results = tidePrediction(mockStation).getExtremesPrediction({
+    const results = tidePrediction(mockConstituents).getExtremesPrediction({
       start: startDate,
       end: endDate
     })
@@ -57,14 +57,14 @@ describe('Tidal station', () => {
   })
 
   test('it fetches a single water level', () => {
-    const result = tidePrediction(mockStation).getWaterLevelAtTime({
+    const result = tidePrediction(mockConstituents).getWaterLevelAtTime({
       time: startDate
     })
     expect(result.level).toBeCloseTo(-1.34712509, 4)
   })
 
   test('it adds offset phases', () => {
-    const results = tidePrediction(mockStation, {
+    const results = tidePrediction(mockConstituents, {
       offset: 3
     }).getExtremesPrediction({ start: startDate, end: endDate })
 

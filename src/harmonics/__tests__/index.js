@@ -1,5 +1,5 @@
 import harmonics, { getDate, getTimeline } from '../index'
-import mockHarmonicConstituents from '../__mocks__/constituents'
+import mockHarmonicConstituents from '../../__mocks__/constituents'
 
 const startDate = new Date(1567346400 * 1000) // 2019-09-01
 const endDate = new Date(1569966078 * 1000) // 2019-10-01
