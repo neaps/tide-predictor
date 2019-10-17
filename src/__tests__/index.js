@@ -22,14 +22,13 @@ endDate.setMilliseconds(0)
 describe('Tidal station', () => {
   test('it is created correctly', () => {
     let stationCreated = true
-    let testStation = {}
+    let testStation = {} // eslint-disable-line
     try {
       testStation = tidePrediction(mockStation)
     } catch (e) {
       stationCreated = false
     }
     expect(stationCreated).toBeTruthy()
-    expect(testStation.isSubordinate).toBeFalsy()
 
     testStation = {}
     try {
@@ -38,8 +37,6 @@ describe('Tidal station', () => {
       stationCreated = false
     }
     expect(stationCreated).toBeTruthy()
-    testStation.setIsSubordinate(true)
-    expect(testStation.isSubordinate).toBeTruthy()
   })
 
   test('it predicts the tides in a timeline', () => {

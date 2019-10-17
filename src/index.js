@@ -1,24 +1,31 @@
 import harmonics from './harmonics/index'
 
 const tidePredictionFactory = (constituents, options) => {
-  let phaseKey = 'phase_GMT'
-  let offset = false
-  if (typeof options !== 'undefined') {
-    phaseKey =
-      typeof options.phaseKey !== 'undefined' ? options.phaseKey : 'phase_GMT'
-    offset = typeof options.offset !== 'undefined' ? options.offset : false
+  const harmonicsOptions = {
+    harmonicConstituents: constituents,
+    phaseKey: 'phase_GMT',
+    offset: false,
+    isSecondary: false
   }
+
+  if (typeof options !== 'undefined') {
+    Object.keys(harmonicsOptions).forEach(key => {
+      if (typeof options[key] !== 'undefined') {
+        harmonicsOptions[key] = options[key]
+      }
+    })
+  }
+
   const tidePrediction = {
-    isSubordinate: false,
     getTimelinePrediction: (start, end) => {
-      return harmonics(constituents, phaseKey, offset)
+      return harmonics(harmonicsOptions)
         .setTimeSpan(start, end)
         .prediction()
         .getTimelinePrediction()
     },
 
     getExtremesPrediction: (start, end, highLowLabels) => {
-      return harmonics(constituents, phaseKey, offset)
+      return harmonics(harmonicsOptions)
         .setTimeSpan(start, end)
         .prediction()
         .getExtremesPrediction(highLowLabels)
@@ -26,16 +33,11 @@ const tidePredictionFactory = (constituents, options) => {
 
     getWaterLevelAtTime: time => {
       const endDate = new Date(time.getTime() + 10 * 60 * 1000)
-      return harmonics(constituents, phaseKey, offset)
+      return harmonics(harmonicsOptions)
         .setTimeSpan(time, endDate)
         .prediction()
         .getTimelinePrediction()[0]
     }
-  }
-
-  tidePrediction.setIsSubordinate = newStatus => {
-    tidePrediction.isSubordinate = newStatus
-    return tidePrediction
   }
 
   return tidePrediction

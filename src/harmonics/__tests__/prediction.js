@@ -20,7 +20,11 @@ endDate.setSeconds(0)
 endDate.setMilliseconds(0)
 
 const setUpPrediction = () => {
-  const harmonic = harmonics(mockHarmonicConstituents, 'phase_GMT', false)
+  const harmonic = harmonics({
+    harmonicConstituents: mockHarmonicConstituents,
+    phaseKey: 'phase_GMT',
+    offset: false
+  })
   harmonic.setTimeSpan(startDate, endDate)
   return harmonic.prediction()
 }
@@ -34,7 +38,11 @@ describe('harmonic prediction', () => {
   })
 
   test('it creates a timeline prediction', () => {
-    const results = harmonics(mockHarmonicConstituents, 'phase_GMT', false)
+    const results = harmonics({
+      harmonicConstituents: mockHarmonicConstituents,
+      phaseKey: 'phase_GMT',
+      offset: false
+    })
       .setTimeSpan(startDate, endDate)
       .prediction()
       .getTimelinePrediction()
@@ -43,7 +51,11 @@ describe('harmonic prediction', () => {
   })
 
   test('it creates a timeline prediction with a non-default phase key', () => {
-    const results = harmonics(mockHarmonicConstituents, 'phase_local', false)
+    const results = harmonics({
+      harmonicConstituents: mockHarmonicConstituents,
+      phaseKey: 'phase_local',
+      offset: false
+    })
       .setTimeSpan(startDate, endDate)
       .prediction()
       .getTimelinePrediction()
@@ -61,7 +73,11 @@ describe('harmonic prediction', () => {
     endDate.setSeconds(0)
     endDate.setMilliseconds(0)
 
-    const results = harmonics(mockHarmonicConstituents, 'phase_GMT', false)
+    const results = harmonics({
+      harmonicConstituents: mockHarmonicConstituents,
+      phaseKey: 'phase_GMT',
+      offset: false
+    })
       .setTimeSpan(startDate, extremesEndDate)
       .prediction()
       .getExtremesPrediction()
@@ -72,7 +88,11 @@ describe('harmonic prediction', () => {
       low: 'Wayyy low'
     }
 
-    const labelResults = harmonics(mockHarmonicConstituents, 'phase_GMT', false)
+    const labelResults = harmonics({
+      harmonicConstituents: mockHarmonicConstituents,
+      phaseKey: 'phase_GMT',
+      offset: false
+    })
       .setTimeSpan(startDate, extremesEndDate)
       .prediction()
       .getExtremesPrediction(customLabels)

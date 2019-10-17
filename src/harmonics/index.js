@@ -31,7 +31,7 @@ const getTimeline = (start, end, seconds) => {
   }
 }
 
-const harmonicsFactory = (harmonicConstituents, phaseKey, offset) => {
+const harmonicsFactory = ({ harmonicConstituents, phaseKey, offset }) => {
   if (!Array.isArray(harmonicConstituents)) {
     throw new Error('Harmonic constituents are not an array')
   }
