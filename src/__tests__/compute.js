@@ -1,4 +1,5 @@
 import compute from '../compute2'
+import testConstituents from '../__mocks__/constituents'
 import mockWaterLevels from '../__mocks__/water-levels-short'
 
 const waterLevels = mockWaterLevels.map(waterLevel => {
@@ -7,8 +8,17 @@ const waterLevels = mockWaterLevels.map(waterLevel => {
   return waterLevel
 })
 
+let testConstituent = {}
+testConstituents.forEach(constituent => {
+  if (constituent.name === 'M1') {
+    testConstituent = constituent
+  }
+})
+
 test('compute', () => {
-  compute(waterLevels)
+  const model = compute(waterLevels)
+  //expect(model.M1.phase).toBeCloseTo(testConstituent.phase_GMT, 4)
+  //expect(model.M1.amplitude).toBeCloseTo(testConstituent.amplitude, 4)
 })
 /*
 describe('Harmonic constituents are correctly computed', () => {
