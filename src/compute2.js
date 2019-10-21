@@ -233,8 +233,8 @@ const compute = waterLevels => {
     return results
   }
 
-  const r = dResidual(initial)
-  console.log(r)
+  const initialResidual = residual(initial)
+  console.log(initialResidual)
 
   const model = {}
 
