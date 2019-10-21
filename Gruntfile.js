@@ -69,7 +69,7 @@ module.exports = function(grunt) {
       }
     },
     eslint: {
-      target: ['src/**/*.js']
+      target: ['src/**/*.js', '!src/__mocks__/**.js']
     }
   })
   this.registerTask(

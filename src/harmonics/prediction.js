@@ -1,9 +1,5 @@
 import astro from '../astronomy/index'
-import { d2r } from '../astronomy/constants'
-
-const modulus = (a, b) => {
-  return ((a % b) + b) % b
-}
+import { d2r, modulus } from '../astronomy/constants'
 
 const addExtremesOffsets = (extreme, offsets) => {
   if (typeof offsets === 'undefined' || !offsets) {

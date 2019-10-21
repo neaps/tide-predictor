@@ -8,7 +8,13 @@
   "license": "MIT",
   "module": "./lib/index.es6.js",
   "browser": "./dist/tide-predictor.js",
-  "dependencies": {},
+  "dependencies": {
+    "ndarray": "^1.0.18",
+    "ndarray-fill": "^1.0.2",
+    "ndarray-ops": "^1.2.2",
+    "numjs": "^0.16.0",
+    "regression": "^2.0.1"
+  },
   "devDependencies": {
     "@babel/core": "^7.6.2",
     "@babel/preset-env": "^7.6.2",
