@@ -1,5 +1,5 @@
 import prediction from './prediction'
-import constituentModels from '../constituent/index'
+import constituentModels from '../constituents/index'
 import { d2r } from '../astronomy/constants'
 
 const getDate = time => {
