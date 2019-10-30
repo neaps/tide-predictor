@@ -1,9 +1,9 @@
 {
-  "name": "js-tides",
+  "name": "@neaps/tide-predictor",
   "version": "0.0.1",
   "description": "Tide predictor",
-  "main": "index.js",
-  "repository": "https://github.com/kevee/js-tides",
+  "main": "",
+  "repository": "https://github.com/neaps/tide-predictor",
   "author": "Kevin Miller <keveemiller@gmail.com>",
   "license": "MIT",
   "module": "./lib/index.es6.js",
