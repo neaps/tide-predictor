@@ -18,8 +18,6 @@ The tide predictions do not factor events such as storms, surge, wind waves, upl
 
 # Installation
 
-Once published, use:
-
 ```
 # yarn
 yarn install @neaps/tide-prediction
