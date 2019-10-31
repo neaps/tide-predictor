@@ -4,6 +4,8 @@
 
 A Javascript tide harmonic calculator.
 
+<!-- START DOCS -->
+
 ## Warning
 
 **Do not use calculations from this project for navigation, or depend on them in any situation where inaccuracies could result in harm to a person or property.**
