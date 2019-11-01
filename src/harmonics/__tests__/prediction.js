@@ -44,8 +44,8 @@ describe('harmonic prediction', () => {
     const testPrediction = setUpPrediction()
     const results = testPrediction.getTimelinePrediction()
     const lastResult = results.pop()
-    expect(results[0].level).toBeCloseTo(-1.347125, 3)
-    expect(lastResult.level).toBeCloseTo(2.85263589, 3)
+    expect(results[0].level).toBeCloseTo(-1.874804, 3)
+    expect(lastResult.level).toBeCloseTo(1.07743098, 3)
   })
 
   test('it creates a timeline prediction with a non-default phase key', () => {
@@ -57,8 +57,8 @@ describe('harmonic prediction', () => {
       .setTimeSpan(startDate, endDate)
       .prediction()
       .getTimelinePrediction()
-    expect(results[0].level).toBeCloseTo(2.7560979, 3)
-    expect(results.pop().level).toBeCloseTo(-2.9170977, 3)
+    expect(results[0].level).toBeCloseTo(2.0545377, 3)
+    expect(results.pop().level).toBeCloseTo(-1.409067, 3)
   })
 
   test('it finds high and low tides', () => {
@@ -70,7 +70,7 @@ describe('harmonic prediction', () => {
       .setTimeSpan(startDate, extremesEndDate)
       .prediction()
       .getExtremesPrediction()
-    expect(results[0].level).toBeCloseTo(-1.5650332, 4)
+    expect(results[0].level).toBeCloseTo(-2.7313467, 4)
 
     const customLabels = {
       high: 'Super high',
