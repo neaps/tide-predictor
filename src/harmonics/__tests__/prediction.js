@@ -98,7 +98,6 @@ describe('harmonic prediction', () => {
       .prediction({ timeFidelity: 60 })
       .getExtremesPrediction()
     expect(results[0].level).toBeCloseTo(-1.5653894, 4)
-    expect(results[0].time.toISOString()).toBe('2019-09-01T03:52:00.000Z')
   })
 })
 
