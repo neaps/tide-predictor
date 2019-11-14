@@ -87,6 +87,19 @@ describe('harmonic prediction', () => {
       .getExtremesPrediction({ labels: customLabels })
     expect(labelResults[0].label).toBe(customLabels.low)
   })
+
+  test('it finds high and low tides with high fidelity', () => {
+    const results = harmonics({
+      harmonicConstituents: mockHarmonicConstituents,
+      phaseKey: 'phase_GMT',
+      offset: false
+    })
+      .setTimeSpan(startDate, extremesEndDate)
+      .prediction({ timeFidelity: 60 })
+      .getExtremesPrediction()
+    expect(results[0].level).toBeCloseTo(-1.5653894, 4)
+    expect(results[0].time.toISOString()).toBe('2019-09-01T03:52:00.000Z')
+  })
 })
 
 describe('Secondary stations', () => {

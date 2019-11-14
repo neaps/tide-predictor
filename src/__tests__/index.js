@@ -56,6 +56,15 @@ describe('Tidal station', () => {
     expect(results[0].level).toBeCloseTo(-1.565033, 4)
   })
 
+  test('it predicts the tidal extremes with high fidelity', () => {
+    const results = tidePrediction(mockConstituents).getExtremesPrediction({
+      start: startDate,
+      end: endDate,
+      timeFidelity: 60
+    })
+    expect(results[0].level).toBeCloseTo(-1.565389, 4)
+  })
+
   test('it fetches a single water level', () => {
     const result = tidePrediction(mockConstituents).getWaterLevelAtTime({
       time: startDate

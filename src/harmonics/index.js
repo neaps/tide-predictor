@@ -70,9 +70,11 @@ const harmonicsFactory = ({ harmonicConstituents, phaseKey, offset }) => {
     return harmonics
   }
 
-  harmonics.prediction = () => {
+  harmonics.prediction = options => {
+    options =
+      typeof options !== 'undefined' ? options : { timeFidelity: 10 * 60 }
     return prediction({
-      timeline: getTimeline(start, end),
+      timeline: getTimeline(start, end, options.timeFidelity),
       constituents: constituents,
       start: start
     })

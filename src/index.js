@@ -23,10 +23,10 @@ const tidePredictionFactory = (constituents, options) => {
         .getTimelinePrediction()
     },
 
-    getExtremesPrediction: ({ start, end, labels, offsets }) => {
+    getExtremesPrediction: ({ start, end, labels, offsets, timeFidelity }) => {
       return harmonics(harmonicsOptions)
         .setTimeSpan(start, end)
-        .prediction()
+        .prediction({ timeFidelity: timeFidelity })
         .getExtremesPrediction(labels, offsets)
     },
 

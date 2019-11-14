@@ -104,8 +104,9 @@ const tides = tidePrediction(constituents).getExtremesPrediction({
 
 The `getExtremesPrediction` accepts a single object with options:
 
-- `startDate` - **Required ** - The date & time to start looking for high and low tides
-- `endDate` - **Required ** - The date & time to stop looking for high and low tides
+- `start` - **Required ** - The date & time to start looking for high and low tides
+- `end` - **Required ** - The date & time to stop looking for high and low tides
+- `timeFidelity` - Number of seconds accurate the time should be, defaults to 10 minutes.
 - `labels` - An object to define the human-readable labels for the tides
   - `high` - The human-readable label for high tides
   - `low` - The human-readable label for low tides
