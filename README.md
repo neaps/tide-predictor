@@ -32,6 +32,8 @@ Neaps requires that you [provide your own tidal harmonics information](#constitu
 
 Because many constituent datum come with multiple phases (in the case of NOAA's data, they are `phase_local` and `phase_GMT`), there is a `phaseKey` option for choosing which to use.
 
+Note that, for now, Neaps **will not** do any timezone corrections. This means you need to pass date objects that align with whatever timezone the constituents are in.
+
 ```javascript
 import TidePrediction from '@neaps/tide-prediction'
 const constituents = [
