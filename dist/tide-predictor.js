@@ -953,9 +953,11 @@
       return harmonics
     };
 
-    harmonics.prediction = () => {
+    harmonics.prediction = options => {
+      options =
+        typeof options !== 'undefined' ? options : { timeFidelity: 10 * 60 };
       return predictionFactory({
-        timeline: getTimeline(start, end),
+        timeline: getTimeline(start, end, options.timeFidelity),
         constituents: constituents$1,
         start: start
       })
@@ -987,10 +989,10 @@
           .getTimelinePrediction()
       },
 
-      getExtremesPrediction: ({ start, end, labels, offsets }) => {
+      getExtremesPrediction: ({ start, end, labels, offsets, timeFidelity }) => {
         return harmonicsFactory(harmonicsOptions)
           .setTimeSpan(start, end)
-          .prediction()
+          .prediction({ timeFidelity: timeFidelity })
           .getExtremesPrediction(labels, offsets)
       },
 
