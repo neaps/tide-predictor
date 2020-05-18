@@ -27,7 +27,7 @@
     "grunt-contrib-uglify": "^4.0.1",
     "grunt-contrib-watch": "^1.1.0",
     "grunt-coveralls": "^2.0.0",
-    "grunt-eslint": "^22.0.0",
+    "grunt-eslint": "^23.0.0",
     "grunt-exec": "^3.0.0",
     "jest": "^26.0.1",
     "jest-junit": "^10.0.0",
