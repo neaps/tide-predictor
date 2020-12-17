@@ -22,32 +22,32 @@ const getStation = (station, callback) => {
   }
   const stationData = {}
   fetch(
-    `https://tidesandcurrents.noaa.gov/mdapi/v1.0/webapi/stations/${station}/harcon.json?units=metric`
+    `https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations/${station}/harcon.json?units=metric`
   )
-    .then(response => {
+    .then((response) => {
       return response.json()
     })
-    .then(harmonics => {
+    .then((harmonics) => {
       stationData.harmonics = harmonics
       return fetch(
-        `https://tidesandcurrents.noaa.gov/api/datagetter?date=recent&station=${station}&product=predictions&datum=MTL&time_zone=gmt&units=metric&format=json`
+        `https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?date=recent&station=${station}&product=predictions&datum=MTL&time_zone=gmt&units=metric&format=json`
       )
     })
-    .then(response => {
+    .then((response) => {
       return response.json()
     })
-    .then(levels => {
+    .then((levels) => {
       stationData.levels = levels
       return fetch(
-        `https://tidesandcurrents.noaa.gov/mdapi/v1.0/webapi/stations/${station}/datums.json?units=metric`
+        `https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations/${station}/datums.json?units=metric`
       )
     })
-    .then(response => {
+    .then((response) => {
       return response.json()
     })
-    .then(info => {
+    .then((info) => {
       stationData.info = info
-      fs.writeFile(filePath, JSON.stringify(stationData), error => {
+      fs.writeFile(filePath, JSON.stringify(stationData), (error) => {
         if (error) {
           throw new Error('Cannot write to test cache')
         }
@@ -57,12 +57,12 @@ const getStation = (station, callback) => {
 }
 
 describe('Results compare to NOAA', () => {
-  stations.forEach(station => {
-    test(`it compares with station ${station}`, done => {
+  stations.forEach((station) => {
+    test(`it compares with station ${station}`, (done) => {
       getStation(station, ({ harmonics, levels, info }) => {
         let mtl = 0
         let mllw = 0
-        info.datums.forEach(datum => {
+        info.datums.forEach((datum) => {
           if (datum.name === 'MTL') {
             mtl = datum.value
           }
@@ -74,12 +74,16 @@ describe('Results compare to NOAA', () => {
           harmonics.HarmonicConstituents,
           mtl - mllw
         )
-        levels.predictions.forEach(prediction => {
+        levels.predictions.forEach((prediction) => {
           const neapsPrediction = tideStation.getWaterLevelAtTime({
-            time: new Date(prediction.t)
+            time: new Date(prediction.t),
           })
-          expect(parseFloat(prediction.v)).toBeGreaterThanOrEqual(neapsPrediction.level - 0.5)
-          expect(parseFloat(prediction.v)).toBeLessThanOrEqual(neapsPrediction.level + 0.5)
+          expect(parseFloat(prediction.v)).toBeGreaterThanOrEqual(
+            neapsPrediction.level - 0.5
+          )
+          expect(parseFloat(prediction.v)).toBeLessThanOrEqual(
+            neapsPrediction.level + 0.5
+          )
         })
         done()
       })
