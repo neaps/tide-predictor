@@ -37,7 +37,7 @@ const getExtremeLabel = (label, highLowLabels) => {
   }
   const labels = {
     high: 'High',
-    low: 'Low'
+    low: 'Low',
   }
   return labels[label]
 }
@@ -47,7 +47,7 @@ const predictionFactory = ({ timeline, constituents, start }) => {
     const amplitudes = []
     let result = 0
 
-    constituents.forEach(constituent => {
+    constituents.forEach((constituent) => {
       const amplitude = constituent.amplitude
       const phase = constituent._phase
       const f = modelF[constituent.name]
@@ -57,7 +57,7 @@ const predictionFactory = ({ timeline, constituents, start }) => {
       amplitudes.push(amplitude * f * Math.cos(speed * hour + (V0 + u) - phase))
     })
     // sum up each row
-    amplitudes.forEach(item => {
+    amplitudes.forEach((item) => {
       result += item
     })
     return result
@@ -65,7 +65,7 @@ const predictionFactory = ({ timeline, constituents, start }) => {
 
   const prediction = {}
 
-  prediction.getExtremesPrediction = options => {
+  prediction.getExtremesPrediction = (options) => {
     const { labels, offsets } = typeof options !== 'undefined' ? options : {}
     const results = []
     const { baseSpeed, u, f, baseValue } = prepare()
@@ -85,7 +85,7 @@ const predictionFactory = ({ timeline, constituents, start }) => {
               level: lastLevel,
               high: false,
               low: true,
-              label: getExtremeLabel('low', labels)
+              label: getExtremeLabel('low', labels),
             },
             offsets
           )
@@ -99,7 +99,7 @@ const predictionFactory = ({ timeline, constituents, start }) => {
               level: lastLevel,
               high: true,
               low: false,
-              label: getExtremeLabel('high', labels)
+              label: getExtremeLabel('high', labels),
             },
             offsets
           )
@@ -126,7 +126,7 @@ const predictionFactory = ({ timeline, constituents, start }) => {
       const prediction = {
         time: time,
         hour: hour,
-        level: getLevel(hour, baseSpeed, u[index], f[index], baseValue)
+        level: getLevel(hour, baseSpeed, u[index], f[index], baseValue),
       }
 
       results.push(prediction)
@@ -141,17 +141,17 @@ const predictionFactory = ({ timeline, constituents, start }) => {
     const baseSpeed = {}
     const u = []
     const f = []
-    constituents.forEach(constituent => {
+    constituents.forEach((constituent) => {
       const value = constituent._model.value(baseAstro)
       const speed = constituent._model.speed(baseAstro)
       baseValue[constituent.name] = d2r * value
       baseSpeed[constituent.name] = d2r * speed
     })
-    timeline.items.forEach(time => {
+    timeline.items.forEach((time) => {
       const uItem = {}
       const fItem = {}
       const itemAstro = astro(time)
-      constituents.forEach(constituent => {
+      constituents.forEach((constituent) => {
         const constituentU = modulus(constituent._model.u(itemAstro), 360)
 
         uItem[constituent.name] = d2r * constituentU
@@ -165,7 +165,7 @@ const predictionFactory = ({ timeline, constituents, start }) => {
       baseValue: baseValue,
       baseSpeed: baseSpeed,
       u: u,
-      f: f
+      f: f,
     }
   }
 

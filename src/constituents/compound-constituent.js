@@ -14,7 +14,7 @@ const compoundConstituentFactory = (name, members) => {
 
     coefficients: coefficients,
 
-    speed: astro => {
+    speed: (astro) => {
       let speed = 0
       members.forEach(({ constituent, factor }) => {
         speed += constituent.speed(astro) * factor
@@ -22,7 +22,7 @@ const compoundConstituentFactory = (name, members) => {
       return speed
     },
 
-    value: astro => {
+    value: (astro) => {
       let value = 0
       members.forEach(({ constituent, factor }) => {
         value += constituent.value(astro) * factor
@@ -30,7 +30,7 @@ const compoundConstituentFactory = (name, members) => {
       return value
     },
 
-    u: astro => {
+    u: (astro) => {
       let u = 0
       members.forEach(({ constituent, factor }) => {
         u += constituent.u(astro) * factor
@@ -38,7 +38,7 @@ const compoundConstituentFactory = (name, members) => {
       return u
     },
 
-    f: astro => {
+    f: (astro) => {
       const f = []
       members.forEach(({ constituent, factor }) => {
         f.push(Math.pow(constituent.f(astro), Math.abs(factor)))
@@ -46,7 +46,7 @@ const compoundConstituentFactory = (name, members) => {
       return f.reduce((previous, value) => {
         return previous * value
       })
-    }
+    },
   }
 
   return Object.freeze(compoundConstituent)

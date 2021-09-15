@@ -24,12 +24,12 @@ const derivativePolynomial = (coefficients, argument) => {
 }
 
 // Meeus formula 11.1
-const T = t => {
+const T = (t) => {
   return (JD(t) - 2451545.0) / 36525
 }
 
 // Meeus formula 7.1
-const JD = t => {
+const JD = (t) => {
   let Y = t.getFullYear()
   let M = t.getMonth() + 1
   const D =
@@ -129,7 +129,7 @@ const modulus = (a, b) => {
   return ((a % b) + b) % b
 }
 
-const astro = time => {
+const astro = (time) => {
   const result = {}
   const polynomials = {
     s: coefficients.lunarLongitude,
@@ -139,16 +139,16 @@ const astro = time => {
     pp: coefficients.solarPerigee,
     90: [90.0],
     omega: coefficients.terrestrialObliquity,
-    i: coefficients.lunarInclination
+    i: coefficients.lunarInclination,
   }
 
   // Polynomials are in T, that is Julian Centuries; we want our speeds to be
   // in the more convenient unit of degrees per hour.
   const dTdHour = 1 / (24 * 365.25 * 100)
-  Object.keys(polynomials).forEach(name => {
+  Object.keys(polynomials).forEach((name) => {
     result[name] = {
       value: modulus(polynomial(polynomials[name], T(time)), 360.0),
-      speed: derivativePolynomial(polynomials[name], T(time)) * dTdHour
+      speed: derivativePolynomial(polynomials[name], T(time)) * dTdHour,
     }
   })
 
@@ -160,16 +160,16 @@ const astro = time => {
     xi: _xi,
     nu: _nu,
     nup: _nup,
-    nupp: _nupp
+    nupp: _nupp,
   }
-  Object.keys(functions).forEach(name => {
+  Object.keys(functions).forEach((name) => {
     const functionCall = functions[name]
     result[name] = {
       value: modulus(
         functionCall(result.N.value, result.i.value, result.omega.value),
         360.0
       ),
-      speed: null
+      speed: null,
     }
   })
 
@@ -178,12 +178,12 @@ const astro = time => {
   // This is in line with convention.
   const hour = {
     value: (JD(time) - Math.floor(JD(time))) * 360.0,
-    speed: 15.0
+    speed: 15.0,
   }
 
   result['T+h-s'] = {
     value: hour.value + result.h.value - result.s.value,
-    speed: hour.speed + result.h.speed - result.s.speed
+    speed: hour.speed + result.h.speed - result.s.speed,
   }
 
   // It is convenient to calculate Schureman's P here since several node
@@ -191,7 +191,7 @@ const astro = time => {
   // (along with I, xi, nu etc) belong somewhere else.
   result.P = {
     value: result.p.value - (result.xi.value % 360.0),
-    speed: null
+    speed: null,
   }
 
   return result
