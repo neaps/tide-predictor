@@ -40,6 +40,6 @@
     "test": "BABEL_ENV=test jest",
     "coverage": "jest --coverage; grunt coveralls;",
     "lint": "eslint ./src",
-    "circleci": "yarn run lint; jest --ci --runInBand --reporters=default --reporters=jest-junit"
+    "ci": "yarn run lint; jest --ci --runInBand --reporters=default --reporters=jest-junit"
   }
 }
