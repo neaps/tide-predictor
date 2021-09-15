@@ -46,7 +46,6 @@ describe('harmonic prediction', () => {
     const lastResult = results.pop()
     expect(results[0].level).toBeCloseTo(-1.347125, 3)
     expect(lastResult.level).toBeCloseTo(2.85263589, 3)
-    expect(true).toBe(false)
   })
 
   test('it creates a timeline prediction with a non-default phase key', () => {
