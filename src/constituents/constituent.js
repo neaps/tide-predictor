@@ -15,7 +15,7 @@ const dotArray = (a, b) => {
   })
 }
 
-const astronimicDoodsonNumber = astro => {
+const astronimicDoodsonNumber = (astro) => {
   return [
     astro['T+h-s'],
     astro.s,
@@ -23,21 +23,21 @@ const astronimicDoodsonNumber = astro => {
     astro.p,
     astro.N,
     astro.pp,
-    astro['90']
+    astro['90'],
   ]
 }
 
-const astronomicSpeed = astro => {
+const astronomicSpeed = (astro) => {
   const results = []
-  astronimicDoodsonNumber(astro).forEach(number => {
+  astronimicDoodsonNumber(astro).forEach((number) => {
     results.push(number.speed)
   })
   return results
 }
 
-const astronomicValues = astro => {
+const astronomicValues = (astro) => {
   const results = []
-  astronimicDoodsonNumber(astro).forEach(number => {
+  astronimicDoodsonNumber(astro).forEach((number) => {
     results.push(number.value)
   })
   return results
@@ -53,7 +53,7 @@ const constituentFactory = (name, coefficients, u, f) => {
 
     coefficients: coefficients,
 
-    value: astro => {
+    value: (astro) => {
       return dotArray(coefficients, astronomicValues(astro))
     },
 
@@ -63,7 +63,7 @@ const constituentFactory = (name, coefficients, u, f) => {
 
     u: typeof u !== 'undefined' ? u : nodeCorrections.uZero,
 
-    f: typeof f !== 'undefined' ? f : nodeCorrections.fUnity
+    f: typeof f !== 'undefined' ? f : nodeCorrections.fUnity,
   }
 
   return Object.freeze(constituent)

@@ -33,7 +33,7 @@ const setUpPrediction = () => {
   const harmonic = harmonics({
     harmonicConstituents: mockHarmonicConstituents,
     phaseKey: 'phase_GMT',
-    offset: false
+    offset: false,
   })
   harmonic.setTimeSpan(startDate, endDate)
   return harmonic.prediction()
@@ -52,7 +52,7 @@ describe('harmonic prediction', () => {
     const results = harmonics({
       harmonicConstituents: mockHarmonicConstituents,
       phaseKey: 'phase_local',
-      offset: false
+      offset: false,
     })
       .setTimeSpan(startDate, endDate)
       .prediction()
@@ -65,7 +65,7 @@ describe('harmonic prediction', () => {
     const results = harmonics({
       harmonicConstituents: mockHarmonicConstituents,
       phaseKey: 'phase_GMT',
-      offset: false
+      offset: false,
     })
       .setTimeSpan(startDate, extremesEndDate)
       .prediction()
@@ -74,13 +74,13 @@ describe('harmonic prediction', () => {
 
     const customLabels = {
       high: 'Super high',
-      low: 'Wayyy low'
+      low: 'Wayyy low',
     }
 
     const labelResults = harmonics({
       harmonicConstituents: mockHarmonicConstituents,
       phaseKey: 'phase_GMT',
-      offset: false
+      offset: false,
     })
       .setTimeSpan(startDate, extremesEndDate)
       .prediction()
@@ -92,7 +92,7 @@ describe('harmonic prediction', () => {
     const results = harmonics({
       harmonicConstituents: mockHarmonicConstituents,
       phaseKey: 'phase_GMT',
-      offset: false
+      offset: false,
     })
       .setTimeSpan(startDate, extremesEndDate)
       .prediction({ timeFidelity: 60 })
@@ -106,7 +106,7 @@ describe('Secondary stations', () => {
     const regularResults = harmonics({
       harmonicConstituents: mockHarmonicConstituents,
       phaseKey: 'phase_GMT',
-      offset: false
+      offset: false,
     })
       .setTimeSpan(startDate, extremesEndDate)
       .prediction()
@@ -115,7 +115,7 @@ describe('Secondary stations', () => {
     const offsetResults = harmonics({
       harmonicConstituents: mockHarmonicConstituents,
       phaseKey: 'phase_GMT',
-      offset: false
+      offset: false,
     })
       .setTimeSpan(startDate, extremesEndDate)
       .prediction()

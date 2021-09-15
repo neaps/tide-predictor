@@ -2,7 +2,7 @@ import prediction from './prediction'
 import constituentModels from '../constituents/index'
 import { d2r } from '../astronomy/constants'
 
-const getDate = time => {
+const getDate = (time) => {
   if (time instanceof Date) {
     return time
   }
@@ -27,7 +27,7 @@ const getTimeline = (start, end, seconds) => {
 
   return {
     items: timeline,
-    hours: hours
+    hours: hours,
   }
 }
 
@@ -52,7 +52,7 @@ const harmonicsFactory = ({ harmonicConstituents, phaseKey, offset }) => {
       name: 'Z0',
       _model: constituentModels.Z0,
       _phase: 0,
-      amplitude: offset
+      amplitude: offset,
     })
   }
 
@@ -70,13 +70,13 @@ const harmonicsFactory = ({ harmonicConstituents, phaseKey, offset }) => {
     return harmonics
   }
 
-  harmonics.prediction = options => {
+  harmonics.prediction = (options) => {
     options =
       typeof options !== 'undefined' ? options : { timeFidelity: 10 * 60 }
     return prediction({
       timeline: getTimeline(start, end, options.timeFidelity),
       constituents: constituents,
-      start: start
+      start: start,
     })
   }
 

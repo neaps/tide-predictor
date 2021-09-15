@@ -27,7 +27,7 @@ const coefficients = {
     sexagesimalToDecimal(0, 0, 7.12),
     sexagesimalToDecimal(0, 0, 27.87),
     sexagesimalToDecimal(0, 0, 5.79),
-    sexagesimalToDecimal(0, 0, 2.45)
+    sexagesimalToDecimal(0, 0, 2.45),
   ].map((number, index) => {
     return number * Math.pow(1e-2, index)
   }),
@@ -36,7 +36,7 @@ const coefficients = {
     280.46645 - 357.5291,
     36000.76932 - 35999.0503,
     0.0003032 + 0.0001559,
-    0.00000048
+    0.00000048,
   ],
 
   solarLongitude: [280.46645, 36000.76983, 0.0003032],
@@ -47,7 +47,7 @@ const coefficients = {
     218.3164591,
     481267.88134236,
     -0.0013268,
-    1 / 538841.0 - 1 / 65194000.0
+    1 / 538841.0 - 1 / 65194000.0,
   ],
 
   lunarNode: [
@@ -55,7 +55,7 @@ const coefficients = {
     -1934.1361849,
     0.0020762,
     1 / 467410.0,
-    -1 / 60616000.0
+    -1 / 60616000.0,
   ],
 
   lunarPerigee: [
@@ -63,8 +63,8 @@ const coefficients = {
     4069.0137111,
     -0.0103238,
     -1 / 80053.0,
-    1 / 18999000.0
-  ]
+    1 / 18999000.0,
+  ],
 }
 
 export default coefficients

@@ -22,17 +22,16 @@ endDate.setMilliseconds(0)
 describe('Tidal station', () => {
   test('it is created correctly', () => {
     let stationCreated = true
-    let testStation = {} // eslint-disable-line
+
     try {
-      testStation = tidePrediction(mockConstituents)
+      tidePrediction(mockConstituents)
     } catch (e) {
       stationCreated = false
     }
     expect(stationCreated).toBeTruthy()
 
-    testStation = {}
     try {
-      testStation = tidePrediction(mockConstituents)
+      tidePrediction(mockConstituents)
     } catch (e) {
       stationCreated = false
     }
@@ -42,7 +41,7 @@ describe('Tidal station', () => {
   test('it predicts the tides in a timeline', () => {
     const results = tidePrediction(mockConstituents).getTimelinePrediction({
       start: startDate,
-      end: endDate
+      end: endDate,
     })
     expect(results[0].level).toBeCloseTo(-1.34712509, 3)
     expect(results.pop().level).toBeCloseTo(2.85263589, 3)
@@ -51,7 +50,7 @@ describe('Tidal station', () => {
   test('it predicts the tidal extremes', () => {
     const results = tidePrediction(mockConstituents).getExtremesPrediction({
       start: startDate,
-      end: endDate
+      end: endDate,
     })
     expect(results[0].level).toBeCloseTo(-1.565033, 4)
   })
@@ -60,21 +59,21 @@ describe('Tidal station', () => {
     const results = tidePrediction(mockConstituents).getExtremesPrediction({
       start: startDate,
       end: endDate,
-      timeFidelity: 60
+      timeFidelity: 60,
     })
     expect(results[0].level).toBeCloseTo(-1.565389, 4)
   })
 
   test('it fetches a single water level', () => {
     const result = tidePrediction(mockConstituents).getWaterLevelAtTime({
-      time: startDate
+      time: startDate,
     })
     expect(result.level).toBeCloseTo(-1.34712509, 4)
   })
 
   test('it adds offset phases', () => {
     const results = tidePrediction(mockConstituents, {
-      offset: 3
+      offset: 3,
     }).getExtremesPrediction({ start: startDate, end: endDate })
 
     expect(results[0].level).toBeCloseTo(1.43496678, 4)

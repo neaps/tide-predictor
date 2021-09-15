@@ -7,9 +7,9 @@ const endDate = new Date(1569966078 * 1000) // 2019-10-01
 describe('harmonics', () => {
   test('it checks constituents', () => {
     let errorMessage = false
-    let testHarmonics = {} // eslint-disable-line
+
     try {
-      testHarmonics = harmonics({ harmonicConstituents: 'not array' })
+      harmonics({ harmonicConstituents: 'not array' })
     } catch (error) {
       errorMessage = error
     }
@@ -18,7 +18,7 @@ describe('harmonics', () => {
     errorMessage = false
 
     try {
-      testHarmonics = harmonics({
+      harmonics({
         harmonicConstituents: [
           {
             name: 'M2',
@@ -26,15 +26,15 @@ describe('harmonics', () => {
             amplitude: 1.61,
             phase_GMT: 181.3,
             phase_local: 309.4,
-            speed: 28.984104
+            speed: 28.984104,
           },
           {
             description: 'Principal solar semidiurnal constituent',
             amplitude: 0.43,
             phase_GMT: 180.1,
-            phase_local: 309.4
-          }
-        ]
+            phase_local: 309.4,
+          },
+        ],
       })
     } catch (error) {
       errorMessage = error
@@ -46,7 +46,7 @@ describe('harmonics', () => {
     errorMessage = false
 
     try {
-      testHarmonics = harmonics({
+      harmonics({
         harmonicConstituents: [
           {
             name: 'not a name',
@@ -54,16 +54,16 @@ describe('harmonics', () => {
             amplitude: 1.61,
             phase_GMT: 181.3,
             phase_local: 309.4,
-            speed: 28.984104
+            speed: 28.984104,
           },
           {
             name: 'M2',
             description: 'Principal solar semidiurnal constituent',
             amplitude: 0.43,
             phase_GMT: 180.1,
-            phase_local: 309.4
-          }
-        ]
+            phase_local: 309.4,
+          },
+        ],
       })
     } catch (error) {
       errorMessage = error
@@ -73,7 +73,7 @@ describe('harmonics', () => {
 
   test('it checks start and end times', () => {
     const testHarmonics = harmonics({
-      harmonicConstituents: mockHarmonicConstituents
+      harmonicConstituents: mockHarmonicConstituents,
     })
     let timeErrorMessage = false
     try {
