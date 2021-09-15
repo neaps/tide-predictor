@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/neaps/tide-predictor.svg?style=svg)](https://circleci.com/gh/neaps/tide-predictor) [![Coverage Status](https://coveralls.io/repos/github/neaps/tide-predictor/badge.svg?branch=master)](https://coveralls.io/github/neaps/tide-predictor?branch=master) [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fneaps%2Ftide-predictor.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fneaps%2Ftide-predictor?ref=badge_shield)
+![example workflow](https://github.com/neaps/tide-predictor/actions/workflows/test.yml/badge.svg) [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fneaps%2Ftide-predictor.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fneaps%2Ftide-predictor?ref=badge_shield)
 
 # Tide predictor
 
@@ -40,13 +40,13 @@ const constituents = [
     phase_local: 313.7,
     amplitude: 2.687,
     name: 'M2',
-    speed: 28.984104
-  }
+    speed: 28.984104,
+  },
   //....there are usually many, read the docs
 ]
 
 const highLowTides = tidePrediction(constituents, {
-  phaseKey: 'phase_GMT'
+  phaseKey: 'phase_GMT',
 }).getExtremesPrediction(new Date('2019-01-01'), new Date('2019-01-10'))
 ```
 
@@ -76,8 +76,8 @@ const tides = tidePrediction(constituents).getExtremesPrediction({
   labels: {
     //optional human-readable labels
     high: 'High tide',
-    low: 'Low tide'
-  }
+    low: 'Low tide',
+  },
 })
 ```
 
@@ -90,13 +90,13 @@ const tides = tidePrediction(constituents).getExtremesPrediction({
   offset: {
     height_offset: {
       high: 1,
-      low: 2
+      low: 2,
     },
     time_offset: {
       high: 1,
-      low: 2
-    }
-  }
+      low: 2,
+    },
+  },
 })
 ```
 
@@ -128,7 +128,7 @@ Gives you the predicted water level at a specific time.
 
 ```javascript
 const waterLevel = tidePrediction(constituents).getWaterLevelAtTime({
-  time: new Date()
+  time: new Date(),
 })
 ```
 
