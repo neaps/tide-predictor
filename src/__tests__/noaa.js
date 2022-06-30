@@ -59,6 +59,7 @@ const getStation = (station, callback) => {
 describe('Results compare to NOAA', () => {
   stations.forEach((station) => {
     test(`it compares with station ${station}`, (done) => {
+      jest.setTimeout(20000)
       getStation(station, ({ harmonics, levels, info }) => {
         let mtl = 0
         let mllw = 0
