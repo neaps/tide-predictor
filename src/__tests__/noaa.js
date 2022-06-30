@@ -1,5 +1,5 @@
 import fs from 'fs'
-import fetch from 'node-fetch'
+import https from 'https'
 import tidePrediction from '..'
 
 // Create a directory for test cache
@@ -8,6 +8,26 @@ if (!fs.existsSync('./.test-cache')) {
 }
 
 const stations = ['9413450', '9411340', '2695535', '8761724', '8410140']
+
+const makeRequest = (url) =>
+  new Promise((resolve, reject) => {
+    https.get(url, (response) => {
+      const data = []
+
+      response.on('data', (fragment) => {
+        data.push(fragment)
+      })
+
+      response.on('end', () => {
+        const body = Buffer.concat(data)
+        resolve(JSON.parse(body.toString()))
+      })
+
+      response.on('error', (error) => {
+        reject(error)
+      })
+    })
+  })
 
 const getStation = (station, callback) => {
   const filePath = `./.test-cache/${station}.json`
@@ -21,39 +41,35 @@ const getStation = (station, callback) => {
     return
   }
   const stationData = {}
-  fetch(
-    `https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations/${station}/harcon.json?units=metric`
+  const tasks = []
+
+  tasks.push(
+    makeRequest(
+      `https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations/${station}/harcon.json?units=metric`
+    ).then((data) => {
+      stationData.harmonics = data
+    })
   )
-    .then((response) => {
-      return response.json()
+
+  tasks.push(
+    makeRequest(
+      `https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?date=recent&station=${station}&product=predictions&datum=MTL&time_zone=gmt&units=metric&format=json`
+    ).then((data) => {
+      stationData.levels = data
     })
-    .then((harmonics) => {
-      stationData.harmonics = harmonics
-      return fetch(
-        `https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?date=recent&station=${station}&product=predictions&datum=MTL&time_zone=gmt&units=metric&format=json`
-      )
+  )
+
+  tasks.push(
+    makeRequest(
+      `https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations/${station}/datums.json?units=metric`
+    ).then((data) => {
+      stationData.info = data
     })
-    .then((response) => {
-      return response.json()
-    })
-    .then((levels) => {
-      stationData.levels = levels
-      return fetch(
-        `https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations/${station}/datums.json?units=metric`
-      )
-    })
-    .then((response) => {
-      return response.json()
-    })
-    .then((info) => {
-      stationData.info = info
-      fs.writeFile(filePath, JSON.stringify(stationData), (error) => {
-        if (error) {
-          throw new Error('Cannot write to test cache')
-        }
-        callback(stationData)
-      })
-    })
+  )
+
+  Promise.all(tasks).then(() => {
+    callback(stationData)
+  })
 }
 
 describe('Results compare to NOAA', () => {
