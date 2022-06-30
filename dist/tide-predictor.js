@@ -1,8 +1,8 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
   typeof define === 'function' && define.amd ? define(factory) :
-  (global = global || self, global.tidePredictor = factory());
-}(this, function () { 'use strict';
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.tidePredictor = factory());
+})(this, (function () { 'use strict';
 
   const d2r = Math.PI / 180.0;
   const r2d = 180.0 / Math.PI;
@@ -36,7 +36,7 @@
       sexagesimalToDecimal(0, 0, 7.12),
       sexagesimalToDecimal(0, 0, 27.87),
       sexagesimalToDecimal(0, 0, 5.79),
-      sexagesimalToDecimal(0, 0, 2.45)
+      sexagesimalToDecimal(0, 0, 2.45),
     ].map((number, index) => {
       return number * Math.pow(1e-2, index)
     }),
@@ -45,7 +45,7 @@
       280.46645 - 357.5291,
       36000.76932 - 35999.0503,
       0.0003032 + 0.0001559,
-      0.00000048
+      0.00000048,
     ],
 
     solarLongitude: [280.46645, 36000.76983, 0.0003032],
@@ -56,7 +56,7 @@
       218.3164591,
       481267.88134236,
       -0.0013268,
-      1 / 538841.0 - 1 / 65194000.0
+      1 / 538841.0 - 1 / 65194000.0,
     ],
 
     lunarNode: [
@@ -64,7 +64,7 @@
       -1934.1361849,
       0.0020762,
       1 / 467410.0,
-      -1 / 60616000.0
+      -1 / 60616000.0,
     ],
 
     lunarPerigee: [
@@ -72,8 +72,8 @@
       4069.0137111,
       -0.0103238,
       -1 / 80053.0,
-      1 / 18999000.0
-    ]
+      1 / 18999000.0,
+    ],
   };
 
   // Evaluates a polynomial at argument
@@ -99,12 +99,12 @@
   };
 
   // Meeus formula 11.1
-  const T = t => {
+  const T = (t) => {
     return (JD(t) - 2451545.0) / 36525
   };
 
   // Meeus formula 7.1
-  const JD = t => {
+  const JD = (t) => {
     let Y = t.getFullYear();
     let M = t.getMonth() + 1;
     const D =
@@ -200,11 +200,11 @@
     return r2d * 0.5 * Math.atan(tan2nupp)
   };
 
-  const modulus = (a, b) => {
+  const modulus$1 = (a, b) => {
     return ((a % b) + b) % b
   };
 
-  const astro = time => {
+  const astro = (time) => {
     const result = {};
     const polynomials = {
       s: coefficients.lunarLongitude,
@@ -214,16 +214,16 @@
       pp: coefficients.solarPerigee,
       90: [90.0],
       omega: coefficients.terrestrialObliquity,
-      i: coefficients.lunarInclination
+      i: coefficients.lunarInclination,
     };
 
     // Polynomials are in T, that is Julian Centuries; we want our speeds to be
     // in the more convenient unit of degrees per hour.
     const dTdHour = 1 / (24 * 365.25 * 100);
-    Object.keys(polynomials).forEach(name => {
+    Object.keys(polynomials).forEach((name) => {
       result[name] = {
-        value: modulus(polynomial(polynomials[name], T(time)), 360.0),
-        speed: derivativePolynomial(polynomials[name], T(time)) * dTdHour
+        value: modulus$1(polynomial(polynomials[name], T(time)), 360.0),
+        speed: derivativePolynomial(polynomials[name], T(time)) * dTdHour,
       };
     });
 
@@ -235,16 +235,16 @@
       xi: _xi,
       nu: _nu,
       nup: _nup,
-      nupp: _nupp
+      nupp: _nupp,
     };
-    Object.keys(functions).forEach(name => {
+    Object.keys(functions).forEach((name) => {
       const functionCall = functions[name];
       result[name] = {
-        value: modulus(
+        value: modulus$1(
           functionCall(result.N.value, result.i.value, result.omega.value),
           360.0
         ),
-        speed: null
+        speed: null,
       };
     });
 
@@ -253,12 +253,12 @@
     // This is in line with convention.
     const hour = {
       value: (JD(time) - Math.floor(JD(time))) * 360.0,
-      speed: 15.0
+      speed: 15.0,
     };
 
     result['T+h-s'] = {
       value: hour.value + result.h.value - result.s.value,
-      speed: hour.speed + result.h.speed - result.s.speed
+      speed: hour.speed + result.h.speed - result.s.speed,
     };
 
     // It is convenient to calculate Schureman's P here since several node
@@ -266,13 +266,13 @@
     // (along with I, xi, nu etc) belong somewhere else.
     result.P = {
       value: result.p.value - (result.xi.value % 360.0),
-      speed: null
+      speed: null,
     };
 
     return result
   };
 
-  const modulus$1 = (a, b) => {
+  const modulus = (a, b) => {
     return ((a % b) + b) % b
   };
 
@@ -318,7 +318,7 @@
       const amplitudes = [];
       let result = 0;
 
-      constituents.forEach(constituent => {
+      constituents.forEach((constituent) => {
         const amplitude = constituent.amplitude;
         const phase = constituent._phase;
         const f = modelF[constituent.name];
@@ -328,7 +328,7 @@
         amplitudes.push(amplitude * f * Math.cos(speed * hour + (V0 + u) - phase));
       });
       // sum up each row
-      amplitudes.forEach(item => {
+      amplitudes.forEach((item) => {
         result += item;
       });
       return result
@@ -336,7 +336,7 @@
 
     const prediction = {};
 
-    prediction.getExtremesPrediction = options => {
+    prediction.getExtremesPrediction = (options) => {
       const { labels, offsets } = typeof options !== 'undefined' ? options : {};
       const results = [];
       const { baseSpeed, u, f, baseValue } = prepare();
@@ -395,8 +395,8 @@
       timeline.items.forEach((time, index) => {
         const hour = timeline.hours[index];
         const prediction = {
-          time: time,
-          hour: hour,
+          time,
+          hour,
           level: getLevel(hour, baseSpeed, u[index], f[index], baseValue)
         };
 
@@ -412,31 +412,31 @@
       const baseSpeed = {};
       const u = [];
       const f = [];
-      constituents.forEach(constituent => {
+      constituents.forEach((constituent) => {
         const value = constituent._model.value(baseAstro);
         const speed = constituent._model.speed(baseAstro);
         baseValue[constituent.name] = d2r * value;
         baseSpeed[constituent.name] = d2r * speed;
       });
-      timeline.items.forEach(time => {
+      timeline.items.forEach((time) => {
         const uItem = {};
         const fItem = {};
         const itemAstro = astro(time);
-        constituents.forEach(constituent => {
-          const constituentU = modulus$1(constituent._model.u(itemAstro), 360);
+        constituents.forEach((constituent) => {
+          const constituentU = modulus(constituent._model.u(itemAstro), 360);
 
           uItem[constituent.name] = d2r * constituentU;
-          fItem[constituent.name] = modulus$1(constituent._model.f(itemAstro), 360);
+          fItem[constituent.name] = modulus(constituent._model.f(itemAstro), 360);
         });
         u.push(uItem);
         f.push(fItem);
       });
 
       return {
-        baseValue: baseValue,
-        baseSpeed: baseSpeed,
-        u: u,
-        f: f
+        baseValue,
+        baseSpeed,
+        u,
+        f
       }
     };
 
@@ -663,7 +663,7 @@
     })
   };
 
-  const astronimicDoodsonNumber = astro => {
+  const astronimicDoodsonNumber = (astro) => {
     return [
       astro['T+h-s'],
       astro.s,
@@ -675,17 +675,17 @@
     ]
   };
 
-  const astronomicSpeed = astro => {
+  const astronomicSpeed = (astro) => {
     const results = [];
-    astronimicDoodsonNumber(astro).forEach(number => {
+    astronimicDoodsonNumber(astro).forEach((number) => {
       results.push(number.speed);
     });
     return results
   };
 
-  const astronomicValues = astro => {
+  const astronomicValues = (astro) => {
     const results = [];
-    astronimicDoodsonNumber(astro).forEach(number => {
+    astronimicDoodsonNumber(astro).forEach((number) => {
       results.push(number.value);
     });
     return results
@@ -697,11 +697,10 @@
     }
 
     const constituent = {
-      name: name,
+      name,
+      coefficients,
 
-      coefficients: coefficients,
-
-      value: astro => {
+      value: (astro) => {
         return dotArray(coefficients, astronomicValues(astro))
       },
 
@@ -729,11 +728,10 @@
     });
 
     const compoundConstituent = {
-      name: name,
+      name,
+      coefficients,
 
-      coefficients: coefficients,
-
-      speed: astro => {
+      speed: (astro) => {
         let speed = 0;
         members.forEach(({ constituent, factor }) => {
           speed += constituent.speed(astro) * factor;
@@ -741,7 +739,7 @@
         return speed
       },
 
-      value: astro => {
+      value: (astro) => {
         let value = 0;
         members.forEach(({ constituent, factor }) => {
           value += constituent.value(astro) * factor;
@@ -749,7 +747,7 @@
         return value
       },
 
-      u: astro => {
+      u: (astro) => {
         let u = 0;
         members.forEach(({ constituent, factor }) => {
           u += constituent.u(astro) * factor;
@@ -757,7 +755,7 @@
         return u
       },
 
-      f: astro => {
+      f: (astro) => {
         const f = [];
         members.forEach(({ constituent, factor }) => {
           f.push(Math.pow(constituent.f(astro), Math.abs(factor)));
@@ -812,80 +810,80 @@
   constituents.M3 = constituentFactory(
     'M3',
     [3, 0, 0, 0, 0, 0, 0],
-    a => {
+    (a) => {
       return corrections.uModd(a, 3)
     },
-    a => {
+    (a) => {
       return corrections.fModd(a, 3)
     }
   );
   // Compound
   constituents.MSF = compoundConstituentFactory('MSF', [
     { constituent: constituents.S2, factor: 1 },
-    { constituent: constituents.M2, factor: -1 }
+    { constituent: constituents.M2, factor: -1 },
   ]);
 
   // Diurnal
   constituents['2Q1'] = compoundConstituentFactory('2Q1', [
     { constituent: constituents.N2, factor: 1 },
-    { constituent: constituents.J1, factor: -1 }
+    { constituent: constituents.J1, factor: -1 },
   ]);
   constituents.RHO = compoundConstituentFactory('RHO', [
     { constituent: constituents.NU2, factor: 1 },
-    { constituent: constituents.K1, factor: -1 }
+    { constituent: constituents.K1, factor: -1 },
   ]);
 
   // Semi-Diurnal
 
   constituents.MU2 = compoundConstituentFactory('MU2', [
     { constituent: constituents.M2, factor: 2 },
-    { constituent: constituents.S2, factor: -1 }
+    { constituent: constituents.S2, factor: -1 },
   ]);
   constituents['2SM2'] = compoundConstituentFactory('2SM2', [
     { constituent: constituents.S2, factor: 2 },
-    { constituent: constituents.M2, factor: -1 }
+    { constituent: constituents.M2, factor: -1 },
   ]);
 
   // Third-Diurnal
   constituents['2MK3'] = compoundConstituentFactory('2MK3', [
     { constituent: constituents.M2, factor: 1 },
-    { constituent: constituents.O1, factor: 1 }
+    { constituent: constituents.O1, factor: 1 },
   ]);
   constituents.MK3 = compoundConstituentFactory('MK3', [
     { constituent: constituents.M2, factor: 1 },
-    { constituent: constituents.K1, factor: 1 }
+    { constituent: constituents.K1, factor: 1 },
   ]);
 
   // Quarter-Diurnal
   constituents.MN4 = compoundConstituentFactory('MN4', [
     { constituent: constituents.M2, factor: 1 },
-    { constituent: constituents.N2, factor: 1 }
+    { constituent: constituents.N2, factor: 1 },
   ]);
   constituents.M4 = compoundConstituentFactory('M4', [
-    { constituent: constituents.M2, factor: 2 }
+    { constituent: constituents.M2, factor: 2 },
   ]);
   constituents.MS4 = compoundConstituentFactory('MS4', [
     { constituent: constituents.M2, factor: 1 },
-    { constituent: constituents.S2, factor: 1 }
+    { constituent: constituents.S2, factor: 1 },
   ]);
   constituents.S4 = compoundConstituentFactory('S4', [
-    { constituent: constituents.S2, factor: 2 }
+    { constituent: constituents.S2, factor: 2 },
   ]);
 
   // Sixth-Diurnal
   constituents.M6 = compoundConstituentFactory('M6', [
-    { constituent: constituents.M2, factor: 3 }
+    { constituent: constituents.M2, factor: 3 },
   ]);
   constituents.S6 = compoundConstituentFactory('S6', [
-    { constituent: constituents.S2, factor: 3 }
+    { constituent: constituents.S2, factor: 3 },
   ]);
 
   // Eighth-Diurnals
   constituents.M8 = compoundConstituentFactory('M8', [
-    { constituent: constituents.M2, factor: 4 }
+    { constituent: constituents.M2, factor: 4 },
   ]);
 
-  const getDate = time => {
+  const getDate = (time) => {
     if (time instanceof Date) {
       return time
     }
@@ -897,20 +895,20 @@
 
   const getTimeline = (start, end, seconds) => {
     seconds = typeof seconds !== 'undefined' ? seconds : 10 * 60;
-    const timeline = [];
+    const items = [];
     const endTime = end.getTime() / 1000;
     let lastTime = start.getTime() / 1000;
     const startTime = lastTime;
     const hours = [];
     while (lastTime <= endTime) {
-      timeline.push(new Date(lastTime * 1000));
+      items.push(new Date(lastTime * 1000));
       hours.push((lastTime - startTime) / (60 * 60));
       lastTime += seconds;
     }
 
     return {
-      items: timeline,
-      hours: hours
+      items,
+      hours
     }
   };
 
@@ -953,13 +951,13 @@
       return harmonics
     };
 
-    harmonics.prediction = options => {
+    harmonics.prediction = (options) => {
       options =
         typeof options !== 'undefined' ? options : { timeFidelity: 10 * 60 };
       return predictionFactory({
         timeline: getTimeline(start, end, options.timeFidelity),
         constituents: constituents$1,
-        start: start
+        start
       })
     };
 
@@ -974,7 +972,7 @@
     };
 
     if (typeof options !== 'undefined') {
-      Object.keys(harmonicsOptions).forEach(key => {
+      Object.keys(harmonicsOptions).forEach((key) => {
         if (typeof options[key] !== 'undefined') {
           harmonicsOptions[key] = options[key];
         }
@@ -992,7 +990,7 @@
       getExtremesPrediction: ({ start, end, labels, offsets, timeFidelity }) => {
         return harmonicsFactory(harmonicsOptions)
           .setTimeSpan(start, end)
-          .prediction({ timeFidelity: timeFidelity })
+          .prediction({ timeFidelity })
           .getExtremesPrediction(labels, offsets)
       },
 

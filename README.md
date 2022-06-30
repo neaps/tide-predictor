@@ -17,11 +17,12 @@ The tide predictions do not factor events such as storm surge, wind waves, uplif
 # Installation
 
 ```
-# yarn
-yarn install @neaps/tide-prediction
-
 #npm
-npm install --save @neaps/tide-prediction
+npm install @neaps/tide-prediction
+
+# yarn
+yarn add @neaps/tide-prediction
+
 ```
 
 # Usage
@@ -40,13 +41,13 @@ const constituents = [
     phase_local: 313.7,
     amplitude: 2.687,
     name: 'M2',
-    speed: 28.984104,
-  },
+    speed: 28.984104
+  }
   //....there are usually many, read the docs
 ]
 
 const highLowTides = tidePrediction(constituents, {
-  phaseKey: 'phase_GMT',
+  phaseKey: 'phase_GMT'
 }).getExtremesPrediction(new Date('2019-01-01'), new Date('2019-01-10'))
 ```
 
@@ -76,8 +77,8 @@ const tides = tidePrediction(constituents).getExtremesPrediction({
   labels: {
     //optional human-readable labels
     high: 'High tide',
-    low: 'Low tide',
-  },
+    low: 'Low tide'
+  }
 })
 ```
 
@@ -90,13 +91,13 @@ const tides = tidePrediction(constituents).getExtremesPrediction({
   offset: {
     height_offset: {
       high: 1,
-      low: 2,
+      low: 2
     },
     time_offset: {
       high: 1,
-      low: 2,
-    },
-  },
+      low: 2
+    }
+  }
 })
 ```
 
@@ -128,7 +129,7 @@ Gives you the predicted water level at a specific time.
 
 ```javascript
 const waterLevel = tidePrediction(constituents).getWaterLevelAtTime({
-  time: new Date(),
+  time: new Date()
 })
 ```
 

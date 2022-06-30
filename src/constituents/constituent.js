@@ -23,7 +23,7 @@ const astronimicDoodsonNumber = (astro) => {
     astro.p,
     astro.N,
     astro.pp,
-    astro['90'],
+    astro['90']
   ]
 }
 
@@ -49,9 +49,8 @@ const constituentFactory = (name, coefficients, u, f) => {
   }
 
   const constituent = {
-    name: name,
-
-    coefficients: coefficients,
+    name,
+    coefficients,
 
     value: (astro) => {
       return dotArray(coefficients, astronomicValues(astro))
@@ -63,7 +62,7 @@ const constituentFactory = (name, coefficients, u, f) => {
 
     u: typeof u !== 'undefined' ? u : nodeCorrections.uZero,
 
-    f: typeof f !== 'undefined' ? f : nodeCorrections.fUnity,
+    f: typeof f !== 'undefined' ? f : nodeCorrections.fUnity
   }
 
   return Object.freeze(constituent)

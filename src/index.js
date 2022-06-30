@@ -8,7 +8,7 @@ const tidePredictionFactory = (constituents, options) => {
   }
 
   if (typeof options !== 'undefined') {
-    Object.keys(harmonicsOptions).forEach(key => {
+    Object.keys(harmonicsOptions).forEach((key) => {
       if (typeof options[key] !== 'undefined') {
         harmonicsOptions[key] = options[key]
       }
@@ -26,7 +26,7 @@ const tidePredictionFactory = (constituents, options) => {
     getExtremesPrediction: ({ start, end, labels, offsets, timeFidelity }) => {
       return harmonics(harmonicsOptions)
         .setTimeSpan(start, end)
-        .prediction({ timeFidelity: timeFidelity })
+        .prediction({ timeFidelity })
         .getExtremesPrediction(labels, offsets)
     },
 

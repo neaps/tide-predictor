@@ -10,9 +10,8 @@ const compoundConstituentFactory = (name, members) => {
   })
 
   const compoundConstituent = {
-    name: name,
-
-    coefficients: coefficients,
+    name,
+    coefficients,
 
     speed: (astro) => {
       let speed = 0
@@ -46,7 +45,7 @@ const compoundConstituentFactory = (name, members) => {
       return f.reduce((previous, value) => {
         return previous * value
       })
-    },
+    }
   }
 
   return Object.freeze(compoundConstituent)

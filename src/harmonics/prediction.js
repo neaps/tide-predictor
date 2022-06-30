@@ -37,7 +37,7 @@ const getExtremeLabel = (label, highLowLabels) => {
   }
   const labels = {
     high: 'High',
-    low: 'Low',
+    low: 'Low'
   }
   return labels[label]
 }
@@ -85,7 +85,7 @@ const predictionFactory = ({ timeline, constituents, start }) => {
               level: lastLevel,
               high: false,
               low: true,
-              label: getExtremeLabel('low', labels),
+              label: getExtremeLabel('low', labels)
             },
             offsets
           )
@@ -99,7 +99,7 @@ const predictionFactory = ({ timeline, constituents, start }) => {
               level: lastLevel,
               high: true,
               low: false,
-              label: getExtremeLabel('high', labels),
+              label: getExtremeLabel('high', labels)
             },
             offsets
           )
@@ -124,9 +124,9 @@ const predictionFactory = ({ timeline, constituents, start }) => {
     timeline.items.forEach((time, index) => {
       const hour = timeline.hours[index]
       const prediction = {
-        time: time,
-        hour: hour,
-        level: getLevel(hour, baseSpeed, u[index], f[index], baseValue),
+        time,
+        hour,
+        level: getLevel(hour, baseSpeed, u[index], f[index], baseValue)
       }
 
       results.push(prediction)
@@ -162,10 +162,10 @@ const predictionFactory = ({ timeline, constituents, start }) => {
     })
 
     return {
-      baseValue: baseValue,
-      baseSpeed: baseSpeed,
-      u: u,
-      f: f,
+      baseValue,
+      baseSpeed,
+      u,
+      f
     }
   }
 

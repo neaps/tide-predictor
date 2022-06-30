@@ -1,7 +1,7 @@
 /* eslint-env node */
 /* eslint-disable no-process-env, camelcase */
 
-module.exports = function(grunt) {
+module.exports = function (grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     eslint: {
@@ -14,7 +14,7 @@ module.exports = function(grunt) {
         command: 'BABEL_ENV=build rollup -c'
       },
       test: {
-        command: 'yarn run test'
+        command: 'npm run test'
       }
     },
     uglify: {
@@ -30,7 +30,7 @@ module.exports = function(grunt) {
             expand: true,
             src: ['*.js', '!*.min.js'],
             dest: 'dist/',
-            rename: function(dest, src) {
+            rename: function (dest, src) {
               return dest + src.replace(/\.js$/, '.min.js')
             }
           }
@@ -75,7 +75,7 @@ module.exports = function(grunt) {
   this.registerTask(
     'build',
     'Builds a distributable version of the current project',
-    ['clean', 'eslint', 'exec:test', 'babel', 'exec:rollup']
+    ['clean', 'eslint', 'exec:test', 'babel', 'exec:rollup', 'uglify']
   )
   grunt.loadNpmTasks('grunt-eslint')
   grunt.loadNpmTasks('grunt-contrib-clean')
