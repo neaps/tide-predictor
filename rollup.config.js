@@ -8,8 +8,7 @@ export default {
       name: 'tidePredictor',
       file: pkg.browser,
       format: 'umd'
-    },
-    { file: pkg.module, format: 'es' }
+    }
   ],
   plugins: [
     resolve({
