@@ -18,7 +18,7 @@
   "scripts": {
     "test": "mocha --recursive",
     "lint": "eslint ./src",
-    "ci": "npm run lint; npm run test",
+    "ci": "run-s lint test",
     "build:rollup": "rollup --config rollup.config.js"
   }
 }
