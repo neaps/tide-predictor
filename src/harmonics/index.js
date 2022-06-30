@@ -36,7 +36,7 @@ const harmonicsFactory = ({ harmonicConstituents, phaseKey, offset }) => {
     throw new Error('Harmonic constituents are not an array')
   }
   const constituents = []
-  harmonicConstituents.forEach((constituent, index) => {
+  harmonicConstituents.forEach((constituent) => {
     if (typeof constituent.name === 'undefined') {
       throw new Error('Harmonic constituents must have a name property')
     }

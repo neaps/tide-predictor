@@ -145,7 +145,7 @@ const corrections = {
 
   // Node factors u, see Table 2 of Schureman.
 
-  uZero(a) {
+  uZero() {
     return 0.0
   },
 
