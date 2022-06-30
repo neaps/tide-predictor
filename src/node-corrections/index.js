@@ -1,4 +1,4 @@
-import { d2r, r2d } from '../astronomy/constants'
+import { d2r, r2d } from '../astronomy/constants.js'
 
 const corrections = {
   fUnity() {

@@ -6,7 +6,8 @@
   "repository": "https://github.com/neaps/tide-predictor",
   "author": "Kevin Miller <keveemiller@gmail.com>",
   "license": "MIT",
-  "module": "./lib/index.es6.js",
+  "type": "module",
+  "module": "./src/index.js",
   "browser": "./dist/tide-predictor.js",
   "devDependencies": {
     "@babel/core": "^7.18.6",
@@ -28,14 +29,13 @@
     "grunt-coveralls": "^2.0.0",
     "grunt-eslint": "^24.0.0",
     "grunt-exec": "^3.0.0",
-    "jest": "^28.1.2",
-    "jest-junit": "^14.0.0",
     "kind-of": "^6.0.3",
+    "mocha": "^10.0.0",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-node-resolve": "^5.2.0"
   },
   "scripts": {
-    "test": "BABEL_ENV=test jest",
+    "test": "mocha --recursive",
     "coverage": "jest --coverage; grunt coveralls;",
     "lint": "eslint ./src",
     "ci": "npm run lint; jest --ci --runInBand --reporters=default --reporters=jest-junit"

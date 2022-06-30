@@ -1,4 +1,4 @@
-import nodeCorrections from '../node-corrections/index'
+import nodeCorrections from '../node-corrections/index.js'
 
 /**
  * Computes the dot notation of two arrays

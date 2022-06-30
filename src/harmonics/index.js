@@ -1,6 +1,6 @@
-import prediction from './prediction'
-import constituentModels from '../constituents/index'
-import { d2r } from '../astronomy/constants'
+import prediction from './prediction.js'
+import constituentModels from '../constituents/index.js'
+import { d2r } from '../astronomy/constants.js'
 
 const getDate = (time) => {
   if (time instanceof Date) {

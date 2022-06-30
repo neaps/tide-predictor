@@ -1,5 +1,7 @@
-import mockConstituents from '../__mocks__/constituents'
-import tidePrediction from '../index.js'
+import assert from 'assert'
+import closeTo from './lib/close-to.js'
+import mockConstituents from './_mocks/constituents.js'
+import tidePrediction from '../src/index.js'
 
 const startDate = new Date()
 startDate.setFullYear(2019)
@@ -20,7 +22,7 @@ endDate.setSeconds(0)
 endDate.setMilliseconds(0)
 
 describe('Tidal station', () => {
-  test('it is created correctly', () => {
+  it('it is created correctly', () => {
     let stationCreated = true
 
     try {
@@ -28,54 +30,54 @@ describe('Tidal station', () => {
     } catch (e) {
       stationCreated = false
     }
-    expect(stationCreated).toBeTruthy()
+    assert.ok(stationCreated)
 
     try {
       tidePrediction(mockConstituents)
     } catch (e) {
       stationCreated = false
     }
-    expect(stationCreated).toBeTruthy()
+    assert.ok(stationCreated)
   })
 
-  test('it predicts the tides in a timeline', () => {
+  it('it predicts the tides in a timeline', () => {
     const results = tidePrediction(mockConstituents).getTimelinePrediction({
       start: startDate,
-      end: endDate,
+      end: endDate
     })
-    expect(results[0].level).toBeCloseTo(-1.34712509, 3)
-    expect(results.pop().level).toBeCloseTo(2.85263589, 3)
+    closeTo(results[0].level, -1.34712509, 3)
+    closeTo(results.pop().level, 2.85263589, 3)
   })
 
-  test('it predicts the tidal extremes', () => {
+  it('it predicts the tidal extremes', () => {
+    const results = tidePrediction(mockConstituents).getExtremesPrediction({
+      start: startDate,
+      end: endDate
+    })
+    closeTo(results[0].level, -1.565033, 4)
+  })
+
+  it('it predicts the tidal extremes with high fidelity', () => {
     const results = tidePrediction(mockConstituents).getExtremesPrediction({
       start: startDate,
       end: endDate,
+      timeFidelity: 60
     })
-    expect(results[0].level).toBeCloseTo(-1.565033, 4)
+    closeTo(results[0].level, -1.565389, 4)
   })
 
-  test('it predicts the tidal extremes with high fidelity', () => {
-    const results = tidePrediction(mockConstituents).getExtremesPrediction({
-      start: startDate,
-      end: endDate,
-      timeFidelity: 60,
-    })
-    expect(results[0].level).toBeCloseTo(-1.565389, 4)
-  })
-
-  test('it fetches a single water level', () => {
+  it('it fetches a single water level', () => {
     const result = tidePrediction(mockConstituents).getWaterLevelAtTime({
-      time: startDate,
+      time: startDate
     })
-    expect(result.level).toBeCloseTo(-1.34712509, 4)
+    closeTo(result.level, -1.34712509, 4)
   })
 
-  test('it adds offset phases', () => {
+  it('it adds offset phases', () => {
     const results = tidePrediction(mockConstituents, {
-      offset: 3,
+      offset: 3
     }).getExtremesPrediction({ start: startDate, end: endDate })
 
-    expect(results[0].level).toBeCloseTo(1.43496678, 4)
+    closeTo(results[0].level, 1.43496678, 4)
   })
 })

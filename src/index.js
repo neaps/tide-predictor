@@ -1,4 +1,4 @@
-import harmonics from './harmonics/index'
+import harmonics from './harmonics/index.js'
 
 const tidePredictionFactory = (constituents, options) => {
   const harmonicsOptions = {
