@@ -13,3 +13,6 @@ jobs:
 
       - name: Test
         run: npm run ci
+
+      - name: Test build
+        run: grunt build
