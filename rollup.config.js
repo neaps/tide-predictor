@@ -15,7 +15,7 @@ export default {
     resolve({
       mainFields: ['module', 'main'],
 
-      jail: '/src' // Default: '/'
+      jail: '/src'
     })
   ]
 }
