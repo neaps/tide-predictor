@@ -1,7 +1,7 @@
 /* eslint-env node */
 /* eslint-disable no-process-env, camelcase */
 
-module.exports = function (grunt) {
+export default (grunt) => {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     eslint: {
@@ -59,15 +59,6 @@ module.exports = function (grunt) {
         tasks: ['eslint', 'exec:test']
       }
     },
-    coveralls: {
-      options: {
-        force: false
-      },
-
-      coverage: {
-        src: 'coverage/lcov.info'
-      }
-    },
     eslint: {
       target: ['src/**/*.js']
     }
@@ -83,5 +74,4 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch')
   grunt.loadNpmTasks('grunt-babel')
   grunt.loadNpmTasks('grunt-exec')
-  grunt.loadNpmTasks('grunt-coveralls')
 }

@@ -20,7 +20,6 @@
     "grunt-contrib-clean": "^2.0.1",
     "grunt-contrib-uglify": "^5.2.2",
     "grunt-contrib-watch": "^1.1.0",
-    "grunt-coveralls": "^2.0.0",
     "grunt-eslint": "^24.0.0",
     "grunt-exec": "^3.0.0",
     "kind-of": "^6.0.3",
@@ -30,8 +29,7 @@
   },
   "scripts": {
     "test": "mocha --recursive",
-    "coverage": "jest --coverage; grunt coveralls;",
     "lint": "eslint ./src",
-    "ci": "npm run lint; jest --ci --runInBand --reporters=default --reporters=jest-junit"
+    "ci": "npm run lint; npm run test"
   }
 }
