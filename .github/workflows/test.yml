@@ -9,7 +9,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Install modules
-        run: yarn
+        run: npm install
 
       - name: Test
-        run: yarn ci
+        run: npm ci
