@@ -75,7 +75,7 @@ module.exports = function (grunt) {
   this.registerTask(
     'build',
     'Builds a distributable version of the current project',
-    ['clean', 'eslint', 'exec:test', 'babel', 'exec:rollup']
+    ['clean', 'eslint', 'exec:test', 'babel', 'exec:rollup', 'uglify']
   )
   grunt.loadNpmTasks('grunt-eslint')
   grunt.loadNpmTasks('grunt-contrib-clean')

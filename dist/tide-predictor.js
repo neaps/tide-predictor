@@ -308,7 +308,7 @@
     }
     const labels = {
       high: 'High',
-      low: 'Low',
+      low: 'Low'
     };
     return labels[label]
   };
@@ -356,7 +356,7 @@
                 level: lastLevel,
                 high: false,
                 low: true,
-                label: getExtremeLabel('low', labels),
+                label: getExtremeLabel('low', labels)
               },
               offsets
             )
@@ -370,7 +370,7 @@
                 level: lastLevel,
                 high: true,
                 low: false,
-                label: getExtremeLabel('high', labels),
+                label: getExtremeLabel('high', labels)
               },
               offsets
             )
@@ -395,9 +395,9 @@
       timeline.items.forEach((time, index) => {
         const hour = timeline.hours[index];
         const prediction = {
-          time: time,
-          hour: hour,
-          level: getLevel(hour, baseSpeed, u[index], f[index], baseValue),
+          time,
+          hour,
+          level: getLevel(hour, baseSpeed, u[index], f[index], baseValue)
         };
 
         results.push(prediction);
@@ -433,10 +433,10 @@
       });
 
       return {
-        baseValue: baseValue,
-        baseSpeed: baseSpeed,
-        u: u,
-        f: f,
+        baseValue,
+        baseSpeed,
+        u,
+        f
       }
     };
 
@@ -671,7 +671,7 @@
       astro.p,
       astro.N,
       astro.pp,
-      astro['90'],
+      astro['90']
     ]
   };
 
@@ -697,9 +697,8 @@
     }
 
     const constituent = {
-      name: name,
-
-      coefficients: coefficients,
+      name,
+      coefficients,
 
       value: (astro) => {
         return dotArray(coefficients, astronomicValues(astro))
@@ -711,7 +710,7 @@
 
       u: typeof u !== 'undefined' ? u : corrections.uZero,
 
-      f: typeof f !== 'undefined' ? f : corrections.fUnity,
+      f: typeof f !== 'undefined' ? f : corrections.fUnity
     };
 
     return Object.freeze(constituent)
@@ -729,9 +728,8 @@
     });
 
     const compoundConstituent = {
-      name: name,
-
-      coefficients: coefficients,
+      name,
+      coefficients,
 
       speed: (astro) => {
         let speed = 0;
@@ -765,7 +763,7 @@
         return f.reduce((previous, value) => {
           return previous * value
         })
-      },
+      }
     };
 
     return Object.freeze(compoundConstituent)
@@ -897,20 +895,20 @@
 
   const getTimeline = (start, end, seconds) => {
     seconds = typeof seconds !== 'undefined' ? seconds : 10 * 60;
-    const timeline = [];
+    const items = [];
     const endTime = end.getTime() / 1000;
     let lastTime = start.getTime() / 1000;
     const startTime = lastTime;
     const hours = [];
     while (lastTime <= endTime) {
-      timeline.push(new Date(lastTime * 1000));
+      items.push(new Date(lastTime * 1000));
       hours.push((lastTime - startTime) / (60 * 60));
       lastTime += seconds;
     }
 
     return {
-      items: timeline,
-      hours: hours,
+      items,
+      hours
     }
   };
 
@@ -935,7 +933,7 @@
         name: 'Z0',
         _model: constituents.Z0,
         _phase: 0,
-        amplitude: offset,
+        amplitude: offset
       });
     }
 
@@ -959,7 +957,7 @@
       return predictionFactory({
         timeline: getTimeline(start, end, options.timeFidelity),
         constituents: constituents$1,
-        start: start,
+        start
       })
     };
 
@@ -974,7 +972,7 @@
     };
 
     if (typeof options !== 'undefined') {
-      Object.keys(harmonicsOptions).forEach(key => {
+      Object.keys(harmonicsOptions).forEach((key) => {
         if (typeof options[key] !== 'undefined') {
           harmonicsOptions[key] = options[key];
         }
@@ -992,7 +990,7 @@
       getExtremesPrediction: ({ start, end, labels, offsets, timeFidelity }) => {
         return harmonicsFactory(harmonicsOptions)
           .setTimeSpan(start, end)
-          .prediction({ timeFidelity: timeFidelity })
+          .prediction({ timeFidelity })
           .getExtremesPrediction(labels, offsets)
       },
 

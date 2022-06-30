@@ -14,20 +14,20 @@ const getDate = (time) => {
 
 const getTimeline = (start, end, seconds) => {
   seconds = typeof seconds !== 'undefined' ? seconds : 10 * 60
-  const timeline = []
+  const items = []
   const endTime = end.getTime() / 1000
   let lastTime = start.getTime() / 1000
   const startTime = lastTime
   const hours = []
   while (lastTime <= endTime) {
-    timeline.push(new Date(lastTime * 1000))
+    items.push(new Date(lastTime * 1000))
     hours.push((lastTime - startTime) / (60 * 60))
     lastTime += seconds
   }
 
   return {
-    items: timeline,
-    hours: hours,
+    items,
+    hours
   }
 }
 
@@ -52,7 +52,7 @@ const harmonicsFactory = ({ harmonicConstituents, phaseKey, offset }) => {
       name: 'Z0',
       _model: constituentModels.Z0,
       _phase: 0,
-      amplitude: offset,
+      amplitude: offset
     })
   }
 
@@ -75,8 +75,8 @@ const harmonicsFactory = ({ harmonicConstituents, phaseKey, offset }) => {
       typeof options !== 'undefined' ? options : { timeFidelity: 10 * 60 }
     return prediction({
       timeline: getTimeline(start, end, options.timeFidelity),
-      constituents: constituents,
-      start: start,
+      constituents,
+      start
     })
   }
 

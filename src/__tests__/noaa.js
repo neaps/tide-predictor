@@ -68,7 +68,12 @@ const getStation = (station, callback) => {
   )
 
   Promise.all(tasks).then(() => {
-    callback(stationData)
+    fs.writeFile(filePath, JSON.stringify(stationData), (error) => {
+      if (error) {
+        throw new Error('Cannot write to test cache')
+      }
+      callback(stationData)
+    })
   })
 }
 
@@ -93,7 +98,7 @@ describe('Results compare to NOAA', () => {
         )
         levels.predictions.forEach((prediction) => {
           const neapsPrediction = tideStation.getWaterLevelAtTime({
-            time: new Date(prediction.t),
+            time: new Date(prediction.t)
           })
           expect(parseFloat(prediction.v)).toBeGreaterThanOrEqual(
             neapsPrediction.level - 0.5
