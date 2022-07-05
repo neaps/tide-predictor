@@ -11,6 +11,9 @@ jobs:
       - name: Install modules
         run: npm install
 
+      - name: Install codecov
+        run: npm install -g codecov
+
       - name: Test
         run: npm run ci
 
