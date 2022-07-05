@@ -10,17 +10,17 @@
   "module": "./src/index.js",
   "browser": "./dist/tide-predictor.js",
   "devDependencies": {
+    "c8": "^7.11.3",
     "eslint": "^8.18.0",
     "mocha": "^10.0.0",
     "npm-run-all": "^4.1.5",
-    "nyc": "^15.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "uglify-js": "^3.16.1"
   },
   "scripts": {
     "test": "mocha --recursive",
     "lint": "eslint ./src",
-    "coverage": "nyc --reporter=lcov mocha && codecov",
+    "coverage": "c8 --reporter=lcov mocha --recursive && codecov",
     "ci": "run-s lint test coverage",
     "build:rollup": "rollup --config rollup.config.js",
     "build:uglify": "uglifyjs ./dist/tide-predictor.js -o ./dist/tide-predictor.min.js",

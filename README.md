@@ -1,4 +1,4 @@
-![example workflow](https://github.com/neaps/tide-predictor/actions/workflows/test.yml/badge.svg) [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fneaps%2Ftide-predictor.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fneaps%2Ftide-predictor?ref=badge_shield)
+![example workflow](https://github.com/neaps/tide-predictor/actions/workflows/test.yml/badge.svg) [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fneaps%2Ftide-predictor.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fneaps%2Ftide-predictor?ref=badge_shield) [![codecov](https://codecov.io/gh/neaps/tide-predictor/branch/main/graph/badge.svg?token=KEJK5NQR5H)](https://codecov.io/gh/neaps/tide-predictor)
 
 # Tide predictor
 
