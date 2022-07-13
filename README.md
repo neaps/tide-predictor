@@ -43,6 +43,8 @@ const TidePrediction = require('@neaps/tide-prediction')
 const TidePrediction = require('@neaps/tide-prediction/dist/commonjs')
 ```
 
+There are also packaged and minified versions for the browser in `dist/web`.
+
 # Usage
 
 Neaps requires that you [provide your own tidal harmonics information](#constituent-object) to generate a prediction.
