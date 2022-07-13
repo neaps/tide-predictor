@@ -25,6 +25,24 @@ yarn add @neaps/tide-prediction
 
 ```
 
+## Importing
+
+Using Ecmascript Imports:
+
+```js
+import TidePrediction from '@neaps/tide-prediction'
+```
+
+Using CommonJS
+
+```js
+const TidePrediction = require('@neaps/tide-prediction')
+
+// Before NodeJS version with conditional export support
+
+const TidePrediction = require('@neaps/tide-prediction/dist/commonjs')
+```
+
 # Usage
 
 Neaps requires that you [provide your own tidal harmonics information](#constituent-object) to generate a prediction.
@@ -35,6 +53,7 @@ Note that, for now, Neaps **will not** do any timezone corrections. This means y
 
 ```javascript
 import TidePrediction from '@neaps/tide-prediction'
+
 const constituents = [
   {
     phase_GMT: 98.7,

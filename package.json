@@ -7,8 +7,15 @@
   "author": "Kevin Miller <keveemiller@gmail.com>",
   "license": "MIT",
   "type": "module",
-  "module": "./src/index.js",
-  "browser": "./dist/tide-predictor.js",
+  "module": "index.js",
+  "browser": "./dist/web/tide-predictor.js",
+  "commonjs": "./dist/commonjs/index.js",
+  "exports": {
+    ".": {
+      "import": "./src/index.js",
+      "require": "./dist/commonjs/index.js"
+    }
+  },
   "devDependencies": {
     "c8": "^7.11.3",
     "eslint": "^8.18.0",
@@ -23,7 +30,8 @@
     "coverage": "c8 --reporter=lcov mocha --recursive && codecov",
     "ci": "run-s lint test coverage",
     "build:rollup": "rollup --config rollup.config.js",
-    "build:uglify": "uglifyjs ./dist/tide-predictor.js -o ./dist/tide-predictor.min.js",
-    "build": "run-s build:rollup build:uglify"
+    "build:uglify": "uglifyjs ./dist/web/tide-predictor.js -o ./dist/web/tide-predictor.min.js",
+    "build:commonDist": "echo \"{\\\"type\\\":\\\"commonjs\\\"}\" > ./dist/commonjs/package.json",
+    "build": "run-s build:rollup build:commonDist build:uglify"
   }
 }
