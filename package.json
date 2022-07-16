@@ -2,12 +2,11 @@
   "name": "@neaps/tide-predictor",
   "version": "0.0.5",
   "description": "Tide predictor",
-  "main": "",
   "repository": "https://github.com/neaps/tide-predictor",
   "author": "Kevin Miller <keveemiller@gmail.com>",
   "license": "MIT",
   "type": "module",
-  "module": "index.js",
+  "module": "./src/index.js",
   "browser": "./dist/web/tide-predictor.js",
   "commonjs": "./dist/commonjs/index.js",
   "exports": {

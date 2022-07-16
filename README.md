@@ -27,20 +27,11 @@ yarn add @neaps/tide-prediction
 
 ## Importing
 
-Using Ecmascript Imports:
+You can import the module using Ecmascript, or CommonJS. Note that the CommonJS export is transpiled, so deep debugging the module that way will be difficult.
 
 ```js
 import TidePrediction from '@neaps/tide-prediction'
-```
-
-Using CommonJS
-
-```js
 const TidePrediction = require('@neaps/tide-prediction')
-
-// Before NodeJS version with conditional export support
-
-const TidePrediction = require('@neaps/tide-prediction/dist/commonjs')
 ```
 
 There are also packaged and minified versions for the browser in `dist/web`.
@@ -69,7 +60,10 @@ const constituents = [
 
 const highLowTides = tidePrediction(constituents, {
   phaseKey: 'phase_GMT'
-}).getExtremesPrediction(new Date('2019-01-01'), new Date('2019-01-10'))
+}).getExtremesPrediction({
+  start: new Date('2019-01-01'),
+  end: new Date('2019-01-10')
+})
 ```
 
 ## Tide prediction object
