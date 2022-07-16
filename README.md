@@ -1,4 +1,4 @@
-![example workflow](https://github.com/neaps/tide-predictor/actions/workflows/test.yml/badge.svg) [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fneaps%2Ftide-predictor.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fneaps%2Ftide-predictor?ref=badge_shield)
+![example workflow](https://github.com/neaps/tide-predictor/actions/workflows/test.yml/badge.svg) [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fneaps%2Ftide-predictor.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fneaps%2Ftide-predictor?ref=badge_shield) [![codecov](https://codecov.io/gh/neaps/tide-predictor/branch/main/graph/badge.svg?token=KEJK5NQR5H)](https://codecov.io/gh/neaps/tide-predictor)
 
 # Tide predictor
 
@@ -25,6 +25,17 @@ yarn add @neaps/tide-prediction
 
 ```
 
+## Importing
+
+You can import the module using Ecmascript, or CommonJS. Note that the CommonJS export is transpiled, so deep debugging the module that way will be difficult.
+
+```js
+import TidePrediction from '@neaps/tide-prediction'
+const TidePrediction = require('@neaps/tide-prediction')
+```
+
+There are also packaged and minified versions for the browser in `dist/web`.
+
 # Usage
 
 Neaps requires that you [provide your own tidal harmonics information](#constituent-object) to generate a prediction.
@@ -35,6 +46,7 @@ Note that, for now, Neaps **will not** do any timezone corrections. This means y
 
 ```javascript
 import TidePrediction from '@neaps/tide-prediction'
+
 const constituents = [
   {
     phase_GMT: 98.7,
@@ -48,7 +60,10 @@ const constituents = [
 
 const highLowTides = tidePrediction(constituents, {
   phaseKey: 'phase_GMT'
-}).getExtremesPrediction(new Date('2019-01-01'), new Date('2019-01-10'))
+}).getExtremesPrediction({
+  start: new Date('2019-01-01'),
+  end: new Date('2019-01-10')
+})
 ```
 
 ## Tide prediction object

@@ -1,6 +1,6 @@
-import constituent from './constituent'
-import compoundConstituent from './compound-constituent'
-import nc from '../node-corrections/index'
+import constituent from './constituent.js'
+import compoundConstituent from './compound-constituent.js'
+import nc from '../node-corrections/index.js'
 
 const constituents = {}
 // Long Term
@@ -53,67 +53,67 @@ constituents.M3 = constituent(
 // Compound
 constituents.MSF = compoundConstituent('MSF', [
   { constituent: constituents.S2, factor: 1 },
-  { constituent: constituents.M2, factor: -1 },
+  { constituent: constituents.M2, factor: -1 }
 ])
 
 // Diurnal
 constituents['2Q1'] = compoundConstituent('2Q1', [
   { constituent: constituents.N2, factor: 1 },
-  { constituent: constituents.J1, factor: -1 },
+  { constituent: constituents.J1, factor: -1 }
 ])
 constituents.RHO = compoundConstituent('RHO', [
   { constituent: constituents.NU2, factor: 1 },
-  { constituent: constituents.K1, factor: -1 },
+  { constituent: constituents.K1, factor: -1 }
 ])
 
 // Semi-Diurnal
 
 constituents.MU2 = compoundConstituent('MU2', [
   { constituent: constituents.M2, factor: 2 },
-  { constituent: constituents.S2, factor: -1 },
+  { constituent: constituents.S2, factor: -1 }
 ])
 constituents['2SM2'] = compoundConstituent('2SM2', [
   { constituent: constituents.S2, factor: 2 },
-  { constituent: constituents.M2, factor: -1 },
+  { constituent: constituents.M2, factor: -1 }
 ])
 
 // Third-Diurnal
 constituents['2MK3'] = compoundConstituent('2MK3', [
   { constituent: constituents.M2, factor: 1 },
-  { constituent: constituents.O1, factor: 1 },
+  { constituent: constituents.O1, factor: 1 }
 ])
 constituents.MK3 = compoundConstituent('MK3', [
   { constituent: constituents.M2, factor: 1 },
-  { constituent: constituents.K1, factor: 1 },
+  { constituent: constituents.K1, factor: 1 }
 ])
 
 // Quarter-Diurnal
 constituents.MN4 = compoundConstituent('MN4', [
   { constituent: constituents.M2, factor: 1 },
-  { constituent: constituents.N2, factor: 1 },
+  { constituent: constituents.N2, factor: 1 }
 ])
 constituents.M4 = compoundConstituent('M4', [
-  { constituent: constituents.M2, factor: 2 },
+  { constituent: constituents.M2, factor: 2 }
 ])
 constituents.MS4 = compoundConstituent('MS4', [
   { constituent: constituents.M2, factor: 1 },
-  { constituent: constituents.S2, factor: 1 },
+  { constituent: constituents.S2, factor: 1 }
 ])
 constituents.S4 = compoundConstituent('S4', [
-  { constituent: constituents.S2, factor: 2 },
+  { constituent: constituents.S2, factor: 2 }
 ])
 
 // Sixth-Diurnal
 constituents.M6 = compoundConstituent('M6', [
-  { constituent: constituents.M2, factor: 3 },
+  { constituent: constituents.M2, factor: 3 }
 ])
 constituents.S6 = compoundConstituent('S6', [
-  { constituent: constituents.S2, factor: 3 },
+  { constituent: constituents.S2, factor: 3 }
 ])
 
 // Eighth-Diurnals
 constituents.M8 = compoundConstituent('M8', [
-  { constituent: constituents.M2, factor: 4 },
+  { constituent: constituents.M2, factor: 4 }
 ])
 
 export default constituents

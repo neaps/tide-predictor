@@ -9,7 +9,7 @@ export default {
       file: pkg.browser,
       format: 'umd'
     },
-    { file: pkg.module, format: 'es' }
+    { file: pkg.commonjs, format: 'commonjs', exports: 'default' }
   ],
   plugins: [
     resolve({

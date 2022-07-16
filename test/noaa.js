@@ -1,6 +1,7 @@
+import assert from 'assert'
 import fs from 'fs'
 import https from 'https'
-import tidePrediction from '..'
+import tidePrediction from '../src/index.js'
 
 // Create a directory for test cache
 if (!fs.existsSync('./.test-cache')) {
@@ -79,8 +80,7 @@ const getStation = (station, callback) => {
 
 describe('Results compare to NOAA', () => {
   stations.forEach((station) => {
-    test(`it compares with station ${station}`, (done) => {
-      jest.setTimeout(20000)
+    it(`it compares with station ${station}`, (done) => {
       getStation(station, ({ harmonics, levels, info }) => {
         let mtl = 0
         let mllw = 0
@@ -100,15 +100,11 @@ describe('Results compare to NOAA', () => {
           const neapsPrediction = tideStation.getWaterLevelAtTime({
             time: new Date(prediction.t)
           })
-          expect(parseFloat(prediction.v)).toBeGreaterThanOrEqual(
-            neapsPrediction.level - 0.5
-          )
-          expect(parseFloat(prediction.v)).toBeLessThanOrEqual(
-            neapsPrediction.level + 0.5
-          )
+          assert.ok(parseFloat(prediction.v) >= neapsPrediction.level - 0.5)
+          assert.ok(parseFloat(prediction.v) <= neapsPrediction.level + 0.5)
         })
         done()
       })
-    })
+    }).timeout(20000)
   })
 })

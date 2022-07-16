@@ -1,4 +1,4 @@
-import { d2r, r2d } from '../astronomy/constants'
+import { d2r, r2d } from '../astronomy/constants.js'
 
 const corrections = {
   fUnity() {
@@ -145,7 +145,7 @@ const corrections = {
 
   // Node factors u, see Table 2 of Schureman.
 
-  uZero(a) {
+  uZero() {
     return 0.0
   },
 

@@ -1,5 +1,5 @@
-import { d2r, r2d } from './constants'
-import coefficients from './coefficients'
+import { d2r, r2d } from './constants.js'
+import coefficients from './coefficients.js'
 
 // Evaluates a polynomial at argument
 const polynomial = (coefficients, argument) => {
@@ -139,7 +139,7 @@ const astro = (time) => {
     pp: coefficients.solarPerigee,
     90: [90.0],
     omega: coefficients.terrestrialObliquity,
-    i: coefficients.lunarInclination,
+    i: coefficients.lunarInclination
   }
 
   // Polynomials are in T, that is Julian Centuries; we want our speeds to be
@@ -148,7 +148,7 @@ const astro = (time) => {
   Object.keys(polynomials).forEach((name) => {
     result[name] = {
       value: modulus(polynomial(polynomials[name], T(time)), 360.0),
-      speed: derivativePolynomial(polynomials[name], T(time)) * dTdHour,
+      speed: derivativePolynomial(polynomials[name], T(time)) * dTdHour
     }
   })
 
@@ -160,7 +160,7 @@ const astro = (time) => {
     xi: _xi,
     nu: _nu,
     nup: _nup,
-    nupp: _nupp,
+    nupp: _nupp
   }
   Object.keys(functions).forEach((name) => {
     const functionCall = functions[name]
@@ -169,7 +169,7 @@ const astro = (time) => {
         functionCall(result.N.value, result.i.value, result.omega.value),
         360.0
       ),
-      speed: null,
+      speed: null
     }
   })
 
@@ -178,12 +178,12 @@ const astro = (time) => {
   // This is in line with convention.
   const hour = {
     value: (JD(time) - Math.floor(JD(time))) * 360.0,
-    speed: 15.0,
+    speed: 15.0
   }
 
   result['T+h-s'] = {
     value: hour.value + result.h.value - result.s.value,
-    speed: hour.speed + result.h.speed - result.s.speed,
+    speed: hour.speed + result.h.speed - result.s.speed
   }
 
   // It is convenient to calculate Schureman's P here since several node
@@ -191,7 +191,7 @@ const astro = (time) => {
   // (along with I, xi, nu etc) belong somewhere else.
   result.P = {
     value: result.p.value - (result.xi.value % 360.0),
-    speed: null,
+    speed: null
   }
 
   return result

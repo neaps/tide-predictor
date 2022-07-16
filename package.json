@@ -2,42 +2,35 @@
   "name": "@neaps/tide-predictor",
   "version": "0.0.5",
   "description": "Tide predictor",
-  "main": "",
   "repository": "https://github.com/neaps/tide-predictor",
   "author": "Kevin Miller <keveemiller@gmail.com>",
   "license": "MIT",
-  "module": "./lib/index.es6.js",
-  "browser": "./dist/tide-predictor.js",
+  "type": "module",
+  "module": "./src/index.js",
+  "browser": "./dist/web/tide-predictor.js",
+  "commonjs": "./dist/commonjs/index.js",
+  "exports": {
+    ".": {
+      "import": "./src/index.js",
+      "require": "./dist/commonjs/index.js"
+    }
+  },
   "devDependencies": {
-    "@babel/core": "^7.18.6",
-    "@babel/preset-env": "^7.18.6",
-    "babel-jest": "^28.1.2",
-    "babel-preset-env": "^1.7.0",
+    "c8": "^7.11.3",
     "eslint": "^8.18.0",
-    "eslint-config-standard": "^17.0.0",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-jest": "^26.5.3",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^6.0.0",
-    "eslint-plugin-standard": "^4.1.0",
-    "grunt": "^1.5.3",
-    "grunt-babel": "^8.0.0",
-    "grunt-contrib-clean": "^2.0.1",
-    "grunt-contrib-uglify": "^5.2.2",
-    "grunt-contrib-watch": "^1.1.0",
-    "grunt-coveralls": "^2.0.0",
-    "grunt-eslint": "^24.0.0",
-    "grunt-exec": "^3.0.0",
-    "jest": "^28.1.2",
-    "jest-junit": "^14.0.0",
-    "kind-of": "^6.0.3",
-    "rollup-plugin-babel": "^4.3.3",
-    "rollup-plugin-node-resolve": "^5.2.0"
+    "mocha": "^10.0.0",
+    "npm-run-all": "^4.1.5",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "uglify-js": "^3.16.1"
   },
   "scripts": {
-    "test": "BABEL_ENV=test jest",
-    "coverage": "jest --coverage; grunt coveralls;",
+    "test": "mocha --recursive",
     "lint": "eslint ./src",
-    "ci": "npm run lint; jest --ci --runInBand --reporters=default --reporters=jest-junit"
+    "coverage": "c8 --reporter=lcov mocha --recursive && codecov",
+    "ci": "run-s lint test coverage",
+    "build:rollup": "rollup --config rollup.config.js",
+    "build:uglify": "uglifyjs ./dist/web/tide-predictor.js -o ./dist/web/tide-predictor.min.js",
+    "build:commonDist": "echo \"{\\\"type\\\":\\\"commonjs\\\"}\" > ./dist/commonjs/package.json",
+    "build": "run-s build:rollup build:commonDist build:uglify"
   }
 }

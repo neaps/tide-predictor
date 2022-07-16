@@ -1,6 +1,6 @@
-import prediction from './prediction'
-import constituentModels from '../constituents/index'
-import { d2r } from '../astronomy/constants'
+import prediction from './prediction.js'
+import constituentModels from '../constituents/index.js'
+import { d2r } from '../astronomy/constants.js'
 
 const getDate = (time) => {
   if (time instanceof Date) {
@@ -36,7 +36,7 @@ const harmonicsFactory = ({ harmonicConstituents, phaseKey, offset }) => {
     throw new Error('Harmonic constituents are not an array')
   }
   const constituents = []
-  harmonicConstituents.forEach((constituent, index) => {
+  harmonicConstituents.forEach((constituent) => {
     if (typeof constituent.name === 'undefined') {
       throw new Error('Harmonic constituents must have a name property')
     }
