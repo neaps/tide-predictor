@@ -1,6 +1,6 @@
 {
   "name": "@neaps/tide-predictor",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "Tide predictor",
   "repository": "https://github.com/neaps/tide-predictor",
   "author": "Kevin Miller <keveemiller@gmail.com>",
