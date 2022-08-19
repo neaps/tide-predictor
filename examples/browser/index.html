@@ -25,7 +25,7 @@
     <script>
       (()=> {
         fetch(
-          'https://tidesandcurrents.noaa.gov/mdapi/v1.0/webapi/stations/9413450/harcon.json?units=metric'
+          'https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations/9413450/harcon.json?units=metric'
         )
         .then(response => {
           return response.json()
