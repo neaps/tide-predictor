@@ -30,8 +30,8 @@ yarn add @neaps/tide-prediction
 You can import the module using Ecmascript, or CommonJS. Note that the CommonJS export is transpiled, so deep debugging the module that way will be difficult.
 
 ```js
-import TidePrediction from '@neaps/tide-prediction'
-const TidePrediction = require('@neaps/tide-prediction')
+import TidePredictor from '@neaps/tide-predictor'
+const TidePredictor = require('@neaps/tide-predictor')
 ```
 
 There are also packaged and minified versions for the browser in `dist/web`.
@@ -45,7 +45,7 @@ Because many constituent datum come with multiple phases (in the case of NOAA's 
 Note that, for now, Neaps **will not** do any timezone corrections. This means you need to pass date objects that align with whatever timezone the constituents are in.
 
 ```javascript
-import TidePrediction from '@neaps/tide-prediction'
+import TidePredictor from '@neaps/tide-predictor'
 
 const constituents = [
   {
@@ -58,7 +58,7 @@ const constituents = [
   //....there are usually many, read the docs
 ]
 
-const highLowTides = tidePrediction(constituents, {
+const highLowTides = TidePredictor(constituents, {
   phaseKey: 'phase_GMT'
 }).getExtremesPrediction({
   start: new Date('2019-01-01'),
@@ -68,7 +68,7 @@ const highLowTides = tidePrediction(constituents, {
 
 ## Tide prediction object
 
-Calling `tidePrediction` will generate a new tide prediction object. It accepts the following arguments:
+Calling `tidePredictor` will generate a new tide prediction object. It accepts the following arguments:
 
 - `constituents` - An array of [constituent objects](#constituent-object)
 - `options` - An object with one of:
@@ -86,7 +86,7 @@ Returns the predicted high and low tides between a start and end date.
 ```javascript
 const startDate = new Date()
 const endDate = new Date(startDate + 3 * 24 * 60 * 60 * 1000)
-const tides = tidePrediction(constituents).getExtremesPrediction({
+const tides = TidePredictor(constituents).getExtremesPrediction({
   start: startDate,
   end: endDate,
   labels: {
@@ -100,7 +100,7 @@ const tides = tidePrediction(constituents).getExtremesPrediction({
 If you want predictions for a subservient station, first set the reference station in the prediction, and pass the [subservient station offests](#subservient-station) to the `getExtremesPrediction` method:
 
 ```javascript
-const tides = tidePrediction(constituents).getExtremesPrediction({
+const tides = TidePredictor(constituents).getExtremesPrediction({
   start: startDate,
   end: endDate,
   offset: {
@@ -143,7 +143,7 @@ High and low tides are returned as arrays of objects:
 Gives you the predicted water level at a specific time.
 
 ```javascript
-const waterLevel = tidePrediction(constituents).getWaterLevelAtTime({
+const waterLevel = TidePredictor(constituents).getWaterLevelAtTime({
   time: new Date()
 })
 ```
