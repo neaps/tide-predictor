@@ -18,10 +18,10 @@ The tide predictions do not factor events such as storm surge, wind waves, uplif
 
 ```
 #npm
-npm install @neaps/tide-prediction
+npm install @neaps/tide-predictor
 
 # yarn
-yarn add @neaps/tide-prediction
+yarn add @neaps/tide-predictor
 
 ```
 
