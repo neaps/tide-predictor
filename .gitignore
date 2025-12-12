@@ -5,3 +5,6 @@ junit.xml
 .test-cache
 .DS_Store
 .nyc_output
+dist
+*.tsbuildinfo
+package-lock.json

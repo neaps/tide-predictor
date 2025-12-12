@@ -1,35 +1,57 @@
 import { d2r, r2d } from './constants.js'
 import coefficients from './coefficients.js'
 
+export interface AstroValue {
+  value: number
+  speed: number | null
+}
+
+export interface AstroData {
+  s: AstroValue
+  h: AstroValue
+  p: AstroValue
+  N: AstroValue
+  pp: AstroValue
+  '90': AstroValue
+  omega: AstroValue
+  i: AstroValue
+  I: AstroValue
+  xi: AstroValue
+  nu: AstroValue
+  nup: AstroValue
+  nupp: AstroValue
+  'T+h-s': AstroValue
+  P: AstroValue
+}
+
 // Evaluates a polynomial at argument
-const polynomial = (coefficients, argument) => {
-  const result = []
+const polynomial = (coefficients: number[], argument: number): number => {
+  const result: number[] = []
   coefficients.forEach((coefficient, index) => {
     result.push(coefficient * Math.pow(argument, index))
   })
-  return result.reduce((a, b) => {
-    return a + b
-  })
+  return result.reduce((a, b) => a + b)
 }
 
 // Evaluates a derivative polynomial at argument
-const derivativePolynomial = (coefficients, argument) => {
-  const result = []
+const derivativePolynomial = (
+  coefficients: number[],
+  argument: number
+): number => {
+  const result: number[] = []
   coefficients.forEach((coefficient, index) => {
     result.push(coefficient * index * Math.pow(argument, index - 1))
   })
-  return result.reduce((a, b) => {
-    return a + b
-  })
+  return result.reduce((a, b) => a + b)
 }
 
 // Meeus formula 11.1
-const T = (t) => {
+const T = (t: Date): number => {
   return (JD(t) - 2451545.0) / 36525
 }
 
 // Meeus formula 7.1
-const JD = (t) => {
+const JD = (t: Date): number => {
   let Y = t.getFullYear()
   let M = t.getMonth() + 1
   const D =
@@ -53,13 +75,7 @@ const JD = (t) => {
   )
 }
 
-/**
- * @todo - What's  with the array returned from the arccos?
- * @param {*} N
- * @param {*} i
- * @param {*} omega
- */
-const _I = (N, i, omega) => {
+const _I = (N: number, i: number, omega: number): number => {
   N = d2r * N
   i = d2r * i
   omega = d2r * omega
@@ -68,7 +84,7 @@ const _I = (N, i, omega) => {
   return r2d * Math.acos(cosI)
 }
 
-const _xi = (N, i, omega) => {
+const _xi = (N: number, i: number, omega: number): number => {
   N = d2r * N
   i = d2r * i
   omega = d2r * omega
@@ -85,7 +101,7 @@ const _xi = (N, i, omega) => {
   return -(e1 + e2) * r2d
 }
 
-const _nu = (N, i, omega) => {
+const _nu = (N: number, i: number, omega: number): number => {
   N = d2r * N
   i = d2r * i
   omega = d2r * omega
@@ -103,7 +119,7 @@ const _nu = (N, i, omega) => {
 }
 
 // Schureman equation 224
-const _nup = (N, i, omega) => {
+const _nup = (N: number, i: number, omega: number): number => {
   const I = d2r * _I(N, i, omega)
   const nu = d2r * _nu(N, i, omega)
   return (
@@ -116,7 +132,7 @@ const _nup = (N, i, omega) => {
 }
 
 // Schureman equation 232
-const _nupp = (N, i, omega) => {
+const _nupp = (N: number, i: number, omega: number): number => {
   const I = d2r * _I(N, i, omega)
   const nu = d2r * _nu(N, i, omega)
   const tan2nupp =
@@ -125,19 +141,19 @@ const _nupp = (N, i, omega) => {
   return r2d * 0.5 * Math.atan(tan2nupp)
 }
 
-const modulus = (a, b) => {
+const modulus = (a: number, b: number): number => {
   return ((a % b) + b) % b
 }
 
-const astro = (time) => {
-  const result = {}
-  const polynomials = {
+const astro = (time: Date): AstroData => {
+  const result: Partial<AstroData> = {}
+  const polynomials: Record<string, number[]> = {
     s: coefficients.lunarLongitude,
     h: coefficients.solarLongitude,
     p: coefficients.lunarPerigee,
     N: coefficients.lunarNode,
     pp: coefficients.solarPerigee,
-    90: [90.0],
+    '90': [90.0],
     omega: coefficients.terrestrialObliquity,
     i: coefficients.lunarInclination
   }
@@ -146,7 +162,7 @@ const astro = (time) => {
   // in the more convenient unit of degrees per hour.
   const dTdHour = 1 / (24 * 365.25 * 100)
   Object.keys(polynomials).forEach((name) => {
-    result[name] = {
+    ;(result as any)[name] = {
       value: modulus(polynomial(polynomials[name], T(time)), 360.0),
       speed: derivativePolynomial(polynomials[name], T(time)) * dTdHour
     }
@@ -155,7 +171,10 @@ const astro = (time) => {
   // Some other parameters defined by Schureman which are dependent on the
   // parameters N, i, omega for use in node factor calculations. We don't need
   // their speeds.
-  const functions = {
+  const functions: Record<
+    string,
+    (N: number, i: number, omega: number) => number
+  > = {
     I: _I,
     xi: _xi,
     nu: _nu,
@@ -164,9 +183,13 @@ const astro = (time) => {
   }
   Object.keys(functions).forEach((name) => {
     const functionCall = functions[name]
-    result[name] = {
+    ;(result as any)[name] = {
       value: modulus(
-        functionCall(result.N.value, result.i.value, result.omega.value),
+        functionCall(
+          (result as any).N.value,
+          (result as any).i.value,
+          (result as any).omega.value
+        ),
         360.0
       ),
       speed: null
@@ -181,20 +204,20 @@ const astro = (time) => {
     speed: 15.0
   }
 
-  result['T+h-s'] = {
-    value: hour.value + result.h.value - result.s.value,
-    speed: hour.speed + result.h.speed - result.s.speed
+  ;(result as any)['T+h-s'] = {
+    value: hour.value + (result as any).h.value - (result as any).s.value,
+    speed: hour.speed + (result as any).h.speed - (result as any).s.speed
   }
 
   // It is convenient to calculate Schureman's P here since several node
   // factors need it, although it could be argued that these
   // (along with I, xi, nu etc) belong somewhere else.
-  result.P = {
-    value: result.p.value - (result.xi.value % 360.0),
+  ;(result as any).P = {
+    value: (result as any).p.value - ((result as any).xi.value % 360.0),
     speed: null
   }
 
-  return result
+  return result as AstroData
 }
 
 export default astro

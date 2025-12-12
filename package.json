@@ -6,31 +6,33 @@
   "author": "Kevin Miller <keveemiller@gmail.com>",
   "license": "MIT",
   "type": "module",
-  "module": "./src/index.js",
-  "browser": "./dist/web/tide-predictor.js",
-  "commonjs": "./dist/commonjs/index.js",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./src/index.js",
-      "require": "./dist/commonjs/index.js"
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
     }
   },
+  "files": [
+    "dist"
+  ],
   "devDependencies": {
+    "@types/node": "^20.10.6",
     "c8": "^7.11.3",
     "eslint": "^8.18.0",
     "mocha": "^10.0.0",
     "npm-run-all": "^4.1.5",
-    "rollup-plugin-node-resolve": "^5.2.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3",
     "uglify-js": "^3.16.1"
   },
   "scripts": {
-    "test": "mocha --recursive",
+    "build": "tsc",
+    "test": "mocha --require tsx --recursive",
     "lint": "eslint ./src",
-    "coverage": "c8 --reporter=lcov mocha --recursive",
-    "ci": "run-s lint coverage",
-    "build:rollup": "rollup --config rollup.config.js",
-    "build:uglify": "uglifyjs ./dist/web/tide-predictor.js -o ./dist/web/tide-predictor.min.js",
-    "build:commonDist": "echo \"{\\\"type\\\":\\\"commonjs\\\"}\" > ./dist/commonjs/package.json",
-    "build": "run-s build:rollup build:commonDist build:uglify"
+    "coverage": "c8 --reporter=lcov mocha --require tsx --recursive",
+    "ci": "run-s lint build coverage",
+    "prepublishOnly": "npm run build"
   }
 }
