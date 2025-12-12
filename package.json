@@ -26,8 +26,8 @@
   "scripts": {
     "test": "mocha --recursive",
     "lint": "eslint ./src",
-    "coverage": "c8 --reporter=lcov mocha --recursive && codecov",
-    "ci": "run-s lint test coverage",
+    "coverage": "c8 --reporter=lcov mocha --recursive",
+    "ci": "run-s lint coverage",
     "build:rollup": "rollup --config rollup.config.js",
     "build:uglify": "uglifyjs ./dist/web/tide-predictor.js -o ./dist/web/tide-predictor.min.js",
     "build:commonDist": "echo \"{\\\"type\\\":\\\"commonjs\\\"}\" > ./dist/commonjs/package.json",
