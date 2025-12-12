@@ -30,7 +30,7 @@ const astronimicDoodsonNumber = (
 const astronomicSpeed = (astro: AstroData): number[] => {
   const results: number[] = []
   astronimicDoodsonNumber(astro).forEach((number) => {
-    results.push(number.speed!)
+    results.push(number.speed)
   })
   return results
 }

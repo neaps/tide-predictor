@@ -38,21 +38,13 @@ export interface TidePrediction {
 
 const tidePredictionFactory = (
   constituents: HarmonicConstituent[],
-  options?: TidePredictionOptions
+  options: TidePredictionOptions = {}
 ): TidePrediction => {
   const harmonicsOptions = {
     harmonicConstituents: constituents,
     phaseKey: 'phase_GMT',
-    offset: false as number | false
-  }
-
-  if (typeof options !== 'undefined') {
-    Object.keys(harmonicsOptions).forEach((key) => {
-      if (typeof options[key as keyof TidePredictionOptions] !== 'undefined') {
-        (harmonicsOptions as any)[key] =
-          options[key as keyof TidePredictionOptions]
-      }
-    })
+    offset: false as number | false,
+    ...options
   }
 
   const tidePrediction: TidePrediction = {
