@@ -73,9 +73,7 @@ const tidePredictionFactory = (
       return harmonics(harmonicsOptions)
         .setTimeSpan(start, end)
         .prediction({ timeFidelity })
-        .getExtremesPrediction(
-          labels || offsets ? { labels, offsets } : undefined
-        )
+        .getExtremesPrediction({ labels, offsets })
     },
 
     getWaterLevelAtTime: ({ time }: { time: Date }): TimelinePoint => {
