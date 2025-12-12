@@ -6,8 +6,6 @@
   "author": "Kevin Miller <keveemiller@gmail.com>",
   "license": "MIT",
   "type": "module",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/index.js",
@@ -18,6 +16,7 @@
     "dist"
   ],
   "devDependencies": {
+    "@types/mocha": "^10.0.10",
     "@types/node": "^20.10.6",
     "c8": "^7.11.3",
     "eslint": "^8.18.0",
@@ -29,9 +28,9 @@
   },
   "scripts": {
     "build": "tsc",
-    "test": "mocha --require tsx --recursive",
-    "lint": "eslint ./src",
-    "coverage": "c8 --reporter=lcov mocha --require tsx --recursive",
+    "test": "mocha --require tsx --extension ts --extension js --recursive",
+    "lint": "eslint ./src --ext .ts,.tsx,.js",
+    "coverage": "c8 --reporter=lcov mocha --require tsx --extension ts --extension js --recursive",
     "ci": "run-s lint build coverage",
     "prepublishOnly": "npm run build"
   }
