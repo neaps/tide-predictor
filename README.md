@@ -2,7 +2,7 @@
 
 # Tide predictor
 
-A Javascript tide harmonic calculator.
+A tide harmonic calculator written in TypeScript.
 
 <!-- START DOCS -->
 
@@ -25,17 +25,6 @@ yarn add @neaps/tide-predictor
 
 ```
 
-## Importing
-
-You can import the module using Ecmascript, or CommonJS. Note that the CommonJS export is transpiled, so deep debugging the module that way will be difficult.
-
-```js
-import TidePredictor from '@neaps/tide-predictor'
-const TidePredictor = require('@neaps/tide-predictor')
-```
-
-There are also packaged and minified versions for the browser in `dist/web`.
-
 # Usage
 
 Neaps requires that you [provide your own tidal harmonics information](#constituent-object) to generate a prediction.
@@ -44,7 +33,7 @@ Because many constituent datum come with multiple phases (in the case of NOAA's 
 
 Note that, for now, Neaps **will not** do any timezone corrections. This means you need to pass date objects that align with whatever timezone the constituents are in.
 
-```javascript
+```typescript
 import TidePredictor from '@neaps/tide-predictor'
 
 const constituents = [
@@ -83,7 +72,7 @@ The returned tide prediction object has various methods. All of these return reg
 
 Returns the predicted high and low tides between a start and end date.
 
-```javascript
+```typescript
 const startDate = new Date()
 const endDate = new Date(startDate + 3 * 24 * 60 * 60 * 1000)
 const tides = TidePredictor(constituents).getExtremesPrediction({
@@ -99,7 +88,7 @@ const tides = TidePredictor(constituents).getExtremesPrediction({
 
 If you want predictions for a subservient station, first set the reference station in the prediction, and pass the [subservient station offests](#subservient-station) to the `getExtremesPrediction` method:
 
-```javascript
+```typescript
 const tides = TidePredictor(constituents).getExtremesPrediction({
   start: startDate,
   end: endDate,
@@ -142,7 +131,7 @@ High and low tides are returned as arrays of objects:
 
 Gives you the predicted water level at a specific time.
 
-```javascript
+```typescript
 const waterLevel = TidePredictor(constituents).getWaterLevelAtTime({
   time: new Date()
 })
