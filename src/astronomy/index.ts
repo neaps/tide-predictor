@@ -162,7 +162,7 @@ const astro = (time: Date): AstroData => {
   // in the more convenient unit of degrees per hour.
   const dTdHour = 1 / (24 * 365.25 * 100)
   Object.keys(polynomials).forEach((name) => {
-    ;(result as any)[name] = {
+    (result as any)[name] = {
       value: modulus(polynomial(polynomials[name], T(time)), 360.0),
       speed: derivativePolynomial(polynomials[name], T(time)) * dTdHour
     }

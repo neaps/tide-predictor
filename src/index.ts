@@ -1,10 +1,6 @@
 import harmonics from './harmonics/index.js'
 import type { HarmonicConstituent } from './harmonics/index.js'
-import type {
-  TimelinePoint,
-  Extreme,
-  ExtremesOptions
-} from './harmonics/prediction.js'
+import type { TimelinePoint, Extreme } from './harmonics/prediction.js'
 
 export interface TidePredictionOptions {
   phaseKey?: string
@@ -53,7 +49,7 @@ const tidePredictionFactory = (
   if (typeof options !== 'undefined') {
     Object.keys(harmonicsOptions).forEach((key) => {
       if (typeof options[key as keyof TidePredictionOptions] !== 'undefined') {
-        ;(harmonicsOptions as any)[key] =
+        (harmonicsOptions as any)[key] =
           options[key as keyof TidePredictionOptions]
       }
     })
