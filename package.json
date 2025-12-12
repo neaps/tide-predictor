@@ -33,6 +33,6 @@
     "lint": "eslint ./src --ext .ts,.tsx,.js",
     "coverage": "c8 --reporter=lcov mocha --require tsx --extension ts --extension js --recursive",
     "ci": "run-s lint build coverage",
-    "prepublishOnly": "npm run build"
+    "prepare": "npm run build"
   }
 }
