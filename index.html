@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Tide Predictor in the browser</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+</head>
+
+<body>
+  <div class="container">
+    <h1>High/low tides for Monterey, CA</h1>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>High/Low</th>
+          <th>Level (meters)</th>
+        </tr>
+      <tbody id="tides"></tbody>
+      </thead>
+    </table>
+  </div>
+
+  <script type="module">
+    import tidePredictor from './src/index.js'
+
+    (() => {
+      fetch('https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations/9413450/harcon.json?units=metric')
+        .then(response => {
+          return response.json()
+        })
+        .then(harmonics => {
+          const start = new Date()
+          const end = new Date(start.getTime() + (10 * 24 * 60 * 60 * 1000))
+
+          const highLow = tidePredictor(harmonics.HarmonicConstituents).getExtremesPrediction({ start, end })
+
+          highLow.forEach(level => {
+            const tableRow = document.createElement('tr')
+            tableRow.innerHTML = `
+              <td>${level
+                .time}</td>
+              <td>${level
+                .label}</td>
+              <td>${level
+                .level}</td>
+            `
+            document
+              .getElementById('tides')
+              .appendChild(tableRow)
+          })
+        })
+    })()
+  </script>
+</body>
+
+</html>

@@ -1,8 +1,30 @@
 import prediction from './prediction.js'
 import constituentModels from '../constituents/index.js'
 import { d2r } from '../astronomy/constants.js'
+import type { Prediction } from './prediction.js'
 
-const getDate = (time) => {
+export interface HarmonicConstituent {
+  name: string
+  amplitude?: number
+  [key: string]: any
+}
+
+export interface HarmonicsOptions {
+  harmonicConstituents: HarmonicConstituent[]
+  phaseKey: string
+  offset: number | false
+}
+
+export interface PredictionOptions {
+  timeFidelity?: number
+}
+
+export interface Harmonics {
+  setTimeSpan: (startTime: Date | number, endTime: Date | number) => Harmonics
+  prediction: (options?: PredictionOptions) => Prediction
+}
+
+const getDate = (time: Date | number): Date => {
   if (time instanceof Date) {
     return time
   }
@@ -12,13 +34,12 @@ const getDate = (time) => {
   throw new Error('Invalid date format, should be a Date object, or timestamp')
 }
 
-const getTimeline = (start, end, seconds) => {
-  seconds = typeof seconds !== 'undefined' ? seconds : 10 * 60
-  const items = []
+const getTimeline = (start: Date, end: Date, seconds: number = 10 * 60) => {
+  const items: Date[] = []
   const endTime = end.getTime() / 1000
   let lastTime = start.getTime() / 1000
   const startTime = lastTime
-  const hours = []
+  const hours: number[] = []
   while (lastTime <= endTime) {
     items.push(new Date(lastTime * 1000))
     hours.push((lastTime - startTime) / (60 * 60))
@@ -31,11 +52,15 @@ const getTimeline = (start, end, seconds) => {
   }
 }
 
-const harmonicsFactory = ({ harmonicConstituents, phaseKey, offset }) => {
+const harmonicsFactory = ({
+  harmonicConstituents,
+  phaseKey,
+  offset
+}: HarmonicsOptions): Harmonics => {
   if (!Array.isArray(harmonicConstituents)) {
     throw new Error('Harmonic constituents are not an array')
   }
-  const constituents = []
+  const constituents: any[] = []
   harmonicConstituents.forEach((constituent) => {
     if (typeof constituent.name === 'undefined') {
       throw new Error('Harmonic constituents must have a name property')
@@ -59,9 +84,12 @@ const harmonicsFactory = ({ harmonicConstituents, phaseKey, offset }) => {
   let start = new Date()
   let end = new Date()
 
-  const harmonics = {}
+  const harmonics: Harmonics = {} as Harmonics
 
-  harmonics.setTimeSpan = (startTime, endTime) => {
+  harmonics.setTimeSpan = (
+    startTime: Date | number,
+    endTime: Date | number
+  ): Harmonics => {
     start = getDate(startTime)
     end = getDate(endTime)
     if (start.getTime() >= end.getTime()) {
@@ -70,11 +98,11 @@ const harmonicsFactory = ({ harmonicConstituents, phaseKey, offset }) => {
     return harmonics
   }
 
-  harmonics.prediction = (options) => {
-    options =
+  harmonics.prediction = (options?: PredictionOptions): Prediction => {
+    const opts =
       typeof options !== 'undefined' ? options : { timeFidelity: 10 * 60 }
     return prediction({
-      timeline: getTimeline(start, end, options.timeFidelity),
+      timeline: getTimeline(start, end, opts.timeFidelity),
       constituents,
       start
     })

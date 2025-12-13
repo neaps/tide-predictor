@@ -1,21 +1,21 @@
 import nodeCorrections from '../node-corrections/index.js'
+import type { AstroData } from '../astronomy/index.js'
+import type { NodeCorrectionFunction } from '../node-corrections/index.js'
 
 /**
  * Computes the dot notation of two arrays
- * @param {*} a
- * @param {*} b
  */
-const dotArray = (a, b) => {
-  const results = []
+const dotArray = (a: number[], b: number[]): number => {
+  const results: number[] = []
   a.forEach((value, index) => {
     results.push(value * b[index])
   })
-  return results.reduce((total, value) => {
-    return total + value
-  })
+  return results.reduce((total, value) => total + value)
 }
 
-const astronimicDoodsonNumber = (astro) => {
+const astronimicDoodsonNumber = (
+  astro: AstroData
+): AstroData[keyof AstroData][] => {
   return [
     astro['T+h-s'],
     astro.s,
@@ -27,36 +27,50 @@ const astronimicDoodsonNumber = (astro) => {
   ]
 }
 
-const astronomicSpeed = (astro) => {
-  const results = []
+const astronomicSpeed = (astro: AstroData): number[] => {
+  const results: number[] = []
   astronimicDoodsonNumber(astro).forEach((number) => {
     results.push(number.speed)
   })
   return results
 }
 
-const astronomicValues = (astro) => {
-  const results = []
+const astronomicValues = (astro: AstroData): number[] => {
+  const results: number[] = []
   astronimicDoodsonNumber(astro).forEach((number) => {
     results.push(number.value)
   })
   return results
 }
 
-const constituentFactory = (name, coefficients, u, f) => {
+export interface Constituent {
+  name: string
+  coefficients: number[]
+  value: (astro: AstroData) => number
+  speed: (astro: AstroData) => number
+  u: NodeCorrectionFunction
+  f: NodeCorrectionFunction
+}
+
+const constituentFactory = (
+  name: string,
+  coefficients: number[],
+  u?: NodeCorrectionFunction,
+  f?: NodeCorrectionFunction
+): Constituent => {
   if (!coefficients) {
     throw new Error('Coefficient must be defined for a constituent')
   }
 
-  const constituent = {
+  const constituent: Constituent = {
     name,
     coefficients,
 
-    value: (astro) => {
+    value: (astro: AstroData): number => {
       return dotArray(coefficients, astronomicValues(astro))
     },
 
-    speed(astro) {
+    speed(astro: AstroData): number {
       return dotArray(coefficients, astronomicSpeed(astro))
     },
 
@@ -69,5 +83,4 @@ const constituentFactory = (name, coefficients, u, f) => {
 }
 
 export default constituentFactory
-
 export { astronimicDoodsonNumber, astronomicSpeed, astronomicValues }

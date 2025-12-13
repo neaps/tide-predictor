@@ -1,10 +1,11 @@
 // Convert a sexagesimal angle into decimal degrees
-const sexagesimalToDecimal = (degrees, arcmins, arcsecs, mas, muas) => {
-  arcmins = typeof arcmins !== 'undefined' ? arcmins : 0
-  arcsecs = typeof arcsecs !== 'undefined' ? arcsecs : 0
-  mas = typeof mas !== 'undefined' ? mas : 0
-  muas = typeof muas !== 'undefined' ? muas : 0
-
+const sexagesimalToDecimal = (
+  degrees: number,
+  arcmins: number = 0,
+  arcsecs: number = 0,
+  mas: number = 0,
+  muas: number = 0
+): number => {
   return (
     degrees +
     arcmins / 60.0 +
@@ -14,7 +15,17 @@ const sexagesimalToDecimal = (degrees, arcmins, arcsecs, mas, muas) => {
   )
 }
 
-const coefficients = {
+interface Coefficients {
+  terrestrialObliquity: number[]
+  solarPerigee: number[]
+  solarLongitude: number[]
+  lunarInclination: number[]
+  lunarLongitude: number[]
+  lunarNode: number[]
+  lunarPerigee: number[]
+}
+
+const coefficients: Coefficients = {
   // Meeus formula 21.3
   terrestrialObliquity: [
     sexagesimalToDecimal(23, 26, 21.448),
@@ -27,7 +38,7 @@ const coefficients = {
     sexagesimalToDecimal(0, 0, 7.12),
     sexagesimalToDecimal(0, 0, 27.87),
     sexagesimalToDecimal(0, 0, 5.79),
-    sexagesimalToDecimal(0, 0, 2.45),
+    sexagesimalToDecimal(0, 0, 2.45)
   ].map((number, index) => {
     return number * Math.pow(1e-2, index)
   }),
@@ -36,7 +47,7 @@ const coefficients = {
     280.46645 - 357.5291,
     36000.76932 - 35999.0503,
     0.0003032 + 0.0001559,
-    0.00000048,
+    0.00000048
   ],
 
   solarLongitude: [280.46645, 36000.76983, 0.0003032],
@@ -47,7 +58,7 @@ const coefficients = {
     218.3164591,
     481267.88134236,
     -0.0013268,
-    1 / 538841.0 - 1 / 65194000.0,
+    1 / 538841.0 - 1 / 65194000.0
   ],
 
   lunarNode: [
@@ -55,7 +66,7 @@ const coefficients = {
     -1934.1361849,
     0.0020762,
     1 / 467410.0,
-    -1 / 60616000.0,
+    -1 / 60616000.0
   ],
 
   lunarPerigee: [
@@ -63,10 +74,10 @@ const coefficients = {
     4069.0137111,
     -0.0103238,
     -1 / 80053.0,
-    1 / 18999000.0,
-  ],
+    1 / 18999000.0
+  ]
 }
 
 export default coefficients
-
 export { sexagesimalToDecimal }
+export type { Coefficients }

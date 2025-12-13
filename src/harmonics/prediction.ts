@@ -1,11 +1,69 @@
 import astro from '../astronomy/index.js'
 import { d2r } from '../astronomy/constants.js'
+import type { Constituent } from '../constituents/constituent.js'
+import type { CompoundConstituent } from '../constituents/compound-constituent.js'
 
-const modulus = (a, b) => {
+export interface Timeline {
+  items: Date[]
+  hours: number[]
+}
+
+export interface HarmonicConstituent {
+  name: string
+  amplitude: number
+  _phase: number
+  _model: Constituent | CompoundConstituent
+  [key: string]: any
+}
+
+export interface TimelinePoint {
+  time: Date
+  hour: number
+  level: number
+}
+
+export interface Extreme {
+  time: Date
+  level: number
+  high: boolean
+  low: boolean
+  label: string
+}
+
+export interface ExtremeOffsets {
+  height_offset?: {
+    high?: number
+    low?: number
+  }
+  time_offset?: {
+    high?: number
+    low?: number
+  }
+}
+
+export interface ExtremeLabels {
+  high?: string
+  low?: string
+}
+
+export interface ExtremesOptions {
+  labels?: ExtremeLabels
+  offsets?: ExtremeOffsets
+}
+
+export interface Prediction {
+  getExtremesPrediction: (options?: ExtremesOptions) => Extreme[]
+  getTimelinePrediction: () => TimelinePoint[]
+}
+
+const modulus = (a: number, b: number): number => {
   return ((a % b) + b) % b
 }
 
-const addExtremesOffsets = (extreme, offsets) => {
+const addExtremesOffsets = (
+  extreme: Extreme,
+  offsets?: ExtremeOffsets
+): Extreme => {
   if (typeof offsets === 'undefined' || !offsets) {
     return extreme
   }
@@ -28,12 +86,15 @@ const addExtremesOffsets = (extreme, offsets) => {
   return extreme
 }
 
-const getExtremeLabel = (label, highLowLabels) => {
+const getExtremeLabel = (
+  label: 'high' | 'low',
+  highLowLabels?: ExtremeLabels
+): string => {
   if (
     typeof highLowLabels !== 'undefined' &&
     typeof highLowLabels[label] !== 'undefined'
   ) {
-    return highLowLabels[label]
+    return highLowLabels[label]!
   }
   const labels = {
     high: 'High',
@@ -42,9 +103,25 @@ const getExtremeLabel = (label, highLowLabels) => {
   return labels[label]
 }
 
-const predictionFactory = ({ timeline, constituents, start }) => {
-  const getLevel = (hour, modelBaseSpeed, modelU, modelF, modelBaseValue) => {
-    const amplitudes = []
+interface PredictionFactoryParams {
+  timeline: Timeline
+  constituents: HarmonicConstituent[]
+  start: Date
+}
+
+const predictionFactory = ({
+  timeline,
+  constituents,
+  start
+}: PredictionFactoryParams): Prediction => {
+  const getLevel = (
+    hour: number,
+    modelBaseSpeed: Record<string, number>,
+    modelU: Record<string, number>,
+    modelF: Record<string, number>,
+    modelBaseValue: Record<string, number>
+  ): number => {
+    const amplitudes: number[] = []
     let result = 0
 
     constituents.forEach((constituent) => {
@@ -63,11 +140,11 @@ const predictionFactory = ({ timeline, constituents, start }) => {
     return result
   }
 
-  const prediction = {}
+  const prediction: Prediction = {} as Prediction
 
-  prediction.getExtremesPrediction = (options) => {
+  prediction.getExtremesPrediction = (options?: ExtremesOptions): Extreme[] => {
     const { labels, offsets } = typeof options !== 'undefined' ? options : {}
-    const results = []
+    const results: Extreme[] = []
     const { baseSpeed, u, f, baseValue } = prepare()
     let goingUp = false
     let goingDown = false
@@ -118,12 +195,12 @@ const predictionFactory = ({ timeline, constituents, start }) => {
     return results
   }
 
-  prediction.getTimelinePrediction = () => {
-    const results = []
+  prediction.getTimelinePrediction = (): TimelinePoint[] => {
+    const results: TimelinePoint[] = []
     const { baseSpeed, u, f, baseValue } = prepare()
     timeline.items.forEach((time, index) => {
       const hour = timeline.hours[index]
-      const prediction = {
+      const prediction: TimelinePoint = {
         time,
         hour,
         level: getLevel(hour, baseSpeed, u[index], f[index], baseValue)
@@ -137,10 +214,10 @@ const predictionFactory = ({ timeline, constituents, start }) => {
   const prepare = () => {
     const baseAstro = astro(start)
 
-    const baseValue = {}
-    const baseSpeed = {}
-    const u = []
-    const f = []
+    const baseValue: Record<string, number> = {}
+    const baseSpeed: Record<string, number> = {}
+    const u: Record<string, number>[] = []
+    const f: Record<string, number>[] = []
     constituents.forEach((constituent) => {
       const value = constituent._model.value(baseAstro)
       const speed = constituent._model.speed(baseAstro)
@@ -148,8 +225,8 @@ const predictionFactory = ({ timeline, constituents, start }) => {
       baseSpeed[constituent.name] = d2r * speed
     })
     timeline.items.forEach((time) => {
-      const uItem = {}
-      const fItem = {}
+      const uItem: Record<string, number> = {}
+      const fItem: Record<string, number> = {}
       const itemAstro = astro(time)
       constituents.forEach((constituent) => {
         const constituentU = modulus(constituent._model.u(itemAstro), 360)

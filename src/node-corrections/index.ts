@@ -1,12 +1,41 @@
 import { d2r, r2d } from '../astronomy/constants.js'
+import type { AstroData } from '../astronomy/index.js'
 
-const corrections = {
-  fUnity() {
+export type NodeCorrectionFunction = (a: AstroData, ...args: any[]) => number
+
+export interface NodeCorrections {
+  fUnity: () => number
+  fMm: (a: AstroData) => number
+  fMf: (a: AstroData) => number
+  fO1: (a: AstroData) => number
+  fJ1: (a: AstroData) => number
+  fOO1: (a: AstroData) => number
+  fM2: (a: AstroData) => number
+  fK1: (a: AstroData) => number
+  fL2: (a: AstroData) => number
+  fK2: (a: AstroData) => number
+  fM1: (a: AstroData) => number
+  fModd: (a: AstroData, n: number) => number
+  uZero: () => number
+  uMf: (a: AstroData) => number
+  uO1: (a: AstroData) => number
+  uJ1: (a: AstroData) => number
+  uOO1: (a: AstroData) => number
+  uM2: (a: AstroData) => number
+  uK1: (a: AstroData) => number
+  uL2: (a: AstroData) => number
+  uK2: (a: AstroData) => number
+  uM1: (a: AstroData) => number
+  uModd: (a: AstroData, n: number) => number
+}
+
+const corrections: NodeCorrections = {
+  fUnity(): number {
     return 1
   },
 
   // Schureman equations 73, 65
-  fMm(a) {
+  fMm(a: AstroData): number {
     const omega = d2r * a.omega.value
     const i = d2r * a.i.value
     const I = d2r * a.I.value
@@ -17,7 +46,7 @@ const corrections = {
   },
 
   // Schureman equations 74, 66
-  fMf(a) {
+  fMf(a: AstroData): number {
     const omega = d2r * a.omega.value
     const i = d2r * a.i.value
     const I = d2r * a.I.value
@@ -26,7 +55,7 @@ const corrections = {
   },
 
   // Schureman equations 75, 67
-  fO1(a) {
+  fO1(a: AstroData): number {
     const omega = d2r * a.omega.value
     const i = d2r * a.i.value
     const I = d2r * a.I.value
@@ -38,7 +67,7 @@ const corrections = {
   },
 
   // Schureman equations 76, 68
-  fJ1(a) {
+  fJ1(a: AstroData): number {
     const omega = d2r * a.omega.value
     const i = d2r * a.i.value
     const I = d2r * a.I.value
@@ -48,7 +77,7 @@ const corrections = {
   },
 
   // Schureman equations 77, 69
-  fOO1(a) {
+  fOO1(a: AstroData): number {
     const omega = d2r * a.omega.value
     const i = d2r * a.i.value
     const I = d2r * a.I.value
@@ -60,7 +89,7 @@ const corrections = {
   },
 
   // Schureman equations 78, 70
-  fM2(a) {
+  fM2(a: AstroData): number {
     const omega = d2r * a.omega.value
     const i = d2r * a.i.value
     const I = d2r * a.I.value
@@ -71,7 +100,7 @@ const corrections = {
 
   // Schureman equations 227, 226, 68
   // Should probably eventually include the derivations of the magic numbers (0.5023 etc).
-  fK1(a) {
+  fK1(a: AstroData): number {
     const omega = d2r * a.omega.value
     const i = d2r * a.i.value
     const I = d2r * a.I.value
@@ -91,7 +120,7 @@ const corrections = {
 
   // Schureman equations 215, 213, 204
   // It can be (and has been) confirmed that the exponent for R_a reads 1/2 via Schureman Table 7
-  fL2(a) {
+  fL2(a: AstroData): number {
     const P = d2r * a.P.value
     const I = d2r * a.I.value
     const rAInv = Math.pow(
@@ -105,7 +134,7 @@ const corrections = {
 
   // Schureman equations 235, 234, 71
   // Again, magic numbers
-  fK2(a) {
+  fK2(a: AstroData): number {
     const omega = d2r * a.omega.value
     const i = d2r * a.i.value
     const I = d2r * a.I.value
@@ -122,8 +151,9 @@ const corrections = {
       ) / mean
     )
   },
+
   // Schureman equations 206, 207, 195
-  fM1(a) {
+  fM1(a: AstroData): number {
     const P = d2r * a.P.value
     const I = d2r * a.I.value
     const qAInv = Math.pow(
@@ -139,42 +169,42 @@ const corrections = {
   },
 
   // See e.g. Schureman equation 149
-  fModd(a, n) {
+  fModd(a: AstroData, n: number): number {
     return Math.pow(corrections.fM2(a), n / 2.0)
   },
 
   // Node factors u, see Table 2 of Schureman.
 
-  uZero() {
+  uZero(): number {
     return 0.0
   },
 
-  uMf(a) {
+  uMf(a: AstroData): number {
     return -2.0 * a.xi.value
   },
 
-  uO1(a) {
+  uO1(a: AstroData): number {
     return 2.0 * a.xi.value - a.nu.value
   },
 
-  uJ1(a) {
+  uJ1(a: AstroData): number {
     return -a.nu.value
   },
 
-  uOO1(a) {
+  uOO1(a: AstroData): number {
     return -2.0 * a.xi.value - a.nu.value
   },
 
-  uM2(a) {
+  uM2(a: AstroData): number {
     return 2.0 * a.xi.value - 2.0 * a.nu.value
   },
 
-  uK1(a) {
+  uK1(a: AstroData): number {
     return -a.nup.value
   },
 
   // Schureman 214
-  uL2(a) {
+  uL2(a: AstroData): number {
     const I = d2r * a.I.value
     const P = d2r * a.P.value
     const R =
@@ -186,12 +216,12 @@ const corrections = {
     return 2.0 * a.xi.value - 2.0 * a.nu.value - R
   },
 
-  uK2(a) {
+  uK2(a: AstroData): number {
     return -2.0 * a.nupp.value
   },
 
   // Schureman 202
-  uM1(a) {
+  uM1(a: AstroData): number {
     const I = d2r * a.I.value
     const P = d2r * a.P.value
     const Q =
@@ -200,7 +230,7 @@ const corrections = {
     return a.xi.value - a.nu.value + Q
   },
 
-  uModd(a, n) {
+  uModd(a: AstroData, n: number): number {
     return (n / 2.0) * corrections.uM2(a)
   }
 }
