@@ -1,4 +1,5 @@
 import harmonics from './harmonics/index.js'
+import { default as constituents } from './constituents/index.js'
 import type { HarmonicConstituent } from './harmonics/index.js'
 import type { TimelinePoint, Extreme } from './harmonics/prediction.js'
 
@@ -79,6 +80,9 @@ const tidePredictionFactory = (
 
   return tidePrediction
 }
+
+// Make constituents available on factory for reference
+tidePredictionFactory.constituents = constituents
 
 export default tidePredictionFactory
 export type { HarmonicConstituent, TimelinePoint, Extreme }
