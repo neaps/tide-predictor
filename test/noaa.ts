@@ -40,9 +40,9 @@ const getStation = async (station: string) => {
 describe('Results compare to NOAA', () => {
   stations.forEach((station) => {
     it(`it compares with station ${station}`, async () => {
-      const { harmonics, levels, info } = await getStation(station)
+      const { harmonics, levels } = await getStation(station)
       const tideStation = tidePrediction(harmonics.HarmonicConstituents)
-      levels.predictions.forEach((prediction: any) => {
+      levels.predictions.forEach((prediction: { t: string; v: string }) => {
         const neapsPrediction = tideStation.getWaterLevelAtTime({
           time: new Date(prediction.t)
         })

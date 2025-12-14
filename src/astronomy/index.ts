@@ -146,7 +146,10 @@ const modulus = (a: number, b: number): number => {
 }
 
 const astro = (time: Date): AstroData => {
-  const result: Partial<AstroData> = {}
+  // This gets cast to `AstroData` later, but we build it up step by step here
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const result: any = {}
+
   const polynomials: Record<string, number[]> = {
     s: coefficients.lunarLongitude,
     h: coefficients.solarLongitude,
@@ -161,12 +164,12 @@ const astro = (time: Date): AstroData => {
   // Polynomials are in T, that is Julian Centuries; we want our speeds to be
   // in the more convenient unit of degrees per hour.
   const dTdHour = 1 / (24 * 365.25 * 100)
-  Object.keys(polynomials).forEach((name) => {
-    ;(result as any)[name] = {
+  for (const name in polynomials) {
+    result[name] = {
       value: modulus(polynomial(polynomials[name], T(time)), 360.0),
       speed: derivativePolynomial(polynomials[name], T(time)) * dTdHour
     }
-  })
+  }
 
   // Some other parameters defined by Schureman which are dependent on the
   // parameters N, i, omega for use in node factor calculations. We don't need
@@ -183,13 +186,9 @@ const astro = (time: Date): AstroData => {
   }
   Object.keys(functions).forEach((name) => {
     const functionCall = functions[name]
-    ;(result as any)[name] = {
+    result[name] = {
       value: modulus(
-        functionCall(
-          (result as any).N.value,
-          (result as any).i.value,
-          (result as any).omega.value
-        ),
+        functionCall(result.N.value, result.i.value, result.omega.value),
         360.0
       ),
       speed: null
@@ -204,16 +203,16 @@ const astro = (time: Date): AstroData => {
     speed: 15.0
   }
 
-  ;(result as any)['T+h-s'] = {
-    value: hour.value + (result as any).h.value - (result as any).s.value,
-    speed: hour.speed + (result as any).h.speed - (result as any).s.speed
+  result['T+h-s'] = {
+    value: hour.value + result.h.value - result.s.value,
+    speed: hour.speed + result.h.speed - result.s.speed
   }
 
   // It is convenient to calculate Schureman's P here since several node
   // factors need it, although it could be argued that these
   // (along with I, xi, nu etc) belong somewhere else.
-  ;(result as any).P = {
-    value: (result as any).p.value - ((result as any).xi.value % 360.0),
+  result.P = {
+    value: result.p.value - (result.xi.value % 360.0),
     speed: null
   }
 

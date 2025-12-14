@@ -11,9 +11,14 @@ export interface Timeline {
 export interface HarmonicConstituent {
   name: string
   amplitude: number
+  // This needs refactored to support generics with the `phaseKey` option
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any
+}
+
+export interface InternalHarmonicConstituent extends HarmonicConstituent {
   _phase: number
   _model: Constituent | CompoundConstituent
-  [key: string]: any
 }
 
 export interface TimelinePoint {
@@ -105,7 +110,7 @@ const getExtremeLabel = (
 
 interface PredictionFactoryParams {
   timeline: Timeline
-  constituents: HarmonicConstituent[]
+  constituents: InternalHarmonicConstituent[]
   start: Date
 }
 

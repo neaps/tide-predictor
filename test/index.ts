@@ -26,14 +26,14 @@ describe('Tidal station', () => {
 
     try {
       tidePrediction(mockConstituents)
-    } catch (e) {
+    } catch {
       stationCreated = false
     }
     expect(stationCreated).toBe(true)
 
     try {
       tidePrediction(mockConstituents)
-    } catch (e) {
+    } catch {
       stationCreated = false
     }
     expect(stationCreated).toBe(true)

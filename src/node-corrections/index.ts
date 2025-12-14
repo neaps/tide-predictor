@@ -1,7 +1,10 @@
 import { d2r, r2d } from '../astronomy/constants.js'
 import type { AstroData } from '../astronomy/index.js'
 
-export type NodeCorrectionFunction = (a: AstroData, ...args: any[]) => number
+export type NodeCorrectionFunction = (
+  a: AstroData,
+  ...args: unknown[]
+) => number
 
 export interface NodeCorrections {
   fUnity: () => number
