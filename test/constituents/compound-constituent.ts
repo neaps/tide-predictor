@@ -1,5 +1,4 @@
-import assert from 'assert'
-import closeTo from '../lib/close-to.js'
+import { describe, it, expect } from 'vitest'
 import compoundConstituent from '../../src/constituents/compound-constituent.js'
 import Constituent from '../../src/constituents/constituent.js'
 import astro from '../../src/astronomy/index.js'
@@ -25,22 +24,22 @@ const compoundTest = compoundConstituent('test compound', [
 ])
 describe('compund constituent', () => {
   it('it calculates compound coefficients', () => {
-    assert.deepStrictEqual(compoundTest.coefficients, [1, 0, 0, 0, 0, 0, 0])
+    expect(compoundTest.coefficients).toEqual([1, 0, 0, 0, 0, 0, 0])
   })
 
   it('it calculates speed', () => {
-    closeTo(compoundTest.speed(testAstro), 14.4920521208, 4)
+    expect(compoundTest.speed(testAstro)).toBeCloseTo(14.4920521208, 4)
   })
 
   it('it calculates value', () => {
-    closeTo(compoundTest.value(testAstro), 268.504355062, 4)
+    expect(compoundTest.value(testAstro)).toBeCloseTo(268.504355062, 4)
   })
 
   it('it returns u correctly', () => {
-    assert.ok(compoundTest.u(testAstro) === 0)
+    expect(compoundTest.u(testAstro)).toBe(0)
   })
 
   it('it returns f correctly', () => {
-    assert.ok(compoundTest.f(testAstro) === 1)
+    expect(compoundTest.f(testAstro)).toBe(1)
   })
 })

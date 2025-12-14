@@ -1,5 +1,4 @@
-import assert from 'assert'
-import closeTo from './lib/close-to.js'
+import { describe, it, expect } from 'vitest'
 import mockConstituents from './_mocks/constituents.js'
 import tidePrediction from '../src/index.js'
 
@@ -30,14 +29,14 @@ describe('Tidal station', () => {
     } catch (e) {
       stationCreated = false
     }
-    assert.ok(stationCreated)
+    expect(stationCreated).toBe(true)
 
     try {
       tidePrediction(mockConstituents)
     } catch (e) {
       stationCreated = false
     }
-    assert.ok(stationCreated)
+    expect(stationCreated).toBe(true)
   })
 
   it('it predicts the tides in a timeline', () => {
@@ -45,8 +44,9 @@ describe('Tidal station', () => {
       start: startDate,
       end: endDate
     })
-    closeTo(results[0].level, -1.34712509, 3)
-    closeTo(results.pop().level, 2.85263589, 3)
+    expect(results[0].level).toBeCloseTo(-1.34712509, 3)
+    const lastResult = results.pop()
+    expect(lastResult?.level).toBeCloseTo(2.85263589, 3)
   })
 
   it('it predicts the tidal extremes', () => {
@@ -54,7 +54,7 @@ describe('Tidal station', () => {
       start: startDate,
       end: endDate
     })
-    closeTo(results[0].level, -1.565033, 4)
+    expect(results[0].level).toBeCloseTo(-1.565033, 4)
   })
 
   it('it predicts the tidal extremes with high fidelity', () => {
@@ -63,14 +63,14 @@ describe('Tidal station', () => {
       end: endDate,
       timeFidelity: 60
     })
-    closeTo(results[0].level, -1.565389, 4)
+    expect(results[0].level).toBeCloseTo(-1.565389, 4)
   })
 
   it('it fetches a single water level', () => {
     const result = tidePrediction(mockConstituents).getWaterLevelAtTime({
       time: startDate
     })
-    closeTo(result.level, -1.34712509, 4)
+    expect(result.level).toBeCloseTo(-1.34712509, 4)
   })
 
   it('it adds offset phases', () => {
@@ -78,6 +78,6 @@ describe('Tidal station', () => {
       offset: 3
     }).getExtremesPrediction({ start: startDate, end: endDate })
 
-    closeTo(results[0].level, 1.43496678, 4)
+    expect(results[0].level).toBeCloseTo(1.43496678, 4)
   })
 })
