@@ -1,5 +1,4 @@
-import assert from 'assert'
-import closeTo from '../lib/close-to.js'
+import { describe, it, expect } from 'vitest'
 import constituent, {
   astronimicDoodsonNumber,
   astronomicSpeed,
@@ -23,45 +22,40 @@ const testConstituent = constituent('test', [1, 1, -1, 0, 0, 0, 1])
 
 describe('constituent', () => {
   it('it throws error if missing coefficients', () => {
-    let errorMessage = false
-    try {
-      const a = constituent('fail') // eslint-disable-line
-    } catch (error) {
-      errorMessage = error
-    }
-    assert.ok(
-      errorMessage.message === 'Coefficient must be defined for a constituent'
-    )
+    expect(() => {
+      // @ts-expect-error
+      constituent('fail')
+    }).toThrow('Coefficient must be defined for a constituent')
   })
 
   it('it fetches astronimic Doodson Number values', () => {
     const values = astronimicDoodsonNumber(testAstro)
-    assert.ok(values[0].value === testAstro['T+h-s'].value)
+    expect(values[0].value).toBe(testAstro['T+h-s'].value)
   })
 
   it('it fetches astronimic speed', () => {
     const values = astronomicSpeed(testAstro)
-    assert.ok(values[0] === testAstro['T+h-s'].speed)
+    expect(values[0]).toBe(testAstro['T+h-s'].speed)
   })
 
   it('it fetches astronimic values', () => {
     const values = astronomicValues(testAstro)
-    assert.ok(values[0] === testAstro['T+h-s'].value)
+    expect(values[0]).toBe(testAstro['T+h-s'].value)
   })
 
   it('it computes constituent value', () => {
-    closeTo(testConstituent.value(testAstro), 423.916666657, 4)
+    expect(testConstituent.value(testAstro)).toBeCloseTo(423.916666657, 4)
   })
 
   it('it computes constituent speed', () => {
-    assert.ok(testConstituent.speed(testAstro) === 15)
+    expect(testConstituent.speed(testAstro)).toBe(15)
   })
 
   it('it returns u correctly', () => {
-    assert.ok(testConstituent.u(testAstro) === 0)
+    expect(testConstituent.u(testAstro)).toBe(0)
   })
 
   it('it returns f correctly', () => {
-    assert.ok(testConstituent.f(testAstro) === 1)
+    expect(testConstituent.f(testAstro)).toBe(1)
   })
 })
