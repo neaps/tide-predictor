@@ -7,6 +7,7 @@ const endDate = new Date(1569966078 * 1000) // 2019-10-01
 
 describe('harmonics', () => {
   it('it checks constituents', () => {
+    // @ts-expect-error: Testing invalid input
     expect(() => harmonics({ harmonicConstituents: 'not array' })).toThrow(
       'Harmonic constituents are not an array'
     )
@@ -14,6 +15,7 @@ describe('harmonics', () => {
     expect(() => {
       harmonics({
         harmonicConstituents: [
+          // @ts-expect-error: Testing invalid input
           {
             description: 'Missing name property',
             amplitude: 0.43,
@@ -26,6 +28,8 @@ describe('harmonics', () => {
 
     expect(() => {
       harmonics({
+        phaseKey: 'phase_GMT',
+        offset: 0,
         harmonicConstituents: [
           {
             name: 'not a name',
@@ -49,9 +53,12 @@ describe('harmonics', () => {
 
   it('it checks start and end times', () => {
     const testHarmonics = harmonics({
+      phaseKey: 'phase_GMT',
+      offset: 0,
       harmonicConstituents: mockHarmonicConstituents
     })
     expect(() => {
+      // @ts-expect-error: Testing invalid input
       testHarmonics.setTimeSpan('lkjsdlf', 'sdfklj')
     }).toThrow('Invalid date format, should be a Date object, or timestamp')
 

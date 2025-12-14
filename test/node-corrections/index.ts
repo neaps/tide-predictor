@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import nodeCorrections from '../../src/node-corrections/index.js'
+import { AstroData } from '../../src/astronomy/index.js'
 
 const testItems = {
   i: {
@@ -14,7 +15,7 @@ const testItems = {
   xi: {
     value: 4
   }
-}
+} as AstroData
 
 describe('Node corrections', () => {
   it('have correct unity', () => {

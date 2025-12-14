@@ -23,7 +23,7 @@ const testConstituent = constituent('test', [1, 1, -1, 0, 0, 0, 1])
 describe('constituent', () => {
   it('it throws error if missing coefficients', () => {
     expect(() => {
-      // @ts-expect-error
+      // @ts-expect-error: Testing invalid input
       constituent('fail')
     }).toThrow('Coefficient must be defined for a constituent')
   })
