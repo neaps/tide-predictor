@@ -22,3 +22,9 @@ jobs:
         with:
           fail_ci_if_error: true
           files: ./coverage/coverage-final.json
+
+      - name: Upload NOAA summary
+        uses: actions/upload-artifact@v6
+        with:
+          name: noaa-benchmarks
+          path: noaa-benchmarks.csv
