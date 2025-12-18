@@ -11,6 +11,13 @@ jobs:
       - name: Install modules
         run: npm install
 
+      - name: Cache test data
+        id: test-cache
+        uses: actions/cache@v4
+        with:
+          path: .test-cache
+          key: ${{ runner.os }}-test-cache
+
       - name: Test build
         run: npm run build
 
