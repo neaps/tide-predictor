@@ -19,6 +19,7 @@
   ],
   "devDependencies": {
     "@eslint/js": "^9.39.2",
+    "@neaps/tide-stations": "github:neaps/tide-database",
     "@types/node": "^25.0.2",
     "@vitest/coverage-v8": "^4.0.15",
     "eslint": "^9.39.2",
