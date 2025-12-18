@@ -26,8 +26,10 @@ describe('NOAA benchmarks', () => {
     it(
       station.source.id,
       async () => {
-        const { harmonics, levels } = await getStation(station.source.id)
-        const tideStation = tidePrediction(harmonics.HarmonicConstituents)
+        const { levels } = await getStation(station.source.id)
+        const tideStation = tidePrediction(station.harmonic_constituents, {
+          phaseKey: 'phase_UTC'
+        })
 
         // No predictions available
         if (!levels.predictions) return
@@ -99,19 +101,11 @@ async function getStation(station: string) {
   try {
     return await fs.readFile(filePath, 'utf-8').then((data) => JSON.parse(data))
   } catch {
-    const [harmonics, levels, info] = await Promise.all([
-      makeRequest(
-        `https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations/${station}/harcon.json?units=metric`
-      ),
-      makeRequest(
-        `https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?date=recent&station=${station}&product=predictions&datum=MTL&time_zone=gmt&units=metric&format=json`
-      ),
-      makeRequest(
-        `https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations/${station}/datums.json?units=metric`
-      )
-    ])
+    const levels = await makeRequest(
+      `https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?date=recent&station=${station}&product=predictions&datum=MTL&time_zone=gmt&units=metric&format=json`
+    )
 
-    const data = { harmonics, levels, info }
+    const data = { levels }
     await fs.writeFile(filePath, JSON.stringify(data))
     return data
   }
