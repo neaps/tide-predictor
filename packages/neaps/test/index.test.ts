@@ -10,8 +10,8 @@ describe('getExtremesPrediction', () => {
     const { predictions } = getExtremesPrediction({
       lat: 26.7,
       lon: -80.05,
-      start: new Date('2025-12-17 00:00'),
-      end: new Date('2025-12-18 00:00'),
+      start: new Date('2025-12-17T05:00:00Z'),
+      end: new Date('2025-12-18T05:00:00Z'),
       timeFidelity: 6,
       datum: 'MLLW'
     })
@@ -31,8 +31,8 @@ describe('getExtremesPrediction', () => {
     test(`accepts position with ${Object.keys(position).join('/')}`, () => {
       const { predictions } = getExtremesPrediction({
         ...position,
-        start: new Date('2025-12-17 00:00'),
-        end: new Date('2025-12-18 00:00')
+        start: new Date('2025-12-17T05:00:00Z'),
+        end: new Date('2025-12-18T05:00:00Z')
       })
       expect(predictions.length).toBe(4)
     })
@@ -50,8 +50,8 @@ describe('nearestStation', () => {
   test('can return extremes from station', () => {
     const station = nearestStation({ lat: 26.7, lon: -80.05 })
 
-    const start = new Date('2025-12-17 00:00')
-    const end = new Date('2025-12-18 00:00')
+    const start = new Date('2025-12-17T05:00:00Z')
+    const end = new Date('2025-12-18T05:00:00Z')
 
     const { predictions } = station.getExtremesPrediction({
       start,

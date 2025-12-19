@@ -26,20 +26,20 @@ jobs:
         id: test-cache
         uses: actions/cache@v4
         with:
-          path: packages/tide-predictor/.test-cache
+          path: .test-cache
           key: ${{ runner.os }}-test-cache
 
       - name: Test build
         run: npm run build:all
 
       - name: Test
-        run: npm run coverage:all
+        run: npm run coverage
 
       - name: Report coverage
         uses: codecov/codecov-action@v5
         with:
           fail_ci_if_error: true
-          files: ./coverage/coverage-final.json,./packages/*/coverage/coverage-final.json
+          files: ./coverage/coverage-final.json
 
       - name: Upload NOAA summary
         uses: actions/upload-artifact@v6

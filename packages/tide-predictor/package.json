@@ -20,9 +20,6 @@
   "devDependencies": {},
   "scripts": {
     "build": "tsdown",
-    "test": "vitest",
-    "coverage": "vitest run --coverage",
-    "ci": "run-s lint build coverage",
     "prepare": "npm run build"
   }
 }

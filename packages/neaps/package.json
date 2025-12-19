@@ -1,0 +1,29 @@
+{
+  "name": "neaps",
+  "version": "0.1.0",
+  "description": "Tide predictions",
+  "keywords": [
+    "tides",
+    "harmonics"
+  ],
+  "homepage": "https://github.com/neaps/tide-predictor#readme",
+  "bugs": {
+    "url": "https://github.com/neaps/tide-predictor/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/neaps/tide-predictor.git"
+  },
+  "license": "MIT",
+  "author": "Brandon Keepers <brandon@openwaters.io>",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "tsdown"
+  },
+  "dependencies": {
+    "@neaps/tide-predictor": "^0.1.1",
+    "@neaps/tide-stations": "github:neaps/tide-database",
+    "geolib": "^3.3.4"
+  }
+}
