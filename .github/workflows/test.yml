@@ -3,6 +3,17 @@ on:
   - push
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install modules
+        run: npm install
+
+      - name: Lint code
+        run: npm run lint
+
   test:
     runs-on: ubuntu-latest
     steps:
@@ -19,16 +30,16 @@ jobs:
           key: ${{ runner.os }}-test-cache
 
       - name: Test build
-        run: npm run build
+        run: npm run build:all
 
       - name: Test
-        run: npm run ci
+        run: npm run coverage:all
 
       - name: Report coverage
         uses: codecov/codecov-action@v5
         with:
           fail_ci_if_error: true
-          files: ./coverage/coverage-final.json
+          files: ./coverage/coverage-final.json,./packages/*/coverage/coverage-final.json
 
       - name: Upload NOAA summary
         uses: actions/upload-artifact@v6

@@ -11,7 +11,7 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
-      "require": "./dist/index.umd.cjs"
+      "require": "./dist/index.cjs"
     }
   },
   "files": [
@@ -19,11 +19,8 @@
   ],
   "devDependencies": {},
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "build": "tsdown",
     "test": "vitest",
-    "lint": "eslint && prettier --check .",
-    "format": "prettier --write .",
     "coverage": "vitest run --coverage",
     "ci": "run-s lint build coverage",
     "prepare": "npm run build"
