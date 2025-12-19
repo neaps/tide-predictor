@@ -15,7 +15,7 @@ process.env.TZ = 'UTC'
 
 describe('getExtremesPrediction', () => {
   test('gets extremes from nearest station', () => {
-    const extremes = getExtremesPrediction({
+    const prediction = getExtremesPrediction({
       lat: 26.7,
       lon: -80.05,
       start: new Date('2025-12-18T00:00:00-05:00'),
@@ -24,16 +24,16 @@ describe('getExtremesPrediction', () => {
       datum: 'MLLW'
     })
 
-    expect(extremes.station.id).toEqual('us-fl-port-of-west-palm-beach')
-    expect(extremes.datum).toBe('MLLW')
+    expect(prediction.station.id).toEqual('us-fl-port-of-west-palm-beach')
+    expect(prediction.datum).toBe('MLLW')
 
-    const { predictions } = extremes
-    expect(predictions.length).toBe(4)
-    expect(predictions[0].time).toEqual(new Date('2025-12-18T05:29:48.000Z'))
-    expect(predictions[0].level).toBeCloseTo(0.02, 2)
-    expect(predictions[0].high).toBe(false)
-    expect(predictions[0].low).toBe(true)
-    expect(predictions[0].label).toBe('Low')
+    const { extremes } = prediction
+    expect(extremes.length).toBe(4)
+    expect(extremes[0].time).toEqual(new Date('2025-12-18T05:29:48.000Z'))
+    expect(extremes[0].level).toBeCloseTo(0.02, 2)
+    expect(extremes[0].high).toBe(false)
+    expect(extremes[0].low).toBe(true)
+    expect(extremes[0].label).toBe('Low')
   })
 })
 
@@ -54,17 +54,17 @@ describe('getTimelinePrediction', () => {
 
 describe('getWaterLevelAtTime', () => {
   test('gets water level at specific time from nearest station', () => {
-    const waterLevel = getWaterLevelAtTime({
+    const prediction = getWaterLevelAtTime({
       lat: 26.7,
       lon: -80.05,
       time: new Date('2025-12-19T00:30:00-05:00'),
       datum: 'MSL'
     })
 
-    expect(waterLevel.station.id).toEqual('us-fl-port-of-west-palm-beach')
-    expect(waterLevel.datum).toBe('MSL')
-    expect(waterLevel.time).toEqual(new Date('2025-12-19T05:30:00.000Z'))
-    expect(typeof waterLevel.level).toBe('number')
+    expect(prediction.station.id).toEqual('us-fl-port-of-west-palm-beach')
+    expect(prediction.datum).toBe('MSL')
+    expect(prediction.time).toEqual(new Date('2025-12-19T05:30:00.000Z'))
+    expect(typeof prediction.level).toBe('number')
   })
 })
 
@@ -78,7 +78,7 @@ describe('for a specific station', () => {
       const start = new Date('2025-12-17T00:00:00-05:00')
       const end = new Date('2025-12-18T05:00:00-05:00')
 
-      const { predictions } = station.getExtremesPrediction({
+      const { extremes: predictions } = station.getExtremesPrediction({
         start,
         end,
         timeFidelity: 6,
@@ -121,9 +121,9 @@ describe('for a specific station', () => {
 describe('nearestStation', () => {
   test('finds the nearest station', () => {
     const station = nearestStation({ lat: 26.7, lon: -80.05 })
-    expect(station.metadata.source.id).toBe('8722588')
-    expect(station.metadata.latitude).toBeCloseTo(26.77)
-    expect(station.metadata.longitude).toBeCloseTo(-80.0517)
+    expect(station.source.id).toBe('8722588')
+    expect(station.latitude).toBeCloseTo(26.77)
+    expect(station.longitude).toBeCloseTo(-80.0517)
   })
   ;[
     { lat: 26.7, lon: -80.05 },
@@ -132,7 +132,7 @@ describe('nearestStation', () => {
   ].forEach((position) => {
     test(`finds station with ${Object.keys(position).join('/')}`, () => {
       const station = nearestStation(position)
-      expect(station.metadata.id).toEqual('us-fl-port-of-west-palm-beach')
+      expect(station.id).toEqual('us-fl-port-of-west-palm-beach')
     })
   })
 })
@@ -145,14 +145,14 @@ describe('findStation', () => {
   test('finds station by id', () => {
     const station = findStation('us-fl-ankona-indian-river')
     expect(station).toBeDefined()
-    expect(station.metadata.id).toBe('us-fl-ankona-indian-river')
+    expect(station.id).toBe('us-fl-ankona-indian-river')
     expect(station.getExtremesPrediction).toBeDefined()
   })
 
   test('finds station by source id', () => {
     const station = findStation('8443970')
     expect(station).toBeDefined()
-    expect(station.metadata.id).toBe('us-ma-boston')
+    expect(station.id).toBe('us-ma-boston')
     expect(station.getExtremesPrediction).toBeDefined()
   })
 })
@@ -213,6 +213,6 @@ describe('datum', () => {
     })
 
     expect(extremes.datum).toBeUndefined()
-    expect(extremes.predictions.length).toBeGreaterThan(0)
+    expect(extremes.extremes.length).toBeGreaterThan(0)
   })
 })

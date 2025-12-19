@@ -94,48 +94,48 @@ export function findStation(query: string) {
   return useStation(found)
 }
 
-export function useStation(metadata: Station, distance?: number) {
+export function useStation(station: Station, distance?: number) {
   // Use MLLW as the default datum if available
-  const defaultDatum = 'MLLW' in metadata.datums ? 'MLLW' : undefined
+  const defaultDatum = 'MLLW' in station.datums ? 'MLLW' : undefined
 
   function getPredictor({ datum = defaultDatum }: DatumOption = {}) {
     let offset = 0
 
     if (datum) {
-      const datumOffset = metadata.datums?.[datum]
-      const mslOffset = metadata.datums?.['MSL']
+      const datumOffset = station.datums?.[datum]
+      const mslOffset = station.datums?.['MSL']
 
       if (!datumOffset) {
         throw new Error(
-          `Station ${metadata.id} missing ${datum} datum. Available datums: ${Object.keys(metadata.datums || {}).join(', ')}`
+          `Station ${station.id} missing ${datum} datum. Available datums: ${Object.keys(station.datums || {}).join(', ')}`
         )
       }
 
       if (!mslOffset) {
         throw new Error(
-          `Station ${metadata.id} missing MSL datum, so predictions can't be given in ${datum}.`
+          `Station ${station.id} missing MSL datum, so predictions can't be given in ${datum}.`
         )
       }
 
       offset = mslOffset - datumOffset
     }
 
-    return tidePredictor(metadata.harmonic_constituents, {
+    return tidePredictor(station.harmonic_constituents, {
       phaseKey: 'phase_UTC',
       offset
     })
   }
 
   return {
-    metadata,
+    ...station,
     distance,
     defaultDatum,
     getExtremesPrediction({ datum = defaultDatum, ...input }: ExtremesOptions) {
       return {
         datum,
         distance,
-        station: metadata,
-        predictions: getPredictor({ datum }).getExtremesPrediction(input)
+        station,
+        extremes: getPredictor({ datum }).getExtremesPrediction(input)
       }
     },
 
@@ -145,7 +145,7 @@ export function useStation(metadata: Station, distance?: number) {
     }: TimelineOptions) {
       return {
         datum,
-        station: metadata,
+        station,
         timeline: getPredictor({ datum }).getTimelinePrediction(params)
       }
     },
@@ -153,7 +153,7 @@ export function useStation(metadata: Station, distance?: number) {
     getWaterLevelAtTime({ time, datum = defaultDatum }: WaterLevelOptions) {
       return {
         datum,
-        station: metadata,
+        station,
         ...getPredictor({ datum }).getWaterLevelAtTime({ time })
       }
     }
