@@ -1,12 +1,19 @@
 import { getDistance } from 'geolib'
 import stations, { type Station } from '@neaps/tide-stations'
-import tidePredictor, { type ExtremesInput } from '@neaps/tide-predictor'
+import tidePredictor, {
+  type TimeSpan,
+  type ExtremesInput
+} from '@neaps/tide-predictor'
 import type { GeolibInputCoordinates } from 'geolib/es/types'
 
-export type ExtremesOptions = ExtremesInput & {
+type DatumOption = {
   /** Datum to return predictions in. Defaults to 'MLLW' if available for the nearest station. */
   datum?: string
 }
+
+export type ExtremesOptions = ExtremesInput & DatumOption
+export type TimelineOptions = TimeSpan & DatumOption
+export type WaterLevelOptions = { time: Date } & DatumOption
 
 /**
  * Get extremes prediction using the nearest station to the given position.
@@ -30,6 +37,24 @@ export function getExtremesPrediction(
 }
 
 /**
+ * Get timeline prediction using the nearest station to the given position.
+ */
+export function getTimelinePrediction(
+  options: GeolibInputCoordinates & TimelineOptions
+) {
+  return nearestStation(options).getTimelinePrediction(options)
+}
+
+/**
+ * Get water level at a specific time using the nearest station to the given position.
+ */
+export function getWaterLevelAtTime(
+  options: GeolibInputCoordinates & WaterLevelOptions
+) {
+  return nearestStation(options).getWaterLevelAtTime(options)
+}
+
+/**
  * Find the nearest station to the given position.
  */
 export function nearestStation(position: GeolibInputCoordinates) {
@@ -37,7 +62,8 @@ export function nearestStation(position: GeolibInputCoordinates) {
 }
 
 /**
- * Find stations closest to the given position.
+ * Find stations near the given position.
+ * @param limit Maximum number of stations to return (default: 10)
  */
 export function stationsNear(position: GeolibInputCoordinates, limit = 10) {
   return stations
@@ -48,7 +74,7 @@ export function stationsNear(position: GeolibInputCoordinates, limit = 10) {
 }
 
 /**
- * Find a station by its ID or source ID.
+ * Find a specific station by its ID or source ID.
  */
 export function findStation(query: string) {
   const searches = [
@@ -72,41 +98,63 @@ export function useStation(metadata: Station, distance?: number) {
   // Use MLLW as the default datum if available
   const defaultDatum = 'MLLW' in metadata.datums ? 'MLLW' : undefined
 
+  function getPredictor({ datum = defaultDatum }: DatumOption = {}) {
+    let offset = 0
+
+    if (datum) {
+      const datumOffset = metadata.datums?.[datum]
+      const mslOffset = metadata.datums?.['MSL']
+
+      if (!datumOffset) {
+        throw new Error(
+          `Station ${metadata.id} missing ${datum} datum. Available datums: ${Object.keys(metadata.datums || {}).join(', ')}`
+        )
+      }
+
+      if (!mslOffset) {
+        throw new Error(
+          `Station ${metadata.id} missing MSL datum, so predictions can't be given in ${datum}.`
+        )
+      }
+
+      offset = mslOffset - datumOffset
+    }
+
+    return tidePredictor(metadata.harmonic_constituents, {
+      phaseKey: 'phase_UTC',
+      offset
+    })
+  }
+
   return {
     metadata,
     distance,
+    defaultDatum,
     getExtremesPrediction({ datum = defaultDatum, ...input }: ExtremesOptions) {
-      let offset = 0
-
-      if (datum) {
-        const datumOffset = metadata.datums?.[datum]
-        const mslOffset = metadata.datums?.['MSL']
-
-        if (!datumOffset) {
-          throw new Error(
-            `Station ${metadata.id} missing ${datum} datum. Available datums: ${Object.keys(metadata.datums || {}).join(', ')}`
-          )
-        }
-
-        if (!mslOffset) {
-          throw new Error(
-            `Station ${metadata.id} missing MSL datum, so predictions can't be given in ${datum}.`
-          )
-        }
-
-        offset = mslOffset - datumOffset
-      }
-
-      const predictor = tidePredictor(metadata.harmonic_constituents, {
-        phaseKey: 'phase_UTC',
-        offset
-      })
-
       return {
         datum,
         distance,
         station: metadata,
-        predictions: predictor.getExtremesPrediction(input)
+        predictions: getPredictor({ datum }).getExtremesPrediction(input)
+      }
+    },
+
+    getTimelinePrediction({
+      datum = defaultDatum,
+      ...params
+    }: TimelineOptions) {
+      return {
+        datum,
+        station: metadata,
+        timeline: getPredictor({ datum }).getTimelinePrediction(params)
+      }
+    },
+
+    getWaterLevelAtTime({ time, datum = defaultDatum }: WaterLevelOptions) {
+      return {
+        datum,
+        station: metadata,
+        ...getPredictor({ datum }).getWaterLevelAtTime({ time })
       }
     }
   }
