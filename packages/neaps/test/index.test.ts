@@ -1,7 +1,9 @@
+import stations from '@neaps/tide-stations'
 import {
   getExtremesPrediction,
   nearestStation,
-  findStation
+  findStation,
+  useStation
 } from '../src/index.js'
 import { describe, test, expect } from 'vitest'
 
@@ -94,5 +96,65 @@ describe('findStation', () => {
     expect(station).toBeDefined()
     expect(station.metadata.id).toBe('us-ma-boston')
     expect(station.getExtremesPrediction).toBeDefined()
+  })
+})
+
+describe('datum', () => {
+  test('defaults to MLLW datum', () => {
+    const station = findStation('us-fl-ankona-indian-river')
+    const extremes = station.getExtremesPrediction({
+      start: new Date('2025-12-17T00:00:00Z'),
+      end: new Date('2025-12-18T00:00:00Z')
+    })
+    expect(extremes.datum).toBe('MLLW')
+  })
+
+  test('accepts datum option', () => {
+    const station = findStation('us-fl-ankona-indian-river')
+    const extremes = station.getExtremesPrediction({
+      start: new Date('2025-12-17T00:00:00Z'),
+      end: new Date('2025-12-18T00:00:00Z'),
+      datum: 'NAVD88'
+    })
+    expect(extremes.datum).toBe('NAVD88')
+  })
+
+  test('throws error for unavailable datum', () => {
+    const station = findStation('us-ma-boston')
+    expect(() => {
+      station.getExtremesPrediction({
+        start: new Date('2025-12-17T00:00:00Z'),
+        end: new Date('2025-12-18T00:00:00Z'),
+        datum: 'UNKNOWN_DATUM'
+      })
+    }).toThrow(/missing UNKNOWN_DATUM/)
+  })
+
+  test('throws error when missing MSL datum', () => {
+    // Find station without MSL but with other datums
+    const station = stations.find(
+      (s) => !('MSL' in s.datums) && Object.keys(s.datums).length > 0
+    )
+    if (!station) expect.fail('No station without MSL datum found')
+    expect(() => {
+      useStation(station).getExtremesPrediction({
+        start: new Date('2025-12-17T00:00:00Z'),
+        end: new Date('2025-12-18T00:00:00Z'),
+        datum: 'NAVD88'
+      })
+    }).toThrow(/missing MSL/)
+  })
+
+  test('does not apply datums when non available', () => {
+    // Find a station with no datums
+    const station = stations.find((s) => Object.entries(s.datums).length === 0)
+    if (!station) expect.fail('No station without datums found')
+    const extremes = useStation(station).getExtremesPrediction({
+      start: new Date('2025-12-17T00:00:00Z'),
+      end: new Date('2025-12-18T00:00:00Z')
+    })
+
+    expect(extremes.datum).toBeUndefined()
+    expect(extremes.predictions.length).toBeGreaterThan(0)
   })
 })

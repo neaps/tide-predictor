@@ -44,7 +44,7 @@ export function stationsNear(position: GeolibInputCoordinates, limit = 10) {
     .map((station) => ({ station, distance: getDistance(position, station) }))
     .sort((a, b) => a.distance - b.distance)
     .slice(0, limit)
-    .map(({ station, distance }) => createStation(station, distance))
+    .map(({ station, distance }) => useStation(station, distance))
 }
 
 /**
@@ -65,10 +65,10 @@ export function findStation(query: string) {
 
   if (!found) throw new Error(`Station not found: ${query}`)
 
-  return createStation(found)
+  return useStation(found)
 }
 
-function createStation(metadata: Station, distance?: number) {
+export function useStation(metadata: Station, distance?: number) {
   // Use MLLW as the default datum if available
   const defaultDatum = 'MLLW' in metadata.datums ? 'MLLW' : undefined
 
@@ -82,7 +82,7 @@ function createStation(metadata: Station, distance?: number) {
         const datumOffset = metadata.datums?.[datum]
         const mslOffset = metadata.datums?.['MSL']
 
-        if (!datum) {
+        if (!datumOffset) {
           throw new Error(
             `Station ${metadata.id} missing ${datum} datum. Available datums: ${Object.keys(metadata.datums || {}).join(', ')}`
           )
