@@ -13,7 +13,7 @@ jobs:
 
       - name: Cache test data
         id: test-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: .test-cache
           key: ${{ runner.os }}-test-cache
