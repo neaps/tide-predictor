@@ -20,10 +20,14 @@
   "type": "module",
   "main": "src/index.ts",
   "scripts": {
-    "build": "tsdown"
+    "build": "tsdown",
+    "prepack": "npm run build"
   },
+  "files": [
+    "dist"
+  ],
   "dependencies": {
-    "@neaps/tide-predictor": "^0.1.1",
+    "@neaps/tide-predictor": "^0.2.0",
     "@neaps/tide-database": "^0.0",
     "geolib": "^3.3.4"
   }

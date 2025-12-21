@@ -1,6 +1,6 @@
 {
   "name": "@neaps/tide-predictor",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Tide predictor",
   "repository": {
     "type": "git",
@@ -24,6 +24,6 @@
   "devDependencies": {},
   "scripts": {
     "build": "tsdown",
-    "prepare": "npm run build"
+    "prepack": "npm run build"
   }
 }
