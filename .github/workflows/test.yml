@@ -3,6 +3,17 @@ on:
   - push
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install modules
+        run: npm install
+
+      - name: Lint code
+        run: npm run lint
+
   test:
     runs-on: ubuntu-latest
     steps:
@@ -19,10 +30,10 @@ jobs:
           key: ${{ runner.os }}-test-cache
 
       - name: Test build
-        run: npm run build
+        run: npm run build:all
 
       - name: Test
-        run: npm run ci
+        run: npm run coverage
 
       - name: Report coverage
         uses: codecov/codecov-action@v5

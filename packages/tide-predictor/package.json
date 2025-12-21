@@ -1,0 +1,25 @@
+{
+  "name": "@neaps/tide-predictor",
+  "version": "0.1.1",
+  "description": "Tide predictor",
+  "repository": "https://github.com/neaps/tide-predictor",
+  "author": "Kevin Miller <keveemiller@gmail.com>",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/index.umd.cjs",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {},
+  "scripts": {
+    "build": "tsdown",
+    "prepare": "npm run build"
+  }
+}

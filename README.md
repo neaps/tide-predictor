@@ -1,204 +1,166 @@
-![example workflow](https://github.com/neaps/tide-predictor/actions/workflows/test.yml/badge.svg) [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fneaps%2Ftide-predictor.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fneaps%2Ftide-predictor?ref=badge_shield) [![codecov](https://codecov.io/gh/neaps/tide-predictor/branch/main/graph/badge.svg?token=KEJK5NQR5H)](https://codecov.io/gh/neaps/tide-predictor)
+![example workflow](https://github.com/neaps/tide-predictor/actions/workflows/test.yml/badge.svg) [![codecov](https://codecov.io/gh/neaps/tide-predictor/branch/main/graph/badge.svg?token=KEJK5NQR5H)](https://codecov.io/gh/neaps/tide-predictor)
 
-# Tide predictor
+# Neaps
 
-A tide harmonic calculator written in TypeScript.
+A tide prediction engine written in TypeScript.
 
-<!-- START DOCS -->
-
-## 🚨Warning🚨
-
-**Do not use calculations from this project for navigation, or depend on them in any situation where inaccuracies could result in harm to a person or property.**
-
-Tide predictions are only as good as the harmonics data available, and these can be inconsistent and vary widely based on the accuracy of the source data and local conditions.
-
-The tide predictions do not factor events such as storm surge, wind waves, uplift, tsunamis, or sadly, climate change. 😢
+> [!CAUTION]
+> **Not for navigational use**
+>
+> Do not use calculations from this project for navigation, or depend on them in any situation where inaccuracies could result in harm to a person or property. Tide predictions are only as good as the harmonics data available, and these can be inconsistent and vary widely based on the accuracy of the source data and local conditions. The tide predictions do not factor events such as storm surge, wind waves, uplift, tsunamis, or sadly, climate change. 😢
 
 # Installation
 
-```
-#npm
-npm install @neaps/tide-predictor
-
-# yarn
-yarn add @neaps/tide-predictor
-
+```sh
+npm install neaps
 ```
 
 # Usage
 
-Neaps requires that you [provide your own tidal harmonics information](#constituent-object) to generate a prediction.
-
-Because many constituent datum come with multiple phases (in the case of NOAA's data, they are `phase_local` and `phase_GMT`), there is a `phaseKey` option for choosing which to use.
-
-Note that, for now, Neaps **will not** do any timezone corrections. This means you need to pass date objects that align with whatever timezone the constituents are in.
+## Tide Extremes Prediction
 
 ```typescript
-import TidePredictor from '@neaps/tide-predictor'
+import { getExtremesPrediction } from 'neaps'
 
-const constituents = [
-  {
-    phase_GMT: 98.7,
-    phase_local: 313.7,
-    amplitude: 2.687,
-    name: 'M2',
-    speed: 28.984104
-  }
-  //....there are usually many, read the docs
-]
-
-const highLowTides = TidePredictor(constituents, {
-  phaseKey: 'phase_GMT'
-}).getExtremesPrediction({
-  start: new Date('2019-01-01'),
-  end: new Date('2019-01-10')
+const prediction = getExtremesPrediction({
+  latitude: 26.7, // or `lat`
+  longitude: -80.05, // or `lng` or `lon`
+  start: new Date('2025-12-17'),
+  end: new Date('2025-12-18'),
+  datum: 'MLLW' // optional, defaults to MLLW if available
 })
+
+console.log(extremes)
+// {
+//   datum: 'MLLW',
+//   station: {
+//     id: '8723214',
+//     name: 'Fort Lauderdale, FL',
+//     // ...
+//   },
+//   distance: 12.3,
+//   extremes: [
+//     { time: 2019-01-01T03:12:00.000Z, level: 3.2, high: true, low: false, label: 'High' },
+//     { time: 2019-01-01T09:45:00.000Z, level: 0.5, high: false, low: true, label: 'Low' },
+//   ]
+// }
 ```
 
-## Tide prediction object
-
-Calling `tidePredictor` will generate a new tide prediction object. It accepts the following arguments:
-
-- `constituents` - An array of [constituent objects](#constituent-object)
-- `options` - An object with one of:
-  - `phaseKey` - The name of the parameter within constituents that is considered the "phase"
-  - `offset` - A value to add to **all** values predicted. This is useful if you want to, for example, offset tides by mean high water, etc.
-
-### Tide prediction methods
-
-The returned tide prediction object has various methods. All of these return regular JavaScript objects.
-
-#### High and low tide - `getExtremesPrediction`
-
-Returns the predicted high and low tides between a start and end date.
+## Get Timeline Prediction
 
 ```typescript
-const startDate = new Date()
-const endDate = new Date(startDate + 3 * 24 * 60 * 60 * 1000)
-const tides = TidePredictor(constituents).getExtremesPrediction({
-  start: startDate,
-  end: endDate,
-  labels: {
-    //optional human-readable labels
-    high: 'High tide',
-    low: 'Low tide'
-  }
+import { getTimelinePrediction } from 'neaps'
+
+const timeline = getTimelinePrediction({
+  lat: 26.7,
+  lon: -80.05,
+  start: new Date('2025-12-19T00:00:00-05:00'),
+  end: new Date('2025-12-19T01:00:00-05:00')
 })
+
+console.log(timeline)
+// {
+//   datum: 'MLLW',
+//   station: {
+//     id: 'us-fl-port-of-west-palm-beach',
+//     name: 'Port of West Palm Beach',
+//     // ...
+//   },
+//   timeline: [
+//     { time: 2025-12-19T05:00:00.000Z, hour: 0, level: 0.07269280868130157 },
+//     { time: 2025-12-19T05:10:00.000Z, hour: 0.16666666666666666, level: 0.054517202710722634 },
+//     { time: 2025-12-19T05:20:00.000Z, hour: 0.3333333333333333, level: 0.0387568479105333 },
+//     { time: 2025-12-19T05:30:00.000Z, hour: 0.5, level: 0.025594147655661648 },
+//     { time: 2025-12-19T05:40:00.000Z, hour: 0.6666666666666666, level: 0.015185512178782279 },
+//     { time: 2025-12-19T05:50:00.000Z, hour: 0.8333333333333334, level: 0.00765764296563648 },
+//     { time: 2025-12-19T06:00:00.000Z, hour: 1, level: 0.0031046829237997287 }
+//   ]
+// }
 ```
 
-If you want predictions for a subservient station, first set the reference station in the prediction, and pass the [subservient station offests](#subservient-station) to the `getExtremesPrediction` method:
+## Get Water Level at Specific Time
 
 ```typescript
-const tides = TidePredictor(constituents).getExtremesPrediction({
-  start: startDate,
-  end: endDate,
-  offset: {
-    height_offset: {
-      high: 1,
-      low: 2
-    },
-    time_offset: {
-      high: 1,
-      low: 2
-    }
-  }
+import { getWaterLevelAtTime } from 'neaps'
+
+const prediction = getWaterLevelAtTime({
+  lat: 26.7,
+  lon: -80.05,
+  time: new Date('2025-12-19T00:30:00-05:00'),
+  datum: 'MSL'
 })
+
+console.log(prediction)
+// {
+//   datum: 'MSL',
+//   station: {
+//     id: 'us-fl-port-of-west-palm-beach',
+//     name: 'Port of West Palm Beach',
+//     // ...
+//   },
+//   time: 2025-12-19T05:30:00.000Z,
+//   hour: 0,
+//   level: -0.43840585181640557
+// }
 ```
 
-##### Options
+## Finding stations
 
-The `getExtremesPrediction` accepts a single object with options:
+Neaps uses [@neaps/tide-database](https://github.com/neaps/tide-database) to find station data. You can find stations by location or ID.
 
-- `start` - **Required ** - The date & time to start looking for high and low tides
-- `end` - **Required ** - The date & time to stop looking for high and low tides
-- `timeFidelity` - Number of seconds accurate the time should be, defaults to 10 minutes.
-- `labels` - An object to define the human-readable labels for the tides
-  - `high` - The human-readable label for high tides
-  - `low` - The human-readable label for low tides
-- `offset` - The offset values if these predictions are for a [subservient station](#subservient-station)
-
-##### Return values
-
-High and low tides are returned as arrays of objects:
-
-- `time` - A Javascript Date object of the time
-- `level` - The water level
-- `high` - **true** if this is a high tide, **false** if not
-- `low` - **true** if this is a low tide, **false** if not
-- `label` - The human-readable label (by default, 'High' or 'Low')
-
-#### Water level at time - `getWaterLevelAtTime`
-
-Gives you the predicted water level at a specific time.
+### Nearest Station
 
 ```typescript
-const waterLevel = TidePredictor(constituents).getWaterLevelAtTime({
-  time: new Date()
+import { nearestStation } from 'neaps'
+
+const station = nearestStation({ lat: 26.7, lon: -80.05 })
+console.log(`${station.name} (${station.source.id})`) // Fort Lauderdale, FL (8722588)
+```
+
+Once you've found a station, you can get predictions, timeline, or water level at a specific time for that station:
+
+```typescript
+// Get extremes prediction for the nearest station
+station.getExtremesPrediction({
+  start: new Date('2025-12-17'),
+  end: new Date('2025-12-18')
 })
+
+// Get timeline prediction for the nearest station
+station.getTimelinePrediction({
+  start: new Date('2025-12-19'),
+  end: new Date('2025-12-20')
+})
+
+// Get timeline prediction for the nearest station
+station.getWaterLevelAt({ time: new Date('2025-12-19T00:30:00-00:00') })
 ```
 
-##### Options
+### List Nearby Stations
 
-The `getWaterLevelAtTime` accepts a single object of options:
+```typescript
+import { stationsNear } from 'neaps'
 
-- `time` - A Javascript date object of the time for the prediction
-
-##### Return values
-
-A single object is returned with:
-
-- `time` - A Javascript date object
-- `level` - The predicted water level
-
-## Data definitions
-
-### <a name="constituent-object"></a>Constituent definition
-
-Tidal constituents should be an array of objects with at least:
-
-- `name` - **string** - The NOAA constituent name, all upper-case.
-- `amplitude` - **float** - The constituent amplitude
-- `[phase]` - **float** - The phase of the constituent. Because several services provide different phase values, you can choose which one to use when building your tide prediction.
-
-```
-[
-  {
-    name: '[constituent name]',
-    amplitude: 1.3,
-    phase: 1.33
-  },
-  {
-    name: '[constituent name 2]',
-    amplitude: 1.3,
-    phase: 1.33
-  }
-]
+stationsNear({ latitude: 45.6, longitude: -122.7 }, 5).forEach((s) => {
+  console.log(
+    `${s.name} (${s.source.id}) - ${(s.distance / 1000).toFixed(2)} km away`
+  )
+})
+// Vancouver (9440083) - 3.49 km away
+// Portland Morrison Street Bridge (9439221) - 10.24 km away
+// KNAPP(THORNES)LNDG, WILLOW BAR (9440171) - 16.34 km away
+// Rocky Point (9439189) - 16.93 km away
+// WASHOUGAL, COLUMBIA RIVER (9440047) - 24.89 km away
 ```
 
-### <a name="subservient-station"></a>Subservient station definitions
+### Find station by ID
 
-Some stations do not have defined harmonic data, but do have published offets and a reference station. These include the offsets in time or amplitude of the high and low tides. Subservient station definitions are objects that include:
+```typescript
+import { findStation } from 'neaps'
 
-- `height_offset` - **object** - An object of height offets, in the same units as the reference station.
-  - `high` - **float** - The offset to be added to high tide (can be negative)
-  - `low` - **float** - The offset to be added to low tide (can be negative)
-- `time_offset` - **object** - An object of time offets, in number of minutes
-  - `high` - **float** - The number of minutes to add to high tide times (can be negative)
-  - `low` - **float** - The number of minutes to add to low tide times (can be negative)
+// Find station by Neaps ID
+findStation('us-wa-seattle') // Seattle
 
+// Find station by source ID (e.g. NOAA)
+findStation('9440083') // Vancouver
 ```
-{
-  height_offset: {
-    high: 1,
-    low: 2
-  },
-  time_offset: {
-    high: 1,
-    low: 2
-  }
-}
-```
-
-# Shout out
-
-All the really hard math is based on the excellent [Xtide](https://flaterco.com/xtide) and [pytides](https://github.com/sam-cox/pytides).
