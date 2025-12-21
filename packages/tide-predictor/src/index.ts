@@ -1,7 +1,11 @@
 import harmonics from './harmonics/index.js'
 import { default as constituents } from './constituents/index.js'
 import type { HarmonicConstituent } from './harmonics/index.js'
-import type { TimelinePoint, Extreme } from './harmonics/prediction.js'
+import type {
+  TimelinePoint,
+  Extreme,
+  ExtremeOffsets
+} from './harmonics/prediction.js'
 
 export interface TidePredictionOptions {
   phaseKey?: string
@@ -18,16 +22,7 @@ export interface ExtremesInput extends TimeSpan {
     high?: string
     low?: string
   }
-  offsets?: {
-    height_offset?: {
-      high?: number
-      low?: number
-    }
-    time_offset?: {
-      high?: number
-      low?: number
-    }
-  }
+  offsets?: ExtremeOffsets
   timeFidelity?: number
 }
 

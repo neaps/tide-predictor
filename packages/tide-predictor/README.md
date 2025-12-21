@@ -167,20 +167,20 @@ Tidal constituents should be an array of objects with at least:
 
 Some stations do not have defined harmonic data, but do have published offets and a reference station. These include the offsets in time or amplitude of the high and low tides. Subservient station definitions are objects that include:
 
-- `height_offset` - **object** - An object of height offets, in the same units as the reference station.
+- `height` - **object** - An object of height offets, in the same units as the reference station.
   - `high` - **float** - The offset to be added to high tide (can be negative)
   - `low` - **float** - The offset to be added to low tide (can be negative)
-- `time_offset` - **object** - An object of time offets, in number of minutes
+- `time` - **object** - An object of time offets, in number of minutes
   - `high` - **float** - The number of minutes to add to high tide times (can be negative)
   - `low` - **float** - The number of minutes to add to low tide times (can be negative)
 
 ```
 {
-  height_offset: {
+  height: {
     high: 1,
     low: 2
   },
-  time_offset: {
+  time: {
     high: 1,
     low: 2
   }

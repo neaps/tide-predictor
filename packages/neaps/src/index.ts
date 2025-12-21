@@ -1,5 +1,5 @@
 import { getDistance } from 'geolib'
-import stations, { type Station } from '@neaps/tide-stations'
+import stations, { type Station } from '@neaps/tide-database'
 import tidePredictor, {
   type TimeSpan,
   type ExtremesInput
@@ -95,23 +95,30 @@ export function findStation(query: string) {
 }
 
 export function useStation(station: Station, distance?: number) {
+  // If subordinate station, use the reference station for datums and constituents
+  let reference = station
+  if (station.type === 'subordinate') {
+    reference = findStation(station.offsets?.reference || '')
+  }
+  const { datums, harmonic_constituents } = reference
+
   // Use MLLW as the default datum if available
-  const defaultDatum = 'MLLW' in station.datums ? 'MLLW' : undefined
+  const defaultDatum = 'MLLW' in datums ? 'MLLW' : undefined
 
   function getPredictor({ datum = defaultDatum }: DatumOption = {}) {
     let offset = 0
 
     if (datum) {
-      const datumOffset = station.datums?.[datum]
-      const mslOffset = station.datums?.['MSL']
+      const datumOffset = datums?.[datum]
+      const mslOffset = datums?.['MSL']
 
-      if (!datumOffset) {
+      if (typeof datumOffset !== 'number') {
         throw new Error(
-          `Station ${station.id} missing ${datum} datum. Available datums: ${Object.keys(station.datums || {}).join(', ')}`
+          `Station ${station.id} missing ${datum} datum. Available datums: ${Object.keys(datums || {}).join(', ')}`
         )
       }
 
-      if (!mslOffset) {
+      if (typeof mslOffset !== 'number') {
         throw new Error(
           `Station ${station.id} missing MSL datum, so predictions can't be given in ${datum}.`
         )
@@ -120,7 +127,7 @@ export function useStation(station: Station, distance?: number) {
       offset = mslOffset - datumOffset
     }
 
-    return tidePredictor(station.harmonic_constituents, {
+    return tidePredictor(harmonic_constituents, {
       phaseKey: 'phase_UTC',
       offset
     })
@@ -129,13 +136,18 @@ export function useStation(station: Station, distance?: number) {
   return {
     ...station,
     distance,
+    datums,
+    harmonic_constituents,
     defaultDatum,
     getExtremesPrediction({ datum = defaultDatum, ...input }: ExtremesOptions) {
       return {
         datum,
         distance,
         station,
-        extremes: getPredictor({ datum }).getExtremesPrediction(input)
+        extremes: getPredictor({ datum }).getExtremesPrediction({
+          ...input,
+          offsets: station.offsets
+        })
       }
     },
 
@@ -143,6 +155,12 @@ export function useStation(station: Station, distance?: number) {
       datum = defaultDatum,
       ...params
     }: TimelineOptions) {
+      if (station.type === 'subordinate') {
+        throw new Error(
+          `Timeline predictions are not supported for subordinate stations.`
+        )
+      }
+
       return {
         datum,
         station,
@@ -151,6 +169,12 @@ export function useStation(station: Station, distance?: number) {
     },
 
     getWaterLevelAtTime({ time, datum = defaultDatum }: WaterLevelOptions) {
+      if (station.type === 'subordinate') {
+        throw new Error(
+          `Water level predictions are not supported for subordinate stations.`
+        )
+      }
+
       return {
         datum,
         station,

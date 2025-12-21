@@ -1,7 +1,7 @@
 import { describe, it, expect, afterAll } from 'vitest'
 import fs from 'fs/promises'
 import tidePrediction from '../src/index.js'
-import db from '@neaps/tide-stations'
+import db from '@neaps/tide-database'
 import { createWriteStream } from 'fs'
 
 const noaa = db.filter((station) =>

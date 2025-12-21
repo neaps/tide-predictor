@@ -36,11 +36,12 @@ export interface Extreme {
 }
 
 export interface ExtremeOffsets {
-  height_offset?: {
+  height?: {
     high?: number
     low?: number
+    type?: 'fixed' | 'ratio'
   }
-  time_offset?: {
+  time?: {
     high?: number
     low?: number
   }
@@ -72,20 +73,29 @@ const addExtremesOffsets = (
   if (typeof offsets === 'undefined' || !offsets) {
     return extreme
   }
-  if (extreme.high && offsets.height_offset && offsets.height_offset.high) {
-    extreme.level *= offsets.height_offset.high
+
+  if (extreme.high && offsets.height?.high) {
+    if (offsets.height.type === 'fixed') {
+      extreme.level += offsets.height.high
+    } else {
+      extreme.level *= offsets.height.high
+    }
   }
-  if (extreme.low && offsets.height_offset && offsets.height_offset.low) {
-    extreme.level *= offsets.height_offset.low
+  if (extreme.low && offsets.height?.low) {
+    if (offsets.height.type === 'fixed') {
+      extreme.level += offsets.height.low
+    } else {
+      extreme.level *= offsets.height.low
+    }
   }
-  if (extreme.high && offsets.time_offset && offsets.time_offset.high) {
+  if (extreme.high && offsets.time?.high) {
     extreme.time = new Date(
-      extreme.time.getTime() + offsets.time_offset.high * 60 * 1000
+      extreme.time.getTime() + offsets.time.high * 60 * 1000
     )
   }
-  if (extreme.low && offsets.time_offset && offsets.time_offset.low) {
+  if (extreme.low && offsets.time?.low) {
     extreme.time = new Date(
-      extreme.time.getTime() + offsets.time_offset.low * 60 * 1000
+      extreme.time.getTime() + offsets.time.low * 60 * 1000
     )
   }
   return extreme
