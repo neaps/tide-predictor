@@ -144,6 +144,30 @@ describe('for a specific station', () => {
         })
       })
     })
+
+    describe('getTimelinePrediction', () => {
+      test('is not supported', () => {
+        expect(() =>
+          station.getTimelinePrediction({
+            start: new Date('2025-12-19T00:00:00Z'),
+            end: new Date('2025-12-19T01:00:00Z')
+          })
+        ).toThrow(
+          'Timeline predictions are not supported for subordinate stations'
+        )
+      })
+    })
+    describe('getWaterLevelAtTime', () => {
+      test('is not supported', () => {
+        expect(() =>
+          station.getWaterLevelAtTime({
+            time: new Date('2025-12-19T00:00:00Z')
+          })
+        ).toThrow(
+          'Water level predictions are not supported for subordinate stations'
+        )
+      })
+    })
   })
 
   describe('getTimelinePrediction', () => {
