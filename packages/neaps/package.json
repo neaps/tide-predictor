@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@neaps/tide-predictor": "^0.1.1",
-    "@neaps/tide-stations": "github:neaps/tide-database",
+    "@neaps/tide-database": "^0.0",
     "geolib": "^3.3.4"
   }
 }

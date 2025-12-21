@@ -1,11 +1,15 @@
 import { describe, it, expect, afterAll } from 'vitest'
 import fs from 'fs/promises'
 import tidePrediction from '../src/index.js'
-import db from '@neaps/tide-stations'
+import db from '@neaps/tide-database'
 import { createWriteStream } from 'fs'
 
-const noaa = db.filter((station) =>
-  station.source.source_url.includes('noaa.gov')
+const noaa = db.filter(
+  (station) =>
+    // TODO: Update this to test subordinate stations too.
+    // Need to switch from `getWaterLevelAtTime` to `getExtremesPrediction` and compare time/level.
+    station.type === 'reference' &&
+    station.source.source_url.includes('noaa.gov')
 )
 
 // Create a directory for test cache

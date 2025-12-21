@@ -3,8 +3,7 @@ import { resolve } from 'node:path'
 
 export default defineConfig({
   test: {
-    projects: ['packages/*'],
     environment: 'node',
-    setupFiles: [resolve(__dirname, './test/setup.ts')]
+    setupFiles: [resolve(__dirname, '../../test/setup.ts')]
   }
 })

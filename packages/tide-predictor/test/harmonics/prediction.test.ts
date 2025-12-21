@@ -1,7 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import harmonics from '../../src/harmonics/index.js'
+import harmonics, { ExtremeOffsets } from '../../src/harmonics/index.js'
 import mockHarmonicConstituents from '../_mocks/constituents.js'
-import mockSecondaryStation from '../_mocks/secondary-station.js'
 
 const startDate = new Date()
 startDate.setFullYear(2019)
@@ -104,15 +103,27 @@ describe('harmonic prediction', () => {
 })
 
 describe('Secondary stations', () => {
-  it('it can add offsets to secondary stations', () => {
-    const regularResults = harmonics({
-      harmonicConstituents: mockHarmonicConstituents,
-      phaseKey: 'phase_GMT',
-      offset: false
-    })
-      .setTimeSpan(startDate, extremesEndDate)
-      .prediction()
-      .getExtremesPrediction()
+  const regularResults = harmonics({
+    harmonicConstituents: mockHarmonicConstituents,
+    phaseKey: 'phase_GMT',
+    offset: false
+  })
+    .setTimeSpan(startDate, extremesEndDate)
+    .prediction()
+    .getExtremesPrediction()
+
+  it('it can add ratio offsets to secondary stations', () => {
+    const offsets: ExtremeOffsets = {
+      height: {
+        type: 'ratio',
+        high: 1.1,
+        low: 1.2
+      },
+      time: {
+        high: 1,
+        low: 2
+      }
+    }
 
     const offsetResults = harmonics({
       harmonicConstituents: mockHarmonicConstituents,
@@ -121,28 +132,70 @@ describe('Secondary stations', () => {
     })
       .setTimeSpan(startDate, extremesEndDate)
       .prediction()
-      .getExtremesPrediction({ offsets: mockSecondaryStation })
+      .getExtremesPrediction({ offsets })
 
     offsetResults.forEach((offsetResult, index) => {
       if (offsetResult.low) {
         expect(offsetResult.level).toBeCloseTo(
-          regularResults[index].level * mockSecondaryStation.height_offset.low,
+          regularResults[index].level * offsets.height!.low!,
           4
         )
         expect(offsetResult.time.getTime()).toBe(
-          regularResults[index].time.getTime() +
-            mockSecondaryStation.time_offset.low * 60 * 1000
+          regularResults[index].time.getTime() + offsets.time!.low! * 60 * 1000
         )
       }
       if (offsetResult.high) {
         expect(offsetResult.level).toBeCloseTo(
-          regularResults[index].level * mockSecondaryStation.height_offset.high,
+          regularResults[index].level * offsets.height!.high!,
           4
         )
 
         expect(offsetResult.time.getTime()).toBe(
-          regularResults[index].time.getTime() +
-            mockSecondaryStation.time_offset.high * 60 * 1000
+          regularResults[index].time.getTime() + offsets.time!.high! * 60 * 1000
+        )
+      }
+    })
+  })
+  it('it can add fixed offsets to secondary stations', () => {
+    const offsets: ExtremeOffsets = {
+      height: {
+        type: 'fixed',
+        high: 1.1,
+        low: 1.2
+      },
+      time: {
+        high: 1,
+        low: 2
+      }
+    }
+
+    const offsetResults = harmonics({
+      harmonicConstituents: mockHarmonicConstituents,
+      phaseKey: 'phase_GMT',
+      offset: false
+    })
+      .setTimeSpan(startDate, extremesEndDate)
+      .prediction()
+      .getExtremesPrediction({ offsets })
+
+    offsetResults.forEach((offsetResult, index) => {
+      if (offsetResult.low) {
+        expect(offsetResult.level).toBeCloseTo(
+          regularResults[index].level + offsets.height!.low!,
+          4
+        )
+        expect(offsetResult.time.getTime()).toBe(
+          regularResults[index].time.getTime() + offsets.time!.low! * 60 * 1000
+        )
+      }
+      if (offsetResult.high) {
+        expect(offsetResult.level).toBeCloseTo(
+          regularResults[index].level + offsets.height!.high!,
+          4
+        )
+
+        expect(offsetResult.time.getTime()).toBe(
+          regularResults[index].time.getTime() + offsets.time!.high! * 60 * 1000
         )
       }
     })

@@ -1,4 +1,4 @@
-import stations from '@neaps/tide-stations'
+import stations from '@neaps/tide-database'
 import {
   getExtremesPrediction,
   nearestStation,
@@ -16,20 +16,20 @@ process.env.TZ = 'UTC'
 describe('getExtremesPrediction', () => {
   test('gets extremes from nearest station', () => {
     const prediction = getExtremesPrediction({
-      lat: 26.7,
+      lat: 26.772,
       lon: -80.05,
       start: new Date('2025-12-18T00:00:00-05:00'),
       end: new Date('2025-12-19T00:00:00-05:00'),
-      timeFidelity: 6,
+      timeFidelity: 60,
       datum: 'MLLW'
     })
 
-    expect(prediction.station.id).toEqual('us-fl-port-of-west-palm-beach')
+    expect(prediction.station.id).toEqual('us-fl-port-of-palm-beach')
     expect(prediction.datum).toBe('MLLW')
 
     const { extremes } = prediction
     expect(extremes.length).toBe(4)
-    expect(extremes[0].time).toEqual(new Date('2025-12-18T05:29:48.000Z'))
+    expect(extremes[0].time).toEqual(new Date('2025-12-18T05:30:00.000Z'))
     expect(extremes[0].level).toBeCloseTo(0.02, 2)
     expect(extremes[0].high).toBe(false)
     expect(extremes[0].low).toBe(true)
@@ -40,13 +40,13 @@ describe('getExtremesPrediction', () => {
 describe('getTimelinePrediction', () => {
   test('gets timeline from nearest station', () => {
     const timeline = getTimelinePrediction({
-      lat: 26.7,
+      lat: 26.772,
       lon: -80.05,
       start: new Date('2025-12-19T00:00:00-05:00'),
       end: new Date('2025-12-19T01:00:00-05:00')
     })
 
-    expect(timeline.station.id).toEqual('us-fl-port-of-west-palm-beach')
+    expect(timeline.station.id).toEqual('us-fl-port-of-palm-beach')
     expect(timeline.datum).toBe('MLLW')
     expect(timeline.timeline.length).toBe(7) // Every 10 minutes for 1 hour = 7 points
   })
@@ -55,13 +55,13 @@ describe('getTimelinePrediction', () => {
 describe('getWaterLevelAtTime', () => {
   test('gets water level at specific time from nearest station', () => {
     const prediction = getWaterLevelAtTime({
-      lat: 26.7,
+      lat: 26.772,
       lon: -80.05,
       time: new Date('2025-12-19T00:30:00-05:00'),
       datum: 'MSL'
     })
 
-    expect(prediction.station.id).toEqual('us-fl-port-of-west-palm-beach')
+    expect(prediction.station.id).toEqual('us-fl-port-of-palm-beach')
     expect(prediction.datum).toBe('MSL')
     expect(prediction.time).toEqual(new Date('2025-12-19T05:30:00.000Z'))
     expect(typeof prediction.level).toBe('number')
@@ -73,7 +73,7 @@ describe('for a specific station', () => {
 
   describe('getExtremesPrediction', () => {
     test('can return extremes from station', () => {
-      const station = nearestStation({ lat: 26.7, lon: -80.05 })
+      const station = nearestStation({ lat: 26.772, lon: -80.05 })
 
       const start = new Date('2025-12-17T00:00:00-05:00')
       const end = new Date('2025-12-18T05:00:00-05:00')
@@ -81,16 +81,92 @@ describe('for a specific station', () => {
       const { extremes: predictions } = station.getExtremesPrediction({
         start,
         end,
-        timeFidelity: 6,
+        timeFidelity: 60,
         datum: 'MLLW'
       })
 
       expect(predictions.length).toBe(4)
-      expect(predictions[0].time).toEqual(new Date('2025-12-17T11:23:06.000Z'))
+      expect(predictions[0].time).toEqual(new Date('2025-12-17T11:23:00.000Z'))
       expect(predictions[0].level).toBeCloseTo(0.9, 1)
       expect(predictions[0].high).toBe(true)
       expect(predictions[0].low).toBe(false)
       expect(predictions[0].label).toBe('High')
+    })
+  })
+
+  describe('for a subordinate station', () => {
+    const station = findStation('8724307')
+
+    test('gets datums and harmonic_constituents from reference station', () => {
+      expect(station.type).toBe('subordinate')
+      const reference = findStation('8724580')
+
+      expect(station.datums).toBeDefined()
+      expect(station.datums).toEqual(reference.datums)
+      expect(station.harmonic_constituents).toBeDefined()
+      expect(station.harmonic_constituents).toEqual(
+        reference.harmonic_constituents
+      )
+      expect(station.defaultDatum).toBe('MLLW')
+    })
+
+    describe('getExtremesPrediction', () => {
+      test('matches NOAA extremes for subordinate station', () => {
+        const start = new Date('2025-12-17T00:00:00Z')
+        const end = new Date('2025-12-19T00:00:00Z')
+
+        const prediction = station.getExtremesPrediction({
+          start,
+          end,
+          timeFidelity: 60,
+          datum: 'MLLW'
+        })
+
+        // https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?station=8724307&format=json&product=predictions&units=metric&time_zone=gmt&begin_date=2025-12-17&end_date=2025-12-18&interval=hilo&datum=MLLW
+        const noaa = [
+          { t: '2025-12-17T02:55:00z', v: 1.128, type: 'H' },
+          { t: '2025-12-17T10:57:00z', v: -0.044, type: 'L' },
+          { t: '2025-12-17T16:48:00z', v: 0.658, type: 'H' },
+          { t: '2025-12-17T22:04:00z', v: 0.337, type: 'L' },
+          { t: '2025-12-18T03:33:00z', v: 1.148, type: 'H' },
+          { t: '2025-12-18T11:35:00z', v: -0.099, type: 'L' },
+          { t: '2025-12-18T17:25:00z', v: 0.64, type: 'H' },
+          { t: '2025-12-18T22:40:00z', v: 0.316, type: 'L' }
+        ]
+
+        noaa.forEach((expected, index) => {
+          const actual = prediction.extremes[index]
+          expect(actual.time).toBeWithin(
+            new Date(expected.t).valueOf(),
+            5 * 60 * 1000 /* min */
+          )
+          expect(actual.level).toBeWithin(expected.v, 0.04 /* m */)
+        })
+      })
+    })
+
+    describe('getTimelinePrediction', () => {
+      test('is not supported', () => {
+        expect(() =>
+          station.getTimelinePrediction({
+            start: new Date('2025-12-19T00:00:00Z'),
+            end: new Date('2025-12-19T01:00:00Z')
+          })
+        ).toThrow(
+          'Timeline predictions are not supported for subordinate stations'
+        )
+      })
+    })
+    describe('getWaterLevelAtTime', () => {
+      test('is not supported', () => {
+        expect(() =>
+          station.getWaterLevelAtTime({
+            time: new Date('2025-12-19T00:00:00Z')
+          })
+        ).toThrow(
+          'Water level predictions are not supported for subordinate stations'
+        )
+      })
     })
   })
 
@@ -119,20 +195,14 @@ describe('for a specific station', () => {
 })
 
 describe('nearestStation', () => {
-  test('finds the nearest station', () => {
-    const station = nearestStation({ lat: 26.7, lon: -80.05 })
-    expect(station.source.id).toBe('8722588')
-    expect(station.latitude).toBeCloseTo(26.77)
-    expect(station.longitude).toBeCloseTo(-80.0517)
-  })
   ;[
-    { lat: 26.7, lon: -80.05 },
-    { lat: 26.7, lng: -80.05 },
-    { latitude: 26.7, longitude: -80.05 }
+    { lat: 26.772, lon: -80.052 },
+    { lat: 26.772, lng: -80.052 },
+    { latitude: 26.772, longitude: -80.052 }
   ].forEach((position) => {
     test(`finds station with ${Object.keys(position).join('/')}`, () => {
       const station = nearestStation(position)
-      expect(station.id).toEqual('us-fl-port-of-west-palm-beach')
+      expect(station.source.id).toBe('8722588')
     })
   })
 })
@@ -143,9 +213,9 @@ describe('findStation', () => {
   })
 
   test('finds station by id', () => {
-    const station = findStation('us-fl-ankona-indian-river')
+    const station = findStation('us-ma-boston')
     expect(station).toBeDefined()
-    expect(station.id).toBe('us-fl-ankona-indian-river')
+    expect(station.id).toBe('us-ma-boston')
     expect(station.getExtremesPrediction).toBeDefined()
   })
 
@@ -159,7 +229,7 @@ describe('findStation', () => {
 
 describe('datum', () => {
   test('defaults to MLLW datum', () => {
-    const station = findStation('us-fl-ankona-indian-river')
+    const station = findStation('8722274')
     const extremes = station.getExtremesPrediction({
       start: new Date('2025-12-17T00:00:00Z'),
       end: new Date('2025-12-18T00:00:00Z')
@@ -168,7 +238,7 @@ describe('datum', () => {
   })
 
   test('accepts datum option', () => {
-    const station = findStation('us-fl-ankona-indian-river')
+    const station = findStation('8722274')
     const extremes = station.getExtremesPrediction({
       start: new Date('2025-12-17T00:00:00Z'),
       end: new Date('2025-12-18T00:00:00Z'),
@@ -191,21 +261,26 @@ describe('datum', () => {
   test('throws error when missing MSL datum', () => {
     // Find station without MSL but with other datums
     const station = stations.find(
-      (s) => !('MSL' in s.datums) && Object.keys(s.datums).length > 0
+      (s) =>
+        s.type === 'reference' &&
+        !('MSL' in s.datums) &&
+        Object.keys(s.datums).length > 0
     )
     if (!station) expect.fail('No station without MSL datum found')
     expect(() => {
       useStation(station).getExtremesPrediction({
         start: new Date('2025-12-17T00:00:00Z'),
         end: new Date('2025-12-18T00:00:00Z'),
-        datum: 'NAVD88'
+        datum: Object.keys(station.datums)[0]
       })
     }).toThrow(/missing MSL/)
   })
 
   test('does not apply datums when non available', () => {
     // Find a station with no datums
-    const station = stations.find((s) => Object.entries(s.datums).length === 0)
+    const station = stations.find(
+      (s) => s.type === 'reference' && Object.entries(s.datums).length === 0
+    )
     if (!station) expect.fail('No station without datums found')
     const extremes = useStation(station).getExtremesPrediction({
       start: new Date('2025-12-17T00:00:00Z'),
