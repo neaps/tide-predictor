@@ -13,26 +13,6 @@ import { describe, test, expect } from 'vitest'
 // predictions for a station in a non-UTC timezone without this.
 process.env.TZ = 'UTC'
 
-expect.extend({
-  toBeWithin(received, expected, delta) {
-    const diff = Math.abs(received - expected)
-    const pass = diff <= delta
-    return {
-      pass,
-      message: () =>
-        `expected ${received} to be within ±${delta} of ${expected}, but was ${diff}`
-    }
-  }
-})
-
-interface CustomMatchers<R = unknown> {
-  toBeWithin: (expected: number, delta: number) => R
-}
-
-declare module 'vitest' {
-  interface Matchers<T = any> extends CustomMatchers<T> {}
-}
-
 describe('getExtremesPrediction', () => {
   test('gets extremes from nearest station', () => {
     const prediction = getExtremesPrediction({
