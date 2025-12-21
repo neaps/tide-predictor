@@ -2,7 +2,11 @@
   "name": "@neaps/tide-predictor",
   "version": "0.1.1",
   "description": "Tide predictor",
-  "repository": "https://github.com/neaps/tide-predictor",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/neaps/neaps",
+    "directory": "packages/tide-predictor"
+  },
   "author": "Kevin Miller <keveemiller@gmail.com>",
   "license": "MIT",
   "type": "module",

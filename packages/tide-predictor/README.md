@@ -1,37 +1,23 @@
-![example workflow](https://github.com/neaps/tide-predictor/actions/workflows/test.yml/badge.svg) [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fneaps%2Ftide-predictor.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fneaps%2Ftide-predictor?ref=badge_shield) [![codecov](https://codecov.io/gh/neaps/tide-predictor/branch/main/graph/badge.svg?token=KEJK5NQR5H)](https://codecov.io/gh/neaps/tide-predictor)
-
-# Tide predictor
+# @neaps/tide-predictor
 
 A tide harmonic calculator written in TypeScript.
 
 <!-- START DOCS -->
 
-## 🚨Warning🚨
-
-**Do not use calculations from this project for navigation, or depend on them in any situation where inaccuracies could result in harm to a person or property.**
-
-Tide predictions are only as good as the harmonics data available, and these can be inconsistent and vary widely based on the accuracy of the source data and local conditions.
-
-The tide predictions do not factor events such as storm surge, wind waves, uplift, tsunamis, or sadly, climate change. 😢
+> [!WARNING]
+> **Not for navigational use**
+>
+> Do not use calculations from this project for navigation, or depend on them in any situation where inaccuracies could result in harm to a person or property. Tide predictions are only as good as the harmonics data available, and these can be inconsistent and vary widely based on the accuracy of the source data and local conditions. The tide predictions do not factor events such as storm surge, wind waves, uplift, tsunamis, or sadly, climate change. 😢
 
 # Installation
 
-```
-#npm
+```sh
 npm install @neaps/tide-predictor
-
-# yarn
-yarn add @neaps/tide-predictor
-
 ```
 
 # Usage
 
-Neaps requires that you [provide your own tidal harmonics information](#constituent-object) to generate a prediction.
-
-Because many constituent datum come with multiple phases (in the case of NOAA's data, they are `phase_local` and `phase_GMT`), there is a `phaseKey` option for choosing which to use.
-
-Note that, for now, Neaps **will not** do any timezone corrections. This means you need to pass date objects that align with whatever timezone the constituents are in.
+`@neaps/tide-predictor` requires that you [provide your own tidal harmonics information](#constituent-object) to generate a prediction. For a complete tide prediction solution, including finding nearby stations and their harmonics, check out the [`neaps` package](https://github.com/neaps/neaps).
 
 ```typescript
 import TidePredictor from '@neaps/tide-predictor'
@@ -55,13 +41,15 @@ const highLowTides = TidePredictor(constituents, {
 })
 ```
 
+Note that, for now, Neaps **will not** do any timezone corrections. This means you need to pass date objects that align with whatever timezone the constituents are in.
+
 ## Tide prediction object
 
 Calling `tidePredictor` will generate a new tide prediction object. It accepts the following arguments:
 
 - `constituents` - An array of [constituent objects](#constituent-object)
 - `options` - An object with one of:
-  - `phaseKey` - The name of the parameter within constituents that is considered the "phase"
+  - `phaseKey` - The name of the parameter within constituents that is considered the "phase" because many constituent datum come with multiple phases (in the case of NOAA's data, they are `phase_local` and `phase_GMT`).
   - `offset` - A value to add to **all** values predicted. This is useful if you want to, for example, offset tides by mean high water, etc.
 
 ### Tide prediction methods

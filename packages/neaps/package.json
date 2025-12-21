@@ -6,13 +6,14 @@
     "tides",
     "harmonics"
   ],
-  "homepage": "https://github.com/neaps/tide-predictor#readme",
+  "homepage": "https://github.com/neaps/neaps#readme",
   "bugs": {
-    "url": "https://github.com/neaps/tide-predictor/issues"
+    "url": "https://github.com/neaps/neaps/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/neaps/tide-predictor.git"
+    "url": "git+https://github.com/neaps/neaps.git",
+    "directory": "packages/neaps"
   },
   "license": "MIT",
   "author": "Brandon Keepers <brandon@openwaters.io>",

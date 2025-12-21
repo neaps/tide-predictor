@@ -1,10 +1,10 @@
-![example workflow](https://github.com/neaps/tide-predictor/actions/workflows/test.yml/badge.svg) [![codecov](https://codecov.io/gh/neaps/tide-predictor/branch/main/graph/badge.svg?token=KEJK5NQR5H)](https://codecov.io/gh/neaps/tide-predictor)
+![example workflow](https://github.com/neaps/neaps/actions/workflows/test.yml/badge.svg) [![codecov](https://codecov.io/gh/neaps/neaps/branch/main/graph/badge.svg?token=KEJK5NQR5H)](https://codecov.io/gh/neaps/neaps)
 
 # Neaps
 
 A tide prediction engine written in TypeScript.
 
-> [!CAUTION]
+> [!WARNING]
 > **Not for navigational use**
 >
 > Do not use calculations from this project for navigation, or depend on them in any situation where inaccuracies could result in harm to a person or property. Tide predictions are only as good as the harmonics data available, and these can be inconsistent and vary widely based on the accuracy of the source data and local conditions. The tide predictions do not factor events such as storm surge, wind waves, uplift, tsunamis, or sadly, climate change. 😢
