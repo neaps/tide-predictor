@@ -156,4 +156,48 @@ describe('Secondary stations', () => {
       }
     })
   })
+  it('it can add fixed offsets to secondary stations', () => {
+    const offsets: ExtremeOffsets = {
+      height: {
+        type: 'fixed',
+        high: 1.1,
+        low: 1.2
+      },
+      time: {
+        high: 1,
+        low: 2
+      }
+    }
+
+    const offsetResults = harmonics({
+      harmonicConstituents: mockHarmonicConstituents,
+      phaseKey: 'phase_GMT',
+      offset: false
+    })
+      .setTimeSpan(startDate, extremesEndDate)
+      .prediction()
+      .getExtremesPrediction({ offsets })
+
+    offsetResults.forEach((offsetResult, index) => {
+      if (offsetResult.low) {
+        expect(offsetResult.level).toBeCloseTo(
+          regularResults[index].level + offsets.height!.low!,
+          4
+        )
+        expect(offsetResult.time.getTime()).toBe(
+          regularResults[index].time.getTime() + offsets.time!.low! * 60 * 1000
+        )
+      }
+      if (offsetResult.high) {
+        expect(offsetResult.level).toBeCloseTo(
+          regularResults[index].level + offsets.height!.high!,
+          4
+        )
+
+        expect(offsetResult.time.getTime()).toBe(
+          regularResults[index].time.getTime() + offsets.time!.high! * 60 * 1000
+        )
+      }
+    })
+  })
 })
