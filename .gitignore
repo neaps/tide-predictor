@@ -8,3 +8,4 @@ junit.xml
 dist
 *.tsbuildinfo
 package-lock.json
+benchmarks/*.csv

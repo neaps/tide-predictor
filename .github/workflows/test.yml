@@ -8,6 +8,10 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+
       - name: Install modules
         run: npm install
 
@@ -19,18 +23,15 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+
       - name: Install modules
         run: npm install
 
-      - name: Cache test data
-        id: test-cache
-        uses: actions/cache@v5
-        with:
-          path: .test-cache
-          key: ${{ runner.os }}-test-cache
-
       - name: Test build
-        run: npm run build:all
+        run: npm run build
 
       - name: Test
         run: npm run coverage
@@ -41,8 +42,33 @@ jobs:
           fail_ci_if_error: true
           files: ./coverage/coverage-final.json
 
-      - name: Upload NOAA summary
+  benchmarks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+
+      - name: Install modules
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Cache benchmark data
+        id: benchmark-cache
+        uses: actions/cache@v5
+        with:
+          path: .test-cache
+          key: ${{ runner.os }}-benchmark-cache
+
+      - name: Run benchmarks
+        run: npm run benchmarks
+
+      - name: Upload benchmark results
         uses: actions/upload-artifact@v6
         with:
-          name: noaa-benchmarks
-          path: noaa-benchmarks.csv
+          name: benchmarks
+          path: benchmarks/*.csv
