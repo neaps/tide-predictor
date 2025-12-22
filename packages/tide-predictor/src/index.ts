@@ -15,6 +15,7 @@ export interface TidePredictionOptions {
 export interface TimeSpan {
   start: Date
   end: Date
+  timeFidelity?: number
 }
 
 export interface ExtremesInput extends TimeSpan {
@@ -23,7 +24,6 @@ export interface ExtremesInput extends TimeSpan {
     low?: string
   }
   offsets?: ExtremeOffsets
-  timeFidelity?: number
 }
 
 export interface TidePrediction {
@@ -44,10 +44,14 @@ const tidePredictionFactory = (
   }
 
   const tidePrediction: TidePrediction = {
-    getTimelinePrediction: ({ start, end }: TimeSpan): TimelinePoint[] => {
+    getTimelinePrediction: ({
+      start,
+      end,
+      timeFidelity
+    }: TimeSpan): TimelinePoint[] => {
       return harmonics(harmonicsOptions)
         .setTimeSpan(start, end)
-        .prediction()
+        .prediction({ timeFidelity })
         .getTimelinePrediction()
     },
 
