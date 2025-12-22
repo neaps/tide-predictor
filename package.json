@@ -4,9 +4,10 @@
   "scripts": {
     "test": "vitest",
     "coverage": "vitest run --coverage",
-    "build:all": "npm run build --workspaces --if-present",
+    "build": "npm run build --workspaces --if-present",
     "lint": "eslint && prettier --check .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "benchmarks": "node benchmarks/noaa.ts"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
