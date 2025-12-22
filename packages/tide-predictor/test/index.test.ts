@@ -44,6 +44,19 @@ describe('Tidal station', () => {
       start: startDate,
       end: endDate
     })
+    expect(results.length).toBe(37)
+    expect(results[0].level).toBeCloseTo(-1.34712509, 3)
+    const lastResult = results.pop()
+    expect(lastResult?.level).toBeCloseTo(2.85263589, 3)
+  })
+
+  it('it predicts the tides in a timeline with time fidelity', () => {
+    const results = tidePrediction(mockConstituents).getTimelinePrediction({
+      start: startDate,
+      end: endDate,
+      timeFidelity: 60
+    })
+    expect(results.length).toBe(361)
     expect(results[0].level).toBeCloseTo(-1.34712509, 3)
     const lastResult = results.pop()
     expect(lastResult?.level).toBeCloseTo(2.85263589, 3)
