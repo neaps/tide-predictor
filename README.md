@@ -163,3 +163,29 @@ findStation('us-wa-seattle') // Seattle
 // Find station by source ID (e.g. NOAA)
 findStation('9440083') // Vancouver
 ```
+
+## Accuracy & Validation
+
+Neaps is continuously validated against NOAA tidal predictions, comparing the **time** and **height** of predicted high and low tides for all NOAA tide stations.
+
+### Methodology
+
+- Recent High/low predictions extracted from both NOAA and Neaps for 3300+ NOAA reference and subordinate stations
+- One-to-one event matching using a ±180-minute window
+- Metrics computed per station and aggregated across all stations
+- Evaluated automatically in CI on every change
+
+### Results
+
+As of Dec 2025:
+
+- **Stations evaluated:** 3,363
+- **High/low events compared:** 36,990
+- **Median |Δt|:** 3.5 minutes
+- **95% of stations** have median |Δt| < **13.5 minutes**
+- **Median MAE:** 1.1 cm
+- **95% of stations** have MAE < 4.5 cm
+
+### Summary
+
+Neaps reproduces high and low tide timing with **minute-level accuracy** and tide heights with **centimeter-level accuracy** compared to NOAA's tide predictions. Validation is automated and enforced in CI to prevent regressions as the model evolves.
