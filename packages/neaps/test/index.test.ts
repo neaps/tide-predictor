@@ -5,13 +5,10 @@ import {
   findStation,
   useStation,
   getTimelinePrediction,
-  getWaterLevelAtTime
+  getWaterLevelAtTime,
+  dateToUtc
 } from '../src/index.js'
 import { describe, test, expect } from 'vitest'
-
-// FIXME: this is required for these tests to pass. I can't figure out how to get accurate
-// predictions for a station in a non-UTC timezone without this.
-process.env.TZ = 'UTC'
 
 describe('getExtremesPrediction', () => {
   test('gets extremes from nearest station', () => {
@@ -124,14 +121,14 @@ describe('for a specific station', () => {
 
         // https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?station=8724307&format=json&product=predictions&units=metric&time_zone=gmt&begin_date=2025-12-17&end_date=2025-12-18&interval=hilo&datum=MLLW
         const noaa = [
-          { t: '2025-12-17T02:55:00z', v: 1.128, type: 'H' },
-          { t: '2025-12-17T10:57:00z', v: -0.044, type: 'L' },
-          { t: '2025-12-17T16:48:00z', v: 0.658, type: 'H' },
-          { t: '2025-12-17T22:04:00z', v: 0.337, type: 'L' },
-          { t: '2025-12-18T03:33:00z', v: 1.148, type: 'H' },
-          { t: '2025-12-18T11:35:00z', v: -0.099, type: 'L' },
-          { t: '2025-12-18T17:25:00z', v: 0.64, type: 'H' },
-          { t: '2025-12-18T22:40:00z', v: 0.316, type: 'L' }
+          { t: '2025-12-17T02:55:00Z', v: 1.128, type: 'H' },
+          { t: '2025-12-17T10:57:00Z', v: -0.044, type: 'L' },
+          { t: '2025-12-17T16:48:00Z', v: 0.658, type: 'H' },
+          { t: '2025-12-17T22:04:00Z', v: 0.337, type: 'L' },
+          { t: '2025-12-18T03:33:00Z', v: 1.148, type: 'H' },
+          { t: '2025-12-18T11:35:00Z', v: -0.099, type: 'L' },
+          { t: '2025-12-18T17:25:00Z', v: 0.64, type: 'H' },
+          { t: '2025-12-18T22:40:00Z', v: 0.316, type: 'L' }
         ]
 
         noaa.forEach((expected, index) => {
@@ -289,5 +286,31 @@ describe('datum', () => {
 
     expect(extremes.datum).toBeUndefined()
     expect(extremes.extremes.length).toBeGreaterThan(0)
+  })
+})
+
+describe('dateToUtc', () => {
+  test('converts local date to UTC date', () => {
+    const localDate = new Date('2025-12-19T12:34:56.789-05:00')
+    const utcDate = dateToUtc(localDate)
+
+    // Still functionally equal
+    expect(localDate).toEqual(utcDate)
+    expect(utcDate.toISOString()).toBe('2025-12-19T17:34:56.789Z')
+
+    expect(utcDate.getUTCFullYear()).toBe(2025)
+    expect(utcDate.getUTCMonth()).toBe(11) // December
+    expect(utcDate.getUTCDate()).toBe(19)
+    expect(utcDate.getUTCHours()).toBe(17) // 12 + 5
+    expect(utcDate.getUTCMinutes()).toBe(34)
+    expect(utcDate.getUTCSeconds()).toBe(56)
+    expect(utcDate.getUTCMilliseconds()).toBe(789)
+  })
+
+  test('preserves UTC date', () => {
+    const utcDateInput = new Date('2025-12-19T17:34:56.789Z')
+    const utcDateOutput = dateToUtc(utcDateInput)
+    expect(utcDateOutput).toEqual(utcDateInput)
+    expect(utcDateOutput.toISOString()).toBe('2025-12-19T17:34:56.789Z')
   })
 })

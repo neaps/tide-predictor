@@ -94,6 +94,20 @@ export function findStation(query: string) {
   return useStation(found)
 }
 
+export function dateToUtc(date: Date): Date {
+  return new Date(
+    Date.UTC(
+      date.getUTCFullYear(),
+      date.getUTCMonth(),
+      date.getUTCDate(),
+      date.getUTCHours(),
+      date.getUTCMinutes(),
+      date.getUTCSeconds(),
+      date.getUTCMilliseconds()
+    )
+  )
+}
+
 export function useStation(station: Station, distance?: number) {
   // If subordinate station, use the reference station for datums and constituents
   let reference = station
@@ -139,19 +153,28 @@ export function useStation(station: Station, distance?: number) {
     datums,
     harmonic_constituents,
     defaultDatum,
-    getExtremesPrediction({ datum = defaultDatum, ...input }: ExtremesOptions) {
+    getExtremesPrediction({
+      start,
+      end,
+      datum = defaultDatum,
+      ...input
+    }: ExtremesOptions) {
       return {
         datum,
         distance,
         station,
         extremes: getPredictor({ datum }).getExtremesPrediction({
           ...input,
+          start: dateToUtc(start),
+          end: dateToUtc(end),
           offsets: station.offsets
         })
       }
     },
 
     getTimelinePrediction({
+      start,
+      end,
       datum = defaultDatum,
       ...params
     }: TimelineOptions) {
@@ -164,7 +187,11 @@ export function useStation(station: Station, distance?: number) {
       return {
         datum,
         station,
-        timeline: getPredictor({ datum }).getTimelinePrediction(params)
+        timeline: getPredictor({ datum }).getTimelinePrediction({
+          start: dateToUtc(start),
+          end: dateToUtc(end),
+          ...params
+        })
       }
     },
 
@@ -178,7 +205,9 @@ export function useStation(station: Station, distance?: number) {
       return {
         datum,
         station,
-        ...getPredictor({ datum }).getWaterLevelAtTime({ time })
+        ...getPredictor({ datum }).getWaterLevelAtTime({
+          time: dateToUtc(time)
+        })
       }
     }
   }
