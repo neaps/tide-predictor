@@ -3,7 +3,7 @@ import { mkdir, readFile, writeFile } from 'fs/promises'
 import { createWriteStream } from 'fs'
 import { join } from 'path'
 import { findStation } from 'neaps'
-import db from '@neaps/tide-database'
+import { stations as db } from '@neaps/tide-database'
 import createFetch from 'make-fetch-happen'
 
 process.env.TZ = 'UTC'
@@ -16,7 +16,7 @@ const fetch = createFetch.defaults({
 })
 
 const stations = db
-  .filter((station) => station.source.source_url.includes('noaa.gov'))
+  .filter((station) => station.source.url.includes('noaa.gov'))
   .map((station) => station.source.id)
 
 // Create a directory for test cache
@@ -36,6 +36,7 @@ interface Stat {
   p95_abs_dt_min: number
   mean_dt_min: number
   mae_dh_m: number
+  mean_dh_m: number
   rmse_dh_m: number
   bias_dh_m: number
   p95_abs_dh_m: number
@@ -163,6 +164,7 @@ for (const id of stations) {
   // Height metrics (meters) at matched events
   const absDh = dhMeters.map((v) => Math.abs(v))
   const mae_dh_m = mean(absDh)
+  const mean_dh_m = mean(dhMeters)
   const rmse_dh_m = Math.sqrt(
     dhMeters.reduce((a, b) => a + b * b, 0) / dhMeters.length
   )
@@ -183,6 +185,7 @@ for (const id of stations) {
     p95_abs_dt_min,
     mean_dt_min,
     mae_dh_m,
+    mean_dh_m,
     rmse_dh_m,
     bias_dh_m,
     p95_abs_dh_m
@@ -193,7 +196,7 @@ for (const id of stations) {
 // Write stats to file for later analysis
 const summary = createWriteStream(join(__dirname, 'noaa.csv'))
 summary.write(
-  'station,type,start_utc,end_utc,events_noaa,events_model,matched,missed,extra,med_abs_dt_min,p95_abs_dt_min,mean_dt_min,mae_dh_m,rmse_dh_m,bias_dh_m,p95_abs_dh_m\n'
+  'station,type,start_utc,end_utc,events_noaa,events_model,matched,missed,extra,med_abs_dt_min,p95_abs_dt_min,mean_dt_min,mae_dh_m,mean_dh_m,rmse_dh_m,bias_dh_m,p95_abs_dh_m\n'
 )
 
 stats.forEach((s) => {
@@ -212,6 +215,7 @@ stats.forEach((s) => {
       s.p95_abs_dt_min.toFixed(2),
       s.mean_dt_min.toFixed(2),
       s.mae_dh_m.toFixed(4),
+      s.mean_dh_m.toFixed(4),
       s.rmse_dh_m.toFixed(4),
       s.bias_dh_m.toFixed(4),
       s.p95_abs_dh_m.toFixed(4)

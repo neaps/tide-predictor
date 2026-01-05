@@ -1,5 +1,5 @@
 import { getDistance } from 'geolib'
-import stations, { type Station } from '@neaps/tide-database'
+import { stations, type Station } from '@neaps/tide-database'
 import tidePredictor, {
   type TimeSpan,
   type ExtremesInput
