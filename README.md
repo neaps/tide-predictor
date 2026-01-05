@@ -9,15 +9,15 @@ A tide prediction engine written in TypeScript.
 >
 > Do not use calculations from this project for navigation, or depend on them in any situation where inaccuracies could result in harm to a person or property. Tide predictions are only as good as the harmonics data available, and these can be inconsistent and vary widely based on the accuracy of the source data and local conditions. The tide predictions do not factor events such as storm surge, wind waves, uplift, tsunamis, or sadly, climate change. 😢
 
-# Installation
+## Installation
 
 ```sh
 npm install neaps
 ```
 
-# Usage
+## Usage
 
-## Tide Extremes Prediction
+### Tide Extremes Prediction
 
 ```typescript
 import { getExtremesPrediction } from 'neaps'
@@ -46,7 +46,7 @@ console.log(extremes)
 // }
 ```
 
-## Get Timeline Prediction
+### Get Timeline Prediction
 
 ```typescript
 import { getTimelinePrediction } from 'neaps'
@@ -77,7 +77,7 @@ console.log(timeline)
 // }
 ```
 
-## Get Water Level at Specific Time
+### Get Water Level at Specific Time
 
 ```typescript
 import { getWaterLevelAtTime } from 'neaps'
@@ -103,11 +103,11 @@ console.log(prediction)
 // }
 ```
 
-## Finding stations
+### Finding stations
 
 Neaps uses [@neaps/tide-database](https://github.com/neaps/tide-database) to find station data. You can find stations by location or ID.
 
-### Nearest Station
+#### Nearest Station
 
 ```typescript
 import { nearestStation } from 'neaps'
@@ -135,7 +135,7 @@ station.getTimelinePrediction({
 station.getWaterLevelAt({ time: new Date('2025-12-19T00:30:00-00:00') })
 ```
 
-### List Nearby Stations
+#### List Nearby Stations
 
 ```typescript
 import { stationsNear } from 'neaps'
@@ -152,7 +152,7 @@ stationsNear({ latitude: 45.6, longitude: -122.7 }, 5).forEach((s) => {
 // WASHOUGAL, COLUMBIA RIVER (9440047) - 24.89 km away
 ```
 
-### Find station by ID
+#### Find station by ID
 
 ```typescript
 import { findStation } from 'neaps'
