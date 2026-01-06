@@ -6,14 +6,21 @@ import tidePredictor, {
 } from '@neaps/tide-predictor'
 import type { GeolibInputCoordinates } from 'geolib/es/types'
 
-type DatumOption = {
+type Units = 'meters' | 'feet'
+type PredictionOptions = {
   /** Datum to return predictions in. Defaults to 'MLLW' if available for the nearest station. */
   datum?: string
+
+  /** Units for returned water levels. Defaults to 'meters'. */
+  units?: Units
 }
 
-export type ExtremesOptions = ExtremesInput & DatumOption
-export type TimelineOptions = TimeSpan & DatumOption
-export type WaterLevelOptions = { time: Date } & DatumOption
+export type ExtremesOptions = ExtremesInput & PredictionOptions
+export type TimelineOptions = TimeSpan & PredictionOptions
+export type WaterLevelOptions = { time: Date } & PredictionOptions
+
+const feetPerMeter = 3.2808399
+const defaultUnits: Units = 'meters'
 
 /**
  * Get extremes prediction using the nearest station to the given position.
@@ -105,7 +112,7 @@ export function useStation(station: Station, distance?: number) {
   // Use MLLW as the default datum if available
   const defaultDatum = 'MLLW' in datums ? 'MLLW' : undefined
 
-  function getPredictor({ datum = defaultDatum }: DatumOption = {}) {
+  function getPredictor({ datum = defaultDatum }: PredictionOptions = {}) {
     let offset = 0
 
     if (datum) {
@@ -139,47 +146,62 @@ export function useStation(station: Station, distance?: number) {
     datums,
     harmonic_constituents,
     defaultDatum,
-    getExtremesPrediction({ datum = defaultDatum, ...input }: ExtremesOptions) {
-      return {
-        datum,
-        distance,
-        station,
-        extremes: getPredictor({ datum }).getExtremesPrediction({
-          ...input,
-          offsets: station.offsets
-        })
-      }
+    getExtremesPrediction({
+      datum = defaultDatum,
+      units = defaultUnits,
+      ...options
+    }: ExtremesOptions) {
+      const extremes = getPredictor({ datum })
+        .getExtremesPrediction({ ...options, offsets: station.offsets })
+        .map((e) => toPreferredUnits(e, units))
+
+      return { datum, units, station, distance, extremes }
     },
 
     getTimelinePrediction({
       datum = defaultDatum,
-      ...params
+      units = defaultUnits,
+      ...options
     }: TimelineOptions) {
       if (station.type === 'subordinate') {
         throw new Error(
           `Timeline predictions are not supported for subordinate stations.`
         )
       }
+      const timeline = getPredictor({ datum })
+        .getTimelinePrediction(options)
+        .map((e) => toPreferredUnits(e, units))
 
-      return {
-        datum,
-        station,
-        timeline: getPredictor({ datum }).getTimelinePrediction(params)
-      }
+      return { datum, units, station, distance, timeline }
     },
 
-    getWaterLevelAtTime({ time, datum = defaultDatum }: WaterLevelOptions) {
+    getWaterLevelAtTime({
+      time,
+      datum = defaultDatum,
+      units = defaultUnits
+    }: WaterLevelOptions) {
       if (station.type === 'subordinate') {
         throw new Error(
           `Water level predictions are not supported for subordinate stations.`
         )
       }
 
-      return {
-        datum,
-        station,
-        ...getPredictor({ datum }).getWaterLevelAtTime({ time })
-      }
+      const prediction = toPreferredUnits(
+        getPredictor({ datum }).getWaterLevelAtTime({ time }),
+        units
+      )
+
+      return { datum, units, station, distance, ...prediction }
     }
   }
+}
+
+function toPreferredUnits<T extends { level: number }>(
+  prediction: T,
+  units: Units
+): T {
+  let { level } = prediction
+  if (units === 'feet') level *= feetPerMeter
+  else if (units !== 'meters') throw new Error(`Unsupported units: ${units}`)
+  return { ...prediction, level }
 }

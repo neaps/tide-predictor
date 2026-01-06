@@ -27,12 +27,14 @@ const prediction = getExtremesPrediction({
   longitude: -80.05, // or `lng` or `lon`
   start: new Date('2025-12-17'),
   end: new Date('2025-12-18'),
-  datum: 'MLLW' // optional, defaults to MLLW if available
+  datum: 'MLLW', // optional, defaults to MLLW if available
+  units: 'meters' // optional, defaults to 'meters', can also be 'feet'
 })
 
-console.log(extremes)
+console.log(prediction)
 // {
 //   datum: 'MLLW',
+//   units: 'meters',
 //   station: {
 //     id: '8723214',
 //     name: 'Fort Lauderdale, FL',
@@ -56,12 +58,14 @@ const timeline = getTimelinePrediction({
   lon: -80.05,
   start: new Date('2025-12-19T00:00:00-05:00'),
   end: new Date('2025-12-19T01:00:00-05:00'),
-  timeFidelity: 5 * 60 // seconds, defaults to `10 * 60`
+  timeFidelity: 5 * 60, // seconds, defaults to `10 * 60`
+  units: 'meters' // optional, defaults to 'meters', can also be 'feet'
 })
 
 console.log(timeline)
 // {
 //   datum: 'MLLW',
+//   units: 'meters',
 //   station: {
 //     id: 'us-fl-port-of-west-palm-beach',
 //     name: 'Port of West Palm Beach',
@@ -86,12 +90,14 @@ const prediction = getWaterLevelAtTime({
   lat: 26.7,
   lon: -80.05,
   time: new Date('2025-12-19T00:30:00-05:00'),
-  datum: 'MSL'
+  datum: 'MSL',
+  units: 'meters' // optional, defaults to 'meters', can also be 'feet'
 })
 
 console.log(prediction)
 // {
 //   datum: 'MSL',
+//   units: 'meters',
 //   station: {
 //     id: 'us-fl-port-of-west-palm-beach',
 //     name: 'Port of West Palm Beach',
