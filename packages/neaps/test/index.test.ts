@@ -14,15 +14,17 @@ import { describe, test, expect } from 'vitest'
 process.env.TZ = 'UTC'
 
 describe('getExtremesPrediction', () => {
+  const options = {
+    lat: 26.772,
+    lon: -80.05,
+    start: new Date('2025-12-18T00:00:00-05:00'),
+    end: new Date('2025-12-19T00:00:00-05:00'),
+    timeFidelity: 60,
+    datum: 'MLLW'
+  }
+
   test('gets extremes from nearest station', () => {
-    const prediction = getExtremesPrediction({
-      lat: 26.772,
-      lon: -80.05,
-      start: new Date('2025-12-18T00:00:00-05:00'),
-      end: new Date('2025-12-19T00:00:00-05:00'),
-      timeFidelity: 60,
-      datum: 'MLLW'
-    })
+    const prediction = getExtremesPrediction(options)
 
     expect(prediction.station.id).toEqual('us/fl/port-of-palm-beach')
     expect(prediction.datum).toBe('MLLW')
@@ -34,21 +36,42 @@ describe('getExtremesPrediction', () => {
     expect(extremes[0].high).toBe(false)
     expect(extremes[0].low).toBe(true)
     expect(extremes[0].label).toBe('Low')
+    expect(prediction.units).toBe('meters')
+  })
+
+  test('with units=feet', () => {
+    const prediction = getExtremesPrediction({ ...options, units: 'feet' })
+    expect(prediction.units).toBe('feet')
+    expect(prediction.extremes[0].level).toBeCloseTo(0.06, 2)
+    expect(prediction.extremes[1].level).toBeCloseTo(3.01, 2)
   })
 })
 
 describe('getTimelinePrediction', () => {
   test('gets timeline from nearest station', () => {
-    const timeline = getTimelinePrediction({
+    const prediction = getTimelinePrediction({
       lat: 26.772,
       lon: -80.05,
       start: new Date('2025-12-19T00:00:00-05:00'),
       end: new Date('2025-12-19T01:00:00-05:00')
     })
 
-    expect(timeline.station.id).toEqual('us/fl/port-of-palm-beach')
-    expect(timeline.datum).toBe('MLLW')
-    expect(timeline.timeline.length).toBe(7) // Every 10 minutes for 1 hour = 7 points
+    expect(prediction.station.id).toEqual('us/fl/port-of-palm-beach')
+    expect(prediction.datum).toBe('MLLW')
+    expect(prediction.units).toBe('meters')
+    expect(prediction.timeline.length).toBe(7) // Every 10 minutes for 1 hour = 7 points
+  })
+
+  test('with units=feet', () => {
+    const prediction = getTimelinePrediction({
+      lat: 26.772,
+      lon: -80.05,
+      start: new Date('2025-12-19T00:00:00-05:00'),
+      end: new Date('2025-12-19T01:00:00-05:00'),
+      units: 'feet'
+    })
+    expect(prediction.units).toBe('feet')
+    expect(prediction.timeline[0].level).toBeCloseTo(0.24, 2)
   })
 })
 
@@ -65,6 +88,30 @@ describe('getWaterLevelAtTime', () => {
     expect(prediction.datum).toBe('MSL')
     expect(prediction.time).toEqual(new Date('2025-12-19T05:30:00.000Z'))
     expect(typeof prediction.level).toBe('number')
+  })
+
+  test('with units=feet', () => {
+    const prediction = getWaterLevelAtTime({
+      lat: 26.772,
+      lon: -80.05,
+      time: new Date('2025-12-19T00:30:00-05:00'),
+      datum: 'MSL',
+      units: 'feet'
+    })
+    expect(prediction.units).toBe('feet')
+    expect(prediction.level).toBeCloseTo(-1.44, 2)
+  })
+
+  test('with unknown units', () => {
+    expect(() =>
+      getWaterLevelAtTime({
+        lat: 26.772,
+        lon: -80.05,
+        time: new Date('2025-12-19T00:30:00-05:00'),
+        // @ts-expect-error Testing unknown units
+        units: 'fathoms'
+      })
+    ).toThrow('Unsupported units: fathoms')
   })
 })
 
