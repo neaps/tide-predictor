@@ -101,6 +101,17 @@ describe('getWaterLevelAtTime', () => {
     expect(prediction.units).toBe('feet')
     expect(prediction.level).toBeCloseTo(-1.44, 2)
   })
+
+  test('with unknown units', () => {
+    expect(() =>
+      getWaterLevelAtTime({
+        lat: 26.772,
+        lon: -80.05,
+        time: new Date('2025-12-19T00:30:00-05:00'),
+        units: 'fathoms' as any
+      })
+    ).toThrow('Unsupported units: fathoms')
+  })
 })
 
 describe('for a specific station', () => {
