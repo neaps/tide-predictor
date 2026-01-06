@@ -72,3 +72,21 @@ jobs:
         with:
           name: benchmarks
           path: benchmarks/*.csv
+
+  examples:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+
+      - name: Install modules
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Run examples
+        run: for e in examples/*.ts; do node "$e"; done

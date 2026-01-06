@@ -54,7 +54,7 @@ console.log(prediction)
 import { getTimelinePrediction } from 'neaps'
 
 const timeline = getTimelinePrediction({
-  lat: 26.7,
+  lat: 26.77,
   lon: -80.05,
   start: new Date('2025-12-19T00:00:00-05:00'),
   end: new Date('2025-12-19T01:00:00-05:00'),
@@ -87,7 +87,7 @@ console.log(timeline)
 import { getWaterLevelAtTime } from 'neaps'
 
 const prediction = getWaterLevelAtTime({
-  lat: 26.7,
+  lat: 26.77,
   lon: -80.05,
   time: new Date('2025-12-19T00:30:00-05:00'),
   datum: 'MSL',
