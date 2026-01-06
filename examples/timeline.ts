@@ -1,4 +1,4 @@
-import { getTimelinePrediction, stationsNear } from 'neaps'
+import { getTimelinePrediction } from 'neaps'
 
 const timeline = getTimelinePrediction({
   lat: 26.77,
