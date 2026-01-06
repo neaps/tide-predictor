@@ -108,7 +108,8 @@ describe('getWaterLevelAtTime', () => {
         lat: 26.772,
         lon: -80.05,
         time: new Date('2025-12-19T00:30:00-05:00'),
-        units: 'fathoms' as any
+        // @ts-expect-error Testing unknown units
+        units: 'fathoms'
       })
     ).toThrow('Unsupported units: fathoms')
   })
