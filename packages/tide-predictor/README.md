@@ -20,22 +20,22 @@ npm install @neaps/tide-predictor
 `@neaps/tide-predictor` requires that you [provide your own tidal harmonics information](#constituent-object) to generate a prediction. For a complete tide prediction solution, including finding nearby stations and their harmonics, check out the [`neaps` package](https://github.com/neaps/neaps).
 
 ```typescript
-import TidePredictor from '@neaps/tide-predictor'
+import TidePredictor from "@neaps/tide-predictor";
 
 const constituents = [
   {
     phase: 98.7,
     amplitude: 2.687,
-    name: 'M2',
-    speed: 28.984104
-  }
+    name: "M2",
+    speed: 28.984104,
+  },
   //....there are usually many, read the docs
-]
+];
 
 const highLowTides = TidePredictor(constituents).getExtremesPrediction({
-  start: new Date('2019-01-01'),
-  end: new Date('2019-01-10')
-})
+  start: new Date("2019-01-01"),
+  end: new Date("2019-01-10"),
+});
 ```
 
 Note that all times internally are evaluated as UTC, so be sure to specify a timezone offset when constructing dates if you want to work in a local time. For example, to get tides for January 1st, 2019 in New York (UTC-5), create a date `new Date('2019-01-01T00:00:00-05:00')`
@@ -57,17 +57,17 @@ The returned tide prediction object has various methods. All of these return reg
 Returns the predicted high and low tides between a start and end date.
 
 ```typescript
-const startDate = new Date()
-const endDate = new Date(startDate + 3 * 24 * 60 * 60 * 1000)
+const startDate = new Date();
+const endDate = new Date(startDate + 3 * 24 * 60 * 60 * 1000);
 const tides = TidePredictor(constituents).getExtremesPrediction({
   start: startDate,
   end: endDate,
   labels: {
     //optional human-readable labels
-    high: 'High tide',
-    low: 'Low tide'
-  }
-})
+    high: "High tide",
+    low: "Low tide",
+  },
+});
 ```
 
 If you want predictions for a subservient station, first set the reference station in the prediction, and pass the [subservient station offests](#subservient-station) to the `getExtremesPrediction` method:
@@ -79,14 +79,14 @@ const tides = TidePredictor(constituents).getExtremesPrediction({
   offset: {
     height_offset: {
       high: 1,
-      low: 2
+      low: 2,
     },
     time_offset: {
       high: 1,
-      low: 2
-    }
-  }
-})
+      low: 2,
+    },
+  },
+});
 ```
 
 ##### Options
@@ -117,8 +117,8 @@ Gives you the predicted water level at a specific time.
 
 ```typescript
 const waterLevel = TidePredictor(constituents).getWaterLevelAtTime({
-  time: new Date()
-})
+  time: new Date(),
+});
 ```
 
 ##### Options

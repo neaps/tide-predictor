@@ -20,18 +20,18 @@ npm install neaps
 ### Tide Extremes Prediction
 
 ```typescript
-import { getExtremesPrediction } from 'neaps'
+import { getExtremesPrediction } from "neaps";
 
 const prediction = getExtremesPrediction({
   latitude: 26.7, // or `lat`
   longitude: -80.05, // or `lng` or `lon`
-  start: new Date('2025-12-17'),
-  end: new Date('2025-12-18'),
-  datum: 'MLLW', // optional, defaults to MLLW if available
-  units: 'meters' // optional, defaults to 'meters', can also be 'feet'
-})
+  start: new Date("2025-12-17"),
+  end: new Date("2025-12-18"),
+  datum: "MLLW", // optional, defaults to MLLW if available
+  units: "meters", // optional, defaults to 'meters', can also be 'feet'
+});
 
-console.log(prediction)
+console.log(prediction);
 // {
 //   datum: 'MLLW',
 //   units: 'meters',
@@ -51,18 +51,18 @@ console.log(prediction)
 ### Get Timeline Prediction
 
 ```typescript
-import { getTimelinePrediction } from 'neaps'
+import { getTimelinePrediction } from "neaps";
 
 const timeline = getTimelinePrediction({
   lat: 26.77,
   lon: -80.05,
-  start: new Date('2025-12-19T00:00:00-05:00'),
-  end: new Date('2025-12-19T01:00:00-05:00'),
+  start: new Date("2025-12-19T00:00:00-05:00"),
+  end: new Date("2025-12-19T01:00:00-05:00"),
   timeFidelity: 5 * 60, // seconds, defaults to `10 * 60`
-  units: 'meters' // optional, defaults to 'meters', can also be 'feet'
-})
+  units: "meters", // optional, defaults to 'meters', can also be 'feet'
+});
 
-console.log(timeline)
+console.log(timeline);
 // {
 //   datum: 'MLLW',
 //   units: 'meters',
@@ -84,17 +84,17 @@ console.log(timeline)
 ### Get Water Level at Specific Time
 
 ```typescript
-import { getWaterLevelAtTime } from 'neaps'
+import { getWaterLevelAtTime } from "neaps";
 
 const prediction = getWaterLevelAtTime({
   lat: 26.77,
   lon: -80.05,
-  time: new Date('2025-12-19T00:30:00-05:00'),
-  datum: 'MSL',
-  units: 'meters' // optional, defaults to 'meters', can also be 'feet'
-})
+  time: new Date("2025-12-19T00:30:00-05:00"),
+  datum: "MSL",
+  units: "meters", // optional, defaults to 'meters', can also be 'feet'
+});
 
-console.log(prediction)
+console.log(prediction);
 // {
 //   datum: 'MSL',
 //   units: 'meters',
@@ -116,10 +116,10 @@ Neaps uses [@neaps/tide-database](https://github.com/neaps/tide-database) to fin
 #### Nearest Station
 
 ```typescript
-import { nearestStation } from 'neaps'
+import { nearestStation } from "neaps";
 
-const station = nearestStation({ lat: 26.7, lon: -80.05 })
-console.log(`${station.name} (${station.source.id})`) // Fort Lauderdale, FL (8722588)
+const station = nearestStation({ lat: 26.7, lon: -80.05 });
+console.log(`${station.name} (${station.source.id})`); // Fort Lauderdale, FL (8722588)
 ```
 
 Once you've found a station, you can get predictions, timeline, or water level at a specific time for that station:
@@ -127,30 +127,28 @@ Once you've found a station, you can get predictions, timeline, or water level a
 ```typescript
 // Get extremes prediction for the nearest station
 station.getExtremesPrediction({
-  start: new Date('2025-12-17'),
-  end: new Date('2025-12-18')
-})
+  start: new Date("2025-12-17"),
+  end: new Date("2025-12-18"),
+});
 
 // Get timeline prediction for the nearest station
 station.getTimelinePrediction({
-  start: new Date('2025-12-19'),
-  end: new Date('2025-12-20')
-})
+  start: new Date("2025-12-19"),
+  end: new Date("2025-12-20"),
+});
 
 // Get timeline prediction for the nearest station
-station.getWaterLevelAt({ time: new Date('2025-12-19T00:30:00-00:00') })
+station.getWaterLevelAt({ time: new Date("2025-12-19T00:30:00-00:00") });
 ```
 
 #### List Nearby Stations
 
 ```typescript
-import { stationsNear } from 'neaps'
+import { stationsNear } from "neaps";
 
 stationsNear({ latitude: 45.6, longitude: -122.7 }, 5).forEach((s) => {
-  console.log(
-    `${s.name} (${s.source.id}) - ${(s.distance / 1000).toFixed(2)} km away`
-  )
-})
+  console.log(`${s.name} (${s.source.id}) - ${(s.distance / 1000).toFixed(2)} km away`);
+});
 // Vancouver (9440083) - 3.49 km away
 // Portland Morrison Street Bridge (9439221) - 10.24 km away
 // KNAPP(THORNES)LNDG, WILLOW BAR (9440171) - 16.34 km away
@@ -161,13 +159,13 @@ stationsNear({ latitude: 45.6, longitude: -122.7 }, 5).forEach((s) => {
 #### Find station by ID
 
 ```typescript
-import { findStation } from 'neaps'
+import { findStation } from "neaps";
 
 // Find station by Neaps ID
-findStation('us-wa-seattle') // Seattle
+findStation("us-wa-seattle"); // Seattle
 
 // Find station by source ID (e.g. NOAA)
-findStation('9440083') // Vancouver
+findStation("9440083"); // Vancouver
 ```
 
 ## Accuracy & Validation

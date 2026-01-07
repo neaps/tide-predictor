@@ -1,12 +1,12 @@
-import eslint from '@eslint/js'
-import tseslint from 'typescript-eslint'
-import prettier from 'eslint-config-prettier'
+import eslint from "@eslint/js";
+import tseslint from "typescript-eslint";
+import prettier from "eslint-config-prettier";
 
 export default [
-  { ignores: ['dist/', 'node_modules/', 'packages/*/dist'] },
+  { ignores: ["dist/", "node_modules/", "packages/*/dist"] },
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   prettier,
-  { files: ['**/*.ts'], languageOptions: { parser: tseslint.parser } },
-  { files: ['**/*.js'] }
-]
+  { files: ["**/*.ts"], languageOptions: { parser: tseslint.parser } },
+  { files: ["**/*.js"] },
+];
