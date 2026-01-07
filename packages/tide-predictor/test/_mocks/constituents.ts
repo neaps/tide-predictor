@@ -4,8 +4,7 @@ export default [
     name: 'M2',
     description: 'Principal lunar semidiurnal constituent',
     amplitude: 1.61,
-    phase_GMT: 181.3,
-    phase_local: 309.4,
+    phase: 181.3,
     speed: 28.984104
   },
   {
@@ -13,8 +12,7 @@ export default [
     name: 'S2',
     description: 'Principal solar semidiurnal constituent',
     amplitude: 0.43,
-    phase_GMT: 180.1,
-    phase_local: 300.1,
+    phase: 180.1,
     speed: 30.0
   },
   {
@@ -22,8 +20,7 @@ export default [
     name: 'N2',
     description: 'Larger lunar elliptic semidiurnal constituent',
     amplitude: 0.37,
-    phase_GMT: 155.0,
-    phase_local: 287.4,
+    phase: 155.0,
     speed: 28.43973
   },
   {
@@ -31,8 +28,7 @@ export default [
     name: 'K1',
     description: 'Lunar diurnal constituent',
     amplitude: 1.2,
-    phase_GMT: 219.6,
-    phase_local: 99.2,
+    phase: 219.6,
     speed: 15.041069
   },
   {
@@ -40,8 +36,7 @@ export default [
     name: 'M4',
     description: 'Shallow water overtides of principal lunar constituent',
     amplitude: 0.0,
-    phase_GMT: 272.7,
-    phase_local: 168.9,
+    phase: 272.7,
     speed: 57.96821
   },
   {
@@ -49,8 +44,7 @@ export default [
     name: 'O1',
     description: 'Lunar diurnal constituent',
     amplitude: 0.75,
-    phase_GMT: 203.5,
-    phase_local: 91.9,
+    phase: 203.5,
     speed: 13.943035
   },
   {
@@ -58,8 +52,7 @@ export default [
     name: 'M6',
     description: 'Shallow water overtides of principal lunar constituent',
     amplitude: 0.0,
-    phase_GMT: 0.0,
-    phase_local: 0.0,
+    phase: 0.0,
     speed: 86.95232
   },
   {
@@ -67,8 +60,7 @@ export default [
     name: 'MK3',
     description: 'Shallow water terdiurnal',
     amplitude: 0.0,
-    phase_GMT: 0.0,
-    phase_local: 0.0,
+    phase: 0.0,
     speed: 44.025173
   },
   {
@@ -76,8 +68,7 @@ export default [
     name: 'S4',
     description: 'Shallow water overtides of principal solar constituent',
     amplitude: 0.0,
-    phase_GMT: 343.5,
-    phase_local: 223.5,
+    phase: 343.5,
     speed: 60.0
   },
   {
@@ -85,8 +76,7 @@ export default [
     name: 'MN4',
     description: 'Shallow water quarter diurnal constituent',
     amplitude: 0.0,
-    phase_GMT: 233.4,
-    phase_local: 134.0,
+    phase: 233.4,
     speed: 57.423832
   },
   {
@@ -94,8 +84,7 @@ export default [
     name: 'NU2',
     description: 'Larger lunar evectional constituent',
     amplitude: 0.07,
-    phase_GMT: 160.9,
-    phase_local: 292.8,
+    phase: 160.9,
     speed: 28.512583
   },
   {
@@ -103,8 +92,7 @@ export default [
     name: 'S6',
     description: 'Shallow water overtides of principal solar constituent',
     amplitude: 0.0,
-    phase_GMT: 0.0,
-    phase_local: 0.0,
+    phase: 0.0,
     speed: 90.0
   },
   {
@@ -112,8 +100,7 @@ export default [
     name: 'MU2',
     description: 'Variational constituent',
     amplitude: 0.04,
-    phase_GMT: 114.7,
-    phase_local: 250.9,
+    phase: 114.7,
     speed: 27.968208
   },
   {
@@ -121,8 +108,7 @@ export default [
     name: '2N2',
     description: 'Lunar elliptical semidiurnal second-order constituent',
     amplitude: 0.05,
-    phase_GMT: 125.4,
-    phase_local: 262.2,
+    phase: 125.4,
     speed: 27.895355
   },
   {
@@ -130,8 +116,7 @@ export default [
     name: 'OO1',
     description: 'Lunar diurnal',
     amplitude: 0.04,
-    phase_GMT: 246.4,
-    phase_local: 117.3,
+    phase: 246.4,
     speed: 16.139101
   },
   {
@@ -139,8 +124,7 @@ export default [
     name: 'LAM2',
     description: 'Smaller lunar evectional constituent',
     amplitude: 0.01,
-    phase_GMT: 213.6,
-    phase_local: 337.9,
+    phase: 213.6,
     speed: 29.455626
   },
   {
@@ -148,8 +132,7 @@ export default [
     name: 'S1',
     description: 'Solar diurnal constituent',
     amplitude: 0.03,
-    phase_GMT: 317.1,
-    phase_local: 197.1,
+    phase: 317.1,
     speed: 15.0
   },
   {
@@ -157,8 +140,7 @@ export default [
     name: 'M1',
     description: 'Smaller lunar elliptic diurnal constituent',
     amplitude: 0.04,
-    phase_GMT: 224.9,
-    phase_local: 108.9,
+    phase: 224.9,
     speed: 14.496694
   },
   {
@@ -166,8 +148,7 @@ export default [
     name: 'J1',
     description: 'Smaller lunar elliptic diurnal constituent',
     amplitude: 0.07,
-    phase_GMT: 232.3,
-    phase_local: 107.5,
+    phase: 232.3,
     speed: 15.5854435
   },
   {
@@ -175,8 +156,7 @@ export default [
     name: 'MM',
     description: 'Lunar monthly constituent',
     amplitude: 0.0,
-    phase_GMT: 0.0,
-    phase_local: 0.0,
+    phase: 0.0,
     speed: 0.5443747
   },
   {
@@ -184,8 +164,7 @@ export default [
     name: 'SSA',
     description: 'Solar semiannual constituent',
     amplitude: 0.07,
-    phase_GMT: 264.6,
-    phase_local: 263.9,
+    phase: 264.6,
     speed: 0.0821373
   },
   {
@@ -193,8 +172,7 @@ export default [
     name: 'SA',
     description: 'Solar annual constituent',
     amplitude: 0.2,
-    phase_GMT: 198.5,
-    phase_local: 198.1,
+    phase: 198.5,
     speed: 0.0410686
   },
   {
@@ -202,8 +180,7 @@ export default [
     name: 'MSF',
     description: 'Lunisolar synodic fortnightly constituent',
     amplitude: 0.0,
-    phase_GMT: 0.0,
-    phase_local: 0.0,
+    phase: 0.0,
     speed: 1.0158958
   },
   {
@@ -211,8 +188,7 @@ export default [
     name: 'MF',
     description: 'Lunisolar fortnightly constituent',
     amplitude: 0.04,
-    phase_GMT: 138.1,
-    phase_local: 129.3,
+    phase: 138.1,
     speed: 1.0980331
   },
   {
@@ -220,8 +196,7 @@ export default [
     name: 'RHO',
     description: 'Larger lunar evectional diurnal constituent',
     amplitude: 0.02,
-    phase_GMT: 197.0,
-    phase_local: 89.2,
+    phase: 197.0,
     speed: 13.471515
   },
   {
@@ -229,8 +204,7 @@ export default [
     name: 'Q1',
     description: 'Larger lunar elliptic diurnal constituent',
     amplitude: 0.13,
-    phase_GMT: 194.8,
-    phase_local: 87.5,
+    phase: 194.8,
     speed: 13.398661
   },
   {
@@ -238,8 +212,7 @@ export default [
     name: 'T2',
     description: 'Larger solar elliptic constituent',
     amplitude: 0.02,
-    phase_GMT: 165.3,
-    phase_local: 285.6,
+    phase: 165.3,
     speed: 29.958933
   },
   {
@@ -247,8 +220,7 @@ export default [
     name: 'R2',
     description: 'Smaller solar elliptic constituent',
     amplitude: 0.0,
-    phase_GMT: 163.2,
-    phase_local: 282.9,
+    phase: 163.2,
     speed: 30.041067
   },
   {
@@ -256,8 +228,7 @@ export default [
     name: '2Q1',
     description: 'Larger elliptic diurnal',
     amplitude: 0.02,
-    phase_GMT: 191.7,
-    phase_local: 88.8,
+    phase: 191.7,
     speed: 12.854286
   },
   {
@@ -265,8 +236,7 @@ export default [
     name: 'P1',
     description: 'Solar diurnal constituent',
     amplitude: 0.38,
-    phase_GMT: 215.8,
-    phase_local: 96.1,
+    phase: 215.8,
     speed: 14.958931
   },
   {
@@ -274,8 +244,7 @@ export default [
     name: '2SM2',
     description: 'Shallow water semidiurnal constituent',
     amplitude: 0.0,
-    phase_GMT: 348.1,
-    phase_local: 99.9,
+    phase: 348.1,
     speed: 31.015896
   },
   {
@@ -283,8 +252,7 @@ export default [
     name: 'M3',
     description: 'Lunar terdiurnal constituent',
     amplitude: 0.01,
-    phase_GMT: 7.0,
-    phase_local: 19.1,
+    phase: 7.0,
     speed: 43.47616
   },
   {
@@ -292,8 +260,7 @@ export default [
     name: 'L2',
     description: 'Smaller lunar elliptic semidiurnal constituent',
     amplitude: 0.04,
-    phase_GMT: 213.4,
-    phase_local: 337.1,
+    phase: 213.4,
     speed: 29.528479
   },
   {
@@ -301,8 +268,7 @@ export default [
     name: '2MK3',
     description: 'Shallow water terdiurnal constituent',
     amplitude: 0.0,
-    phase_GMT: 126.8,
-    phase_local: 143.4,
+    phase: 126.8,
     speed: 42.92714
   },
   {
@@ -310,8 +276,7 @@ export default [
     name: 'K2',
     description: 'Lunisolar semidiurnal constituent',
     amplitude: 0.12,
-    phase_GMT: 170.6,
-    phase_local: 289.9,
+    phase: 170.6,
     speed: 30.082138
   },
   {
@@ -319,8 +284,7 @@ export default [
     name: 'M8',
     description: 'Shallow water eighth diurnal constituent',
     amplitude: 0.0,
-    phase_GMT: 0.0,
-    phase_local: 0.0,
+    phase: 0.0,
     speed: 115.93642
   },
   {
@@ -328,8 +292,7 @@ export default [
     name: 'MS4',
     description: 'Shallow water quarter diurnal constituent',
     amplitude: 0.0,
-    phase_GMT: 264.0,
-    phase_local: 152.1,
+    phase: 264.0,
     speed: 58.984104
   }
 ]

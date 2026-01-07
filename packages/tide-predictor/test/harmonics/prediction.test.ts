@@ -9,7 +9,6 @@ const extremesEndDate = new Date('2019-09-03T00:00:00Z')
 const setUpPrediction = () => {
   const harmonic = harmonics({
     harmonicConstituents: mockHarmonicConstituents,
-    phaseKey: 'phase_GMT',
     offset: false
   })
   harmonic.setTimeSpan(startDate, endDate)
@@ -25,24 +24,9 @@ describe('harmonic prediction', () => {
     expect(lastResult?.level).toBeCloseTo(2.85263589, 3)
   })
 
-  it('it creates a timeline prediction with a non-default phase key', () => {
-    const results = harmonics({
-      harmonicConstituents: mockHarmonicConstituents,
-      phaseKey: 'phase_local',
-      offset: false
-    })
-      .setTimeSpan(startDate, endDate)
-      .prediction()
-      .getTimelinePrediction()
-    expect(results[0].level).toBeCloseTo(2.7560979, 3)
-    const lastPhaseResult = results.pop()
-    expect(lastPhaseResult?.level).toBeCloseTo(-2.9170977, 3)
-  })
-
   it('it finds high and low tides', () => {
     const results = harmonics({
       harmonicConstituents: mockHarmonicConstituents,
-      phaseKey: 'phase_GMT',
       offset: false
     })
       .setTimeSpan(startDate, extremesEndDate)
@@ -57,7 +41,6 @@ describe('harmonic prediction', () => {
 
     const labelResults = harmonics({
       harmonicConstituents: mockHarmonicConstituents,
-      phaseKey: 'phase_GMT',
       offset: false
     })
       .setTimeSpan(startDate, extremesEndDate)
@@ -69,7 +52,6 @@ describe('harmonic prediction', () => {
   it('it finds high and low tides with high fidelity', () => {
     const results = harmonics({
       harmonicConstituents: mockHarmonicConstituents,
-      phaseKey: 'phase_GMT',
       offset: false
     })
       .setTimeSpan(startDate, extremesEndDate)
@@ -82,7 +64,6 @@ describe('harmonic prediction', () => {
 describe('Secondary stations', () => {
   const regularResults = harmonics({
     harmonicConstituents: mockHarmonicConstituents,
-    phaseKey: 'phase_GMT',
     offset: false
   })
     .setTimeSpan(startDate, extremesEndDate)
@@ -104,7 +85,6 @@ describe('Secondary stations', () => {
 
     const offsetResults = harmonics({
       harmonicConstituents: mockHarmonicConstituents,
-      phaseKey: 'phase_GMT',
       offset: false
     })
       .setTimeSpan(startDate, extremesEndDate)
@@ -148,7 +128,6 @@ describe('Secondary stations', () => {
 
     const offsetResults = harmonics({
       harmonicConstituents: mockHarmonicConstituents,
-      phaseKey: 'phase_GMT',
       offset: false
     })
       .setTimeSpan(startDate, extremesEndDate)

@@ -8,7 +8,6 @@ import type {
 } from './harmonics/prediction.js'
 
 export interface TidePredictionOptions {
-  phaseKey?: string
   offset?: number | false
 }
 
@@ -38,7 +37,6 @@ const tidePredictionFactory = (
 ): TidePrediction => {
   const harmonicsOptions = {
     harmonicConstituents: constituents,
-    phaseKey: 'phase_GMT',
     offset: false as number | false,
     ...options
   }
