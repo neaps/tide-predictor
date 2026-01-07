@@ -1,56 +1,48 @@
-import harmonics from './harmonics/index.js'
-import { default as constituents } from './constituents/index.js'
-import type { HarmonicConstituent } from './harmonics/index.js'
-import type {
-  TimelinePoint,
-  Extreme,
-  ExtremeOffsets
-} from './harmonics/prediction.js'
+import harmonics from "./harmonics/index.js";
+import { default as constituents } from "./constituents/index.js";
+import type { HarmonicConstituent } from "./harmonics/index.js";
+import type { TimelinePoint, Extreme, ExtremeOffsets } from "./harmonics/prediction.js";
 
 export interface TidePredictionOptions {
-  offset?: number | false
+  offset?: number | false;
 }
 
 export interface TimeSpan {
-  start: Date
-  end: Date
-  timeFidelity?: number
+  start: Date;
+  end: Date;
+  timeFidelity?: number;
 }
 
 export interface ExtremesInput extends TimeSpan {
   labels?: {
-    high?: string
-    low?: string
-  }
-  offsets?: ExtremeOffsets
+    high?: string;
+    low?: string;
+  };
+  offsets?: ExtremeOffsets;
 }
 
 export interface TidePrediction {
-  getTimelinePrediction: (params: TimeSpan) => TimelinePoint[]
-  getExtremesPrediction: (params: ExtremesInput) => Extreme[]
-  getWaterLevelAtTime: (params: { time: Date }) => TimelinePoint
+  getTimelinePrediction: (params: TimeSpan) => TimelinePoint[];
+  getExtremesPrediction: (params: ExtremesInput) => Extreme[];
+  getWaterLevelAtTime: (params: { time: Date }) => TimelinePoint;
 }
 
 const tidePredictionFactory = (
   constituents: HarmonicConstituent[],
-  options: TidePredictionOptions = {}
+  options: TidePredictionOptions = {},
 ): TidePrediction => {
   const harmonicsOptions = {
     harmonicConstituents: constituents,
     offset: false as number | false,
-    ...options
-  }
+    ...options,
+  };
 
   const tidePrediction: TidePrediction = {
-    getTimelinePrediction: ({
-      start,
-      end,
-      timeFidelity
-    }: TimeSpan): TimelinePoint[] => {
+    getTimelinePrediction: ({ start, end, timeFidelity }: TimeSpan): TimelinePoint[] => {
       return harmonics(harmonicsOptions)
         .setTimeSpan(start, end)
         .prediction({ timeFidelity })
-        .getTimelinePrediction()
+        .getTimelinePrediction();
     },
 
     getExtremesPrediction: ({
@@ -58,28 +50,28 @@ const tidePredictionFactory = (
       end,
       labels,
       offsets,
-      timeFidelity
+      timeFidelity,
     }: ExtremesInput): Extreme[] => {
       return harmonics(harmonicsOptions)
         .setTimeSpan(start, end)
         .prediction({ timeFidelity })
-        .getExtremesPrediction({ labels, offsets })
+        .getExtremesPrediction({ labels, offsets });
     },
 
     getWaterLevelAtTime: ({ time }: { time: Date }): TimelinePoint => {
-      const endDate = new Date(time.getTime() + 10 * 60 * 1000)
+      const endDate = new Date(time.getTime() + 10 * 60 * 1000);
       return harmonics(harmonicsOptions)
         .setTimeSpan(time, endDate)
         .prediction()
-        .getTimelinePrediction()[0]
-    }
-  }
+        .getTimelinePrediction()[0];
+    },
+  };
 
-  return tidePrediction
-}
+  return tidePrediction;
+};
 
 // Make constituents available on factory for reference
-tidePredictionFactory.constituents = constituents
+tidePredictionFactory.constituents = constituents;
 
-export default tidePredictionFactory
-export type { HarmonicConstituent, TimelinePoint, Extreme }
+export default tidePredictionFactory;
+export type { HarmonicConstituent, TimelinePoint, Extreme };

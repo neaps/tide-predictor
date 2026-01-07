@@ -24,31 +24,32 @@
     </div>
 
     <script type="module">
-      import tidePredictor from './src/index.js'
+      import tidePredictor from "./src/index.js";
       fetch(
-        'https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations/9413450/harcon.json?units=metric'
+        "https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations/9413450/harcon.json?units=metric",
       )
         .then((response) => {
-          return response.json()
+          return response.json();
         })
         .then((harmonics) => {
-          const start = new Date()
-          const end = new Date(start.getTime() + 10 * 24 * 60 * 60 * 1000)
+          const start = new Date();
+          const end = new Date(start.getTime() + 10 * 24 * 60 * 60 * 1000);
 
-          const highLow = tidePredictor(
-            harmonics.HarmonicConstituents
-          ).getExtremesPrediction({ start, end })
+          const highLow = tidePredictor(harmonics.HarmonicConstituents).getExtremesPrediction({
+            start,
+            end,
+          });
 
           highLow.forEach((level) => {
-            const tableRow = document.createElement('tr')
+            const tableRow = document.createElement("tr");
             tableRow.innerHTML = `
               <td>${level.time}</td>
               <td>${level.label}</td>
               <td>${level.level}</td>
-            `
-            document.getElementById('tides').appendChild(tableRow)
-          })
-        })
+            `;
+            document.getElementById("tides").appendChild(tableRow);
+          });
+        });
     </script>
   </body>
 </html>
