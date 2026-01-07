@@ -24,8 +24,7 @@ import TidePredictor from '@neaps/tide-predictor'
 
 const constituents = [
   {
-    phase_GMT: 98.7,
-    phase_local: 313.7,
+    phase: 98.7,
     amplitude: 2.687,
     name: 'M2',
     speed: 28.984104
@@ -33,9 +32,7 @@ const constituents = [
   //....there are usually many, read the docs
 ]
 
-const highLowTides = TidePredictor(constituents, {
-  phaseKey: 'phase_GMT'
-}).getExtremesPrediction({
+const highLowTides = TidePredictor(constituents).getExtremesPrediction({
   start: new Date('2019-01-01'),
   end: new Date('2019-01-10')
 })
@@ -49,7 +46,6 @@ Calling `tidePredictor` will generate a new tide prediction object. It accepts t
 
 - `constituents` - An array of [constituent objects](#constituent-object)
 - `options` - An object with one of:
-  - `phaseKey` - The name of the parameter within constituents that is considered the "phase" because many constituent datum come with multiple phases (in the case of NOAA's data, they are `phase_local` and `phase_GMT`).
   - `offset` - A value to add to **all** values predicted. This is useful if you want to, for example, offset tides by mean high water, etc.
 
 ### Tide prediction methods
@@ -146,19 +142,19 @@ Tidal constituents should be an array of objects with at least:
 
 - `name` - **string** - The NOAA constituent name, all upper-case.
 - `amplitude` - **float** - The constituent amplitude
-- `[phase]` - **float** - The phase of the constituent. Because several services provide different phase values, you can choose which one to use when building your tide prediction.
+- `phase` - **float** - The phase of the constituent.
 
-```
+```json
 [
   {
-    name: '[constituent name]',
-    amplitude: 1.3,
-    phase: 1.33
+    "name": "[constituent name]",
+    "amplitude": 1.3,
+    "phase": 1.33
   },
   {
-    name: '[constituent name 2]',
-    amplitude: 1.3,
-    phase: 1.33
+    "name": "[constituent name 2]",
+    "amplitude": 1.3,
+    "phase": 1.33
   }
 ]
 ```

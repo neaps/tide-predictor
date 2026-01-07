@@ -134,10 +134,7 @@ export function useStation(station: Station, distance?: number) {
       offset = mslOffset - datumOffset
     }
 
-    return tidePredictor(harmonic_constituents, {
-      phaseKey: 'phase_UTC',
-      offset
-    })
+    return tidePredictor(harmonic_constituents, { offset })
   }
 
   return {

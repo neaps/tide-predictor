@@ -11,7 +11,6 @@ export type * from './prediction.js'
 
 export interface HarmonicsOptions {
   harmonicConstituents: HarmonicConstituent[]
-  phaseKey: string
   offset: number | false
 }
 
@@ -54,7 +53,6 @@ const getTimeline = (start: Date, end: Date, seconds: number = 10 * 60) => {
 
 const harmonicsFactory = ({
   harmonicConstituents,
-  phaseKey,
   offset
 }: HarmonicsOptions): Harmonics => {
   if (!Array.isArray(harmonicConstituents)) {
@@ -69,7 +67,7 @@ const harmonicsFactory = ({
       constituents.push({
         ...constituent,
         _model: constituentModels[constituent.name],
-        _phase: d2r * constituent[phaseKey]
+        phase: d2r * constituent.phase
       })
     }
   })
@@ -78,7 +76,7 @@ const harmonicsFactory = ({
     constituents.push({
       name: 'Z0',
       _model: constituentModels.Z0,
-      _phase: 0,
+      phase: 0,
       amplitude: offset
     })
   }

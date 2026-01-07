@@ -19,8 +19,7 @@ describe('harmonics', () => {
           {
             description: 'Missing name property',
             amplitude: 0.43,
-            phase_GMT: 180.1,
-            phase_local: 309.4
+            phase: 180.1
           }
         ]
       })
@@ -28,23 +27,20 @@ describe('harmonics', () => {
 
     expect(() => {
       harmonics({
-        phaseKey: 'phase_GMT',
         offset: 0,
         harmonicConstituents: [
           {
             name: 'not a name',
             description: 'Principal lunar semidiurnal constituent',
             amplitude: 1.61,
-            phase_GMT: 181.3,
-            phase_local: 309.4,
+            phase: 181.3,
             speed: 28.984104
           },
           {
             name: 'M2',
             description: 'Principal solar semidiurnal constituent',
             amplitude: 0.43,
-            phase_GMT: 180.1,
-            phase_local: 309.4
+            phase: 180.1
           }
         ]
       })
@@ -53,7 +49,6 @@ describe('harmonics', () => {
 
   it('it checks start and end times', () => {
     const testHarmonics = harmonics({
-      phaseKey: 'phase_GMT',
       offset: 0,
       harmonicConstituents: mockHarmonicConstituents
     })

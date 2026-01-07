@@ -11,13 +11,12 @@ export interface Timeline {
 export interface HarmonicConstituent {
   name: string
   amplitude: number
-  // This needs refactored to support generics with the `phaseKey` option
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any
+  phase: number
+  speed?: number
+  description?: string
 }
 
 export interface InternalHarmonicConstituent extends HarmonicConstituent {
-  _phase: number
   _model: Constituent | CompoundConstituent
 }
 
@@ -141,7 +140,7 @@ const predictionFactory = ({
 
     constituents.forEach((constituent) => {
       const amplitude = constituent.amplitude
-      const phase = constituent._phase
+      const phase = constituent.phase
       const f = modelF[constituent.name]
       const speed = modelBaseSpeed[constituent.name]
       const u = modelU[constituent.name]
