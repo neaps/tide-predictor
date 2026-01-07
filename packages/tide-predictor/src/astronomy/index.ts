@@ -52,14 +52,14 @@ const T = (t: Date): number => {
 
 // Meeus formula 7.1
 const JD = (t: Date): number => {
-  let Y = t.getFullYear()
-  let M = t.getMonth() + 1
+  let Y = t.getUTCFullYear()
+  let M = t.getUTCMonth() + 1
   const D =
-    t.getDate() +
-    t.getHours() / 24.0 +
-    t.getMinutes() / (24.0 * 60.0) +
-    t.getSeconds() / (24.0 * 60.0 * 60.0) +
-    t.getMilliseconds() / (24.0 * 60.0 * 60.0 * 1e6)
+    t.getUTCDate() +
+    t.getUTCHours() / 24.0 +
+    t.getUTCMinutes() / (24.0 * 60.0) +
+    t.getUTCSeconds() / (24.0 * 60.0 * 60.0) +
+    t.getUTCMilliseconds() / (24.0 * 60.0 * 60.0 * 1e6)
   if (M <= 2) {
     Y = Y - 1
     M = M + 12

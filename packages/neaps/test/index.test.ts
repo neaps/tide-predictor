@@ -9,9 +9,49 @@ import {
 } from '../src/index.js'
 import { describe, test, expect } from 'vitest'
 
-// FIXME: this is required for these tests to pass. I can't figure out how to get accurate
-// predictions for a station in a non-UTC timezone without this.
-process.env.TZ = 'UTC'
+describe('timezone independence', () => {
+  const location = { lat: 26.772, lon: -80.05 }
+
+  test('equivalent instants yield identical extremes', () => {
+    const station = nearestStation(location)
+
+    // Same instant range expressed in different offsets
+    const utc = {
+      start: new Date('2025-12-18T00:00:00Z'),
+      end: new Date('2025-12-19T00:00:00Z'),
+      timeFidelity: 60,
+      datum: 'MLLW' as const
+    }
+    const newYork = {
+      start: new Date('2025-12-17T19:00:00-05:00'),
+      end: new Date('2025-12-18T19:00:00-05:00'),
+      timeFidelity: 60,
+      datum: 'MLLW' as const
+    }
+    const tokyo = {
+      start: new Date('2025-12-18T09:00:00+09:00'),
+      end: new Date('2025-12-19T09:00:00+09:00'),
+      timeFidelity: 60,
+      datum: 'MLLW' as const
+    }
+
+    const baseline = station.getExtremesPrediction(utc).extremes
+    const ny = station.getExtremesPrediction(newYork).extremes
+    const jp = station.getExtremesPrediction(tokyo).extremes
+
+    ;[ny, jp].forEach((result) => {
+      expect(result.length).toBe(baseline.length)
+      result.forEach((extreme, index) => {
+        const base = baseline[index]
+        expect(extreme.time.valueOf()).toBe(base.time.valueOf())
+        expect(extreme.high).toBe(base.high)
+        expect(extreme.low).toBe(base.low)
+        expect(extreme.label).toBe(base.label)
+        expect(extreme.level).toBeCloseTo(base.level, 6)
+      })
+    })
+  })
+})
 
 describe('getExtremesPrediction', () => {
   const options = {
