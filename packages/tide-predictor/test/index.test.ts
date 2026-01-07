@@ -2,23 +2,8 @@ import { describe, it, expect } from 'vitest'
 import mockConstituents from './_mocks/constituents.js'
 import tidePrediction from '../src/index.js'
 
-const startDate = new Date()
-startDate.setFullYear(2019)
-startDate.setMonth(8)
-startDate.setDate(1)
-startDate.setHours(0)
-startDate.setMinutes(0)
-startDate.setSeconds(0)
-startDate.setMilliseconds(0)
-
-const endDate = new Date()
-endDate.setFullYear(2019)
-endDate.setMonth(8)
-endDate.setDate(1)
-endDate.setHours(6)
-endDate.setMinutes(0)
-endDate.setSeconds(0)
-endDate.setMilliseconds(0)
+const startDate = new Date('2019-09-01T00:00:00Z')
+const endDate = new Date('2019-09-01T06:00:00Z')
 
 describe('Tidal station', () => {
   it('it is created correctly', () => {

@@ -11,14 +11,7 @@ import astro, {
   _nupp
 } from '../../src/astronomy/index.js'
 
-const sampleTime = new Date()
-sampleTime.setFullYear(2019)
-sampleTime.setMonth(9)
-sampleTime.setDate(4)
-sampleTime.setHours(10)
-sampleTime.setMinutes(15)
-sampleTime.setSeconds(40)
-sampleTime.setMilliseconds(10)
+const sampleTime = new Date('2019-10-04T10:15:40.010Z')
 
 describe('astronomy', () => {
   it('complete astronomic calculation', () => {
@@ -63,11 +56,12 @@ describe('astronomy', () => {
   })
 
   it('evaluates Meeus formula 7.1 (JD) correctly', () => {
-    sampleTime.setMonth(9)
-    expect(JD(sampleTime)).toBeCloseTo(2458760.92755, 2)
+    const time = new Date(sampleTime)
+    time.setUTCMonth(9)
+    expect(JD(time)).toBeCloseTo(2458760.92755, 2)
     // Months of less than 2 go back a year
-    sampleTime.setMonth(0)
-    expect(JD(sampleTime)).toBeCloseTo(2458487.92755, 2)
+    time.setUTCMonth(0)
+    expect(JD(time)).toBeCloseTo(2458487.92755, 2)
   })
 
   it('evaluates Meeus formula 11.1 (T) correctly', () => {

@@ -2,15 +2,7 @@ import { describe, it, expect } from 'vitest'
 import constituents from '../../src/constituents/index.js'
 import astro from '../../src/astronomy/index.js'
 
-const sampleTime = new Date()
-sampleTime.setFullYear(2019)
-sampleTime.setMonth(9)
-sampleTime.setDate(4)
-sampleTime.setHours(10)
-sampleTime.setMinutes(15)
-sampleTime.setSeconds(40)
-sampleTime.setMilliseconds(10)
-
+const sampleTime = new Date('2019-10-04T10:15:40.010Z')
 const testAstro = astro(sampleTime)
 
 describe('Base constituent definitions', () => {

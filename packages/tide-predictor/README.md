@@ -41,7 +41,7 @@ const highLowTides = TidePredictor(constituents, {
 })
 ```
 
-Note that, for now, Neaps **will not** do any timezone corrections. This means you need to pass date objects that align with whatever timezone the constituents are in.
+Note that all times internally are evaluated as UTC, so be sure to specify a timezone offset when constructing dates if you want to work in a local time. For example, to get tides for January 1st, 2019 in New York (UTC-5), create a date `new Date('2019-01-01T00:00:00-05:00')`
 
 ## Tide prediction object
 

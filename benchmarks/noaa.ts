@@ -6,8 +6,6 @@ import { findStation } from 'neaps'
 import { stations as db } from '@neaps/tide-database'
 import createFetch from 'make-fetch-happen'
 
-process.env.TZ = 'UTC'
-
 const __dirname = new URL('.', import.meta.url).pathname
 const fetch = createFetch.defaults({
   cachePath: join(__dirname, '.cache'),
@@ -59,7 +57,7 @@ for (const id of stations) {
 
   const noaaEvents: Extreme[] | undefined = (
     await fetchNOAAdata(id, datum)
-  ).predictions?.map((e) => ({
+  ).predictions?.map((e: { t: string; v: string; type: 'H' | 'L' }) => ({
     time: new Date(e.t + ' GMT').getTime(),
     level: parseFloat(e.v),
     type: e.type
@@ -90,8 +88,14 @@ for (const id of stations) {
   const dtMinutes: number[] = []
   const dhMeters: number[] = []
 
-  const noaa = Object.groupBy(noaaEvents, (e) => e.type)
-  const neaps = Object.groupBy(neapsEvents, (e) => e.type)
+  const noaa = Object.groupBy(noaaEvents, (e) => e.type) as Record<
+    'H' | 'L',
+    Extreme[] | undefined
+  >
+  const neaps = Object.groupBy(neapsEvents, (e) => e.type) as Record<
+    'H' | 'L',
+    Extreme[] | undefined
+  >
 
   const matchAndCollect = (noaaList: Extreme[], neapsList: Extreme[]) => {
     let j = 0
@@ -152,8 +156,8 @@ for (const id of stations) {
   matchAndCollect(noaa.H ?? [], neaps.H ?? [])
   matchAndCollect(noaa.L ?? [], neaps.L ?? [])
 
-  const events_noaa = noaa.H.length + noaa.L.length
-  const events_model = neaps.H.length + neaps.L.length
+  const events_noaa = (noaa.H?.length ?? 0) + (noaa.L?.length ?? 0)
+  const events_model = (neaps.H?.length ?? 0) + (neaps.L?.length ?? 0)
 
   // Timing metrics (minutes)
   const absDt = sort(dtMinutes.map((v) => Math.abs(v)))
