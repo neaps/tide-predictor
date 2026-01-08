@@ -1,7 +1,6 @@
 import astro from "../astronomy/index.js";
 import { d2r } from "../astronomy/constants.js";
-import type { Constituent } from "../constituents/constituent.js";
-import type { CompoundConstituent } from "../constituents/compound-constituent.js";
+import constituentModels from "../constituents/index.js";
 
 export interface Timeline {
   items: Date[];
@@ -14,10 +13,6 @@ export interface HarmonicConstituent {
   phase: number;
   speed?: number;
   description?: string;
-}
-
-export interface InternalHarmonicConstituent extends HarmonicConstituent {
-  _model: Constituent | CompoundConstituent;
 }
 
 export interface TimelinePoint {
@@ -106,7 +101,7 @@ const getExtremeLabel = (label: "high" | "low", highLowLabels?: ExtremeLabels): 
 
 interface PredictionFactoryParams {
   timeline: Timeline;
-  constituents: InternalHarmonicConstituent[];
+  constituents: HarmonicConstituent[];
   start: Date;
 }
 
@@ -220,8 +215,11 @@ const predictionFactory = ({
     const u: Record<string, number>[] = [];
     const f: Record<string, number>[] = [];
     constituents.forEach((constituent) => {
-      const value = constituent._model.value(baseAstro);
-      const speed = constituent._model.speed(baseAstro);
+      const model = constituentModels[constituent.name];
+      if (!model) return;
+
+      const value = model.value(baseAstro);
+      const speed = model.speed(baseAstro);
       baseValue[constituent.name] = d2r * value;
       baseSpeed[constituent.name] = d2r * speed;
     });
@@ -230,11 +228,14 @@ const predictionFactory = ({
       const fItem: Record<string, number> = {};
       const itemAstro = astro(time);
       constituents.forEach((constituent) => {
-        const constituentU = modulus(constituent._model.u(itemAstro), 360);
+        const model = constituentModels[constituent.name];
+        if (!model) return;
 
+        const constituentU = modulus(model.u(itemAstro), 360);
         uItem[constituent.name] = d2r * constituentU;
-        fItem[constituent.name] = modulus(constituent._model.f(itemAstro), 360);
+        fItem[constituent.name] = modulus(model.f(itemAstro), 360);
       });
+
       u.push(uItem);
       f.push(fItem);
     });

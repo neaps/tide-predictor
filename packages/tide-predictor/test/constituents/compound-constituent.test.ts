@@ -1,20 +1,20 @@
 import { describe, it, expect } from "vitest";
-import compoundConstituent from "../../src/constituents/compound-constituent.js";
-import Constituent from "../../src/constituents/constituent.js";
+import { defineCompoundConstituent } from "../../src/constituents/index.js";
+import { defineConstituent } from "../../src/constituents/index.js";
 import astro from "../../src/astronomy/index.js";
 
 const sampleTime = new Date("2019-10-04T10:15:40.010Z");
 const testAstro = astro(sampleTime);
 
 // This is a made-up doodson number for a test coefficient
-const testConstituentA = Constituent("testa", [1, 1, -1, 0, 0, 0, 1]);
-const testConstituentB = Constituent("testb", [0, 1, -1, 0, 0, 0, 1]);
+const testConstituentA = defineConstituent("testa", [1, 1, -1, 0, 0, 0, 1]);
+const testConstituentB = defineConstituent("testb", [0, 1, -1, 0, 0, 0, 1]);
 
-const compoundTest = compoundConstituent("test compound", [
+const compoundTest = defineCompoundConstituent("test compound", [
   { constituent: testConstituentA, factor: 1 },
   { constituent: testConstituentB, factor: -1 },
 ]);
-describe("compund constituent", () => {
+describe("compound constituent", () => {
   it("it calculates compound coefficients", () => {
     expect(compoundTest.coefficients).toEqual([1, 0, 0, 0, 0, 0, 0]);
   });
