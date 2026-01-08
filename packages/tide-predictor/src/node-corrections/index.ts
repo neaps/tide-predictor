@@ -3,33 +3,7 @@ import type { AstroData } from "../astronomy/index.js";
 
 export type NodeCorrectionFunction = (a: AstroData, ...args: unknown[]) => number;
 
-export interface NodeCorrections {
-  fUnity: () => number;
-  fMm: (a: AstroData) => number;
-  fMf: (a: AstroData) => number;
-  fO1: (a: AstroData) => number;
-  fJ1: (a: AstroData) => number;
-  fOO1: (a: AstroData) => number;
-  fM2: (a: AstroData) => number;
-  fK1: (a: AstroData) => number;
-  fL2: (a: AstroData) => number;
-  fK2: (a: AstroData) => number;
-  fM1: (a: AstroData) => number;
-  fModd: (a: AstroData, n: number) => number;
-  uZero: () => number;
-  uMf: (a: AstroData) => number;
-  uO1: (a: AstroData) => number;
-  uJ1: (a: AstroData) => number;
-  uOO1: (a: AstroData) => number;
-  uM2: (a: AstroData) => number;
-  uK1: (a: AstroData) => number;
-  uL2: (a: AstroData) => number;
-  uK2: (a: AstroData) => number;
-  uM1: (a: AstroData) => number;
-  uModd: (a: AstroData, n: number) => number;
-}
-
-const corrections: NodeCorrections = {
+const corrections = {
   fUnity(): number {
     return 1;
   },
