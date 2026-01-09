@@ -1,4 +1,4 @@
-import { defineConstituent } from "./index.js";
+import { defineConstituent } from "./definition.js";
 import nc from "../node-corrections/index.js";
 
 /**

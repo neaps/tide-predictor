@@ -4,7 +4,7 @@ import {
   astronomicSpeed,
   astronomicValues,
   defineConstituent,
-} from "../../src/constituents/index.js";
+} from "../../src/constituents/definition.js";
 import astro from "../../src/astronomy/index.js";
 
 const sampleTime = new Date("2019-10-04T10:15:40.010Z");

@@ -1,4 +1,4 @@
-import { defineCompoundConstituent } from "./index.js";
+import { defineCompoundConstituent } from "./definition.js";
 import S2 from "./S2.js";
 
 /**

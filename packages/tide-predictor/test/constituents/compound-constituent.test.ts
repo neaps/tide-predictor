@@ -1,6 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { defineCompoundConstituent } from "../../src/constituents/index.js";
-import { defineConstituent } from "../../src/constituents/index.js";
+import { defineCompoundConstituent, defineConstituent } from "../../src/constituents/definition.js";
 import astro from "../../src/astronomy/index.js";
 
 const sampleTime = new Date("2019-10-04T10:15:40.010Z");
