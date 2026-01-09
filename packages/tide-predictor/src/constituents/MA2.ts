@@ -3,7 +3,7 @@ import nc from "../node-corrections/index.js";
 
 /**
  * Lunar variational semi-diurnal constituent (μ2, mu2).
- * Doodson Number: 237.555
+ * Doodson Number: 545.555
  * Derived from Moon's orbital parameter variations; speed 27.968°/h with period ~12.87 hours.
  * Uses M2 nodal factors with complex variable modulation.
  *
@@ -12,4 +12,4 @@ import nc from "../node-corrections/index.js";
  *
  * @see https://iho.int/en/standards-and-specifications/standards/s-14 IHO Tidal Constituent Bank
  */
-export default defineConstituent("MA2", [2, -2, 2, 0, 0, 0, 0], nc.uM2, nc.fM2);
+export default defineConstituent("MA2", [2, 0, -1, 0, 0, 0, 0], nc.uM2, nc.fM2);
