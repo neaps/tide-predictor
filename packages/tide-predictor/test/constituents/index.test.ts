@@ -135,13 +135,13 @@ describe("Base constituent definitions", () => {
     expect(constituents["2MS6"].speed(testAstro)).toBeCloseTo(87.9682085, 7);
   });
 
-  it("has correct properties for 2MK5 (quinte-diurnal M2-K1 interaction)", () => {
+  it("has correct properties for 2MK5 (fifth-diurnal M2-K1 interaction)", () => {
     expect(constituents["2MK5"]).toBeDefined();
     const expectedSpeed = 2 * constituents.M2.speed(testAstro) + constituents.K1.speed(testAstro);
     expect(constituents["2MK5"].speed(testAstro)).toBeCloseTo(expectedSpeed, 2);
   });
 
-  it("has correct properties for 2MO5 (quinte-diurnal M2-O1 interaction)", () => {
+  it("has correct properties for 2MO5 (fifth-diurnal M2-O1 interaction)", () => {
     expect(constituents["2MO5"]).toBeDefined();
     expect(constituents["2MO5"].speed(testAstro)).toBeCloseTo(71.911244, 6);
   });

@@ -3,9 +3,6 @@ import nc from "../node-corrections/index.js";
 
 /**
  * Lunar elliptic constituent from parameter variations.
- * Doodson Number: ~565.555
- * Speed ~27.9°/h with period ~12.9 hours.
- * Uses M2 nodal factors (fM2/uM2).
  *
  * From https://iho.int/mtg_docs/com_wg/IHOTC/IHOTC_Misc/TWCWG_Constituent_list.pdf:
  *

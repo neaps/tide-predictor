@@ -5,8 +5,6 @@ import K1 from "./K1.js";
 
 /**
  * Lunar-solar interaction compound constituent.
- * Doodson Number: 254.658 (or ~255 variant)
- * Speed ~28.5°/h; Uses fK1/uK1 nodal corrections.
  *
  * Warning: Non-standard constituent not in IHO or modern NOAA standard tables.
  * Definition varies significantly across sources. Rarely used in modern tide prediction.

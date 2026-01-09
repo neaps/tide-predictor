@@ -4,8 +4,6 @@ import T2 from "./T2.js";
 
 /**
  * Lunar-solar shallow-water interaction (M2 modulated by lunar orbit).
- * Speed ~29.0°/h with period ~12.0-12.2 hours.
- * Uses M2 nodal factors (fM2/uM2).
  *
  * Warning: Not in modern IHO standard constituents; mostly historical interest.
  * Often replaced by specific ν2, λ2, or other lunar elliptic terms in modern analysis.
