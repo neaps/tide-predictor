@@ -1,22 +1,23 @@
 import { describe, it, expect } from "vitest";
-import constituent, {
+import {
   astronimicDoodsonNumber,
   astronomicSpeed,
   astronomicValues,
-} from "../../src/constituents/constituent.js";
+  defineConstituent,
+} from "../../src/constituents/definition.js";
 import astro from "../../src/astronomy/index.js";
 
 const sampleTime = new Date("2019-10-04T10:15:40.010Z");
 const testAstro = astro(sampleTime);
 
 // This is a made-up doodson number for a test coefficient
-const testConstituent = constituent("test", [1, 1, -1, 0, 0, 0, 1]);
+const testConstituent = defineConstituent("test", [1, 1, -1, 0, 0, 0, 1]);
 
 describe("constituent", () => {
   it("it throws error if missing coefficients", () => {
     expect(() => {
       // @ts-expect-error: Testing invalid input
-      constituent("fail");
+      defineConstituent("fail");
     }).toThrow("Coefficient must be defined for a constituent");
   });
 

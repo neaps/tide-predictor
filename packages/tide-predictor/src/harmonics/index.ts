@@ -1,7 +1,7 @@
 import prediction from "./prediction.js";
 import constituentModels from "../constituents/index.js";
 import { d2r } from "../astronomy/constants.js";
-import type { HarmonicConstituent, InternalHarmonicConstituent, Prediction } from "./prediction.js";
+import type { HarmonicConstituent, Prediction } from "./prediction.js";
 
 export type * from "./prediction.js";
 
@@ -51,7 +51,7 @@ const harmonicsFactory = ({ harmonicConstituents, offset }: HarmonicsOptions): H
   if (!Array.isArray(harmonicConstituents)) {
     throw new Error("Harmonic constituents are not an array");
   }
-  const constituents: InternalHarmonicConstituent[] = [];
+  const constituents: HarmonicConstituent[] = [];
   harmonicConstituents.forEach((constituent) => {
     if (typeof constituent.name === "undefined") {
       throw new Error("Harmonic constituents must have a name property");
@@ -59,7 +59,6 @@ const harmonicsFactory = ({ harmonicConstituents, offset }: HarmonicsOptions): H
     if (constituentModels[constituent.name] !== undefined) {
       constituents.push({
         ...constituent,
-        _model: constituentModels[constituent.name],
         phase: d2r * constituent.phase,
       });
     }
@@ -68,7 +67,6 @@ const harmonicsFactory = ({ harmonicConstituents, offset }: HarmonicsOptions): H
   if (offset !== false) {
     constituents.push({
       name: "Z0",
-      _model: constituentModels.Z0,
       phase: 0,
       amplitude: offset,
     });
