@@ -2,7 +2,7 @@ import type { AstroData } from "../astronomy/index.js";
 import nodeCorrections, { type NodeCorrectionFunction } from "../node-corrections/index.js";
 
 export interface Constituent {
-  name: string;
+  names: string[];
   coefficients: number[];
   value: (astro: AstroData) => number;
   speed: (astro: AstroData) => number;
@@ -11,7 +11,7 @@ export interface Constituent {
 }
 
 export function defineConstituent(
-  name: string,
+  names: string | string[],
   coefficients: number[],
   u?: NodeCorrectionFunction,
   f?: NodeCorrectionFunction,
@@ -21,7 +21,8 @@ export function defineConstituent(
   }
 
   return Object.freeze({
-    name,
+    names: Array.isArray(names) ? names : [names],
+
     coefficients,
 
     value: (astro: AstroData): number => {
@@ -43,7 +44,10 @@ export interface ConstituentMember {
   factor: number;
 }
 
-export function defineCompoundConstituent(name: string, members: ConstituentMember[]): Constituent {
+export function defineCompoundConstituent(
+  names: string | string[],
+  members: ConstituentMember[],
+): Constituent {
   const coefficients: number[] = [];
   members.forEach(({ constituent, factor }) => {
     constituent.coefficients.forEach((coefficient, index) => {
@@ -55,7 +59,7 @@ export function defineCompoundConstituent(name: string, members: ConstituentMemb
   });
 
   return Object.freeze({
-    name,
+    names: Array.isArray(names) ? names : [names],
     coefficients,
 
     speed: (astro: AstroData): number => {

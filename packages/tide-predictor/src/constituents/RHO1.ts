@@ -9,7 +9,10 @@ import K1 from "./K1.js";
  * Amplitude typically very small; rarely significant.
  * Found only in shallow-water regions with strong tidal distortion.
  */
-export default defineCompoundConstituent("RHO1", [
-  { constituent: NU2, factor: 1 },
-  { constituent: K1, factor: -1 },
-]);
+export default defineCompoundConstituent(
+  ["RHO", "RHO1"],
+  [
+    { constituent: NU2, factor: 1 },
+    { constituent: K1, factor: -1 },
+  ],
+);

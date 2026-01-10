@@ -7,4 +7,4 @@ import nc from "../node-corrections/index.js";
  * Amplitude typically <5% of M2; important in detailed constituent analysis.
  * IHO standard designation (previously abbreviated as LAM2).
  */
-export default defineConstituent("LAMBDA2", [2, 1, -2, 1, 0, 0, 2], nc.uM2, nc.fM2);
+export default defineConstituent(["LAM2", "LAMBDA2"], [2, 1, -2, 1, 0, 0, 2], nc.uM2, nc.fM2);
