@@ -7,4 +7,4 @@ import nc from "../node-corrections/index.js";
  *
  * Note: Often has small amplitude; closely related to K1 and O1 variations.
  */
-export default defineConstituent("SGM", [1, -3, 2, 0, 0, 0, -1], nc.uO1, nc.fO1);
+export default defineConstituent(["SGM", "SIGMA1"], [1, -3, 2, 0, 0, 0, -1], nc.uO1, nc.fO1);

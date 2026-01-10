@@ -10,16 +10,12 @@ const constituents: Record<string, Constituent> = {};
 
 // Extract constituent name from file path and populate the constituents object
 for (const [path, module] of Object.entries(constituentModules)) {
-  // Skip the index file itself
-  if (path.includes("index.ts")) continue;
+  // Skip the index and definition files
+  if (path.match(/index|definition/)) continue;
 
-  // Extract filename without extension and .js suffix
-  const name = path.split("/").pop()?.replace(/\..*$/, "") ?? "";
-
-  // Skip module for definition.ts
-  if (name === "definition") continue;
-
-  constituents[name] = module;
+  module.names.forEach((name) => {
+    constituents[name] = module;
+  });
 }
 
 export default constituents;
