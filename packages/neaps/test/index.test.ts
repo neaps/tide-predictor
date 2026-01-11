@@ -66,7 +66,7 @@ describe("getExtremesPrediction", () => {
   test("gets extremes from nearest station", () => {
     const prediction = getExtremesPrediction(options);
 
-    expect(prediction.station.id).toEqual("us/fl/port-of-palm-beach");
+    expect(prediction.station.id).toEqual("noaa/8722588");
     expect(prediction.datum).toBe("MLLW");
 
     const { extremes } = prediction;
@@ -96,7 +96,7 @@ describe("getTimelinePrediction", () => {
       end: new Date("2025-12-19T01:00:00-05:00"),
     });
 
-    expect(prediction.station.id).toEqual("us/fl/port-of-palm-beach");
+    expect(prediction.station.id).toEqual("noaa/8722588");
     expect(prediction.datum).toBe("MLLW");
     expect(prediction.units).toBe("meters");
     expect(prediction.timeline.length).toBe(7); // Every 10 minutes for 1 hour = 7 points
@@ -124,7 +124,7 @@ describe("getWaterLevelAtTime", () => {
       datum: "MSL",
     });
 
-    expect(prediction.station.id).toEqual("us/fl/port-of-palm-beach");
+    expect(prediction.station.id).toEqual("noaa/8722588");
     expect(prediction.datum).toBe("MSL");
     expect(prediction.time).toEqual(new Date("2025-12-19T05:30:00.000Z"));
     expect(typeof prediction.level).toBe("number");
@@ -291,16 +291,16 @@ describe("findStation", () => {
   });
 
   test("finds station by id", () => {
-    const station = findStation("us/ma/boston");
+    const station = findStation("noaa/8443970");
     expect(station).toBeDefined();
-    expect(station.id).toBe("us/ma/boston");
+    expect(station.source.id).toBe("8443970");
     expect(station.getExtremesPrediction).toBeDefined();
   });
 
   test("finds station by source id", () => {
     const station = findStation("8443970");
     expect(station).toBeDefined();
-    expect(station.id).toBe("us/ma/boston");
+    expect(station.id).toBe("noaa/8443970");
     expect(station.getExtremesPrediction).toBeDefined();
   });
 });
@@ -326,7 +326,7 @@ describe("datum", () => {
   });
 
   test("throws error for unavailable datum", () => {
-    const station = findStation("us/ma/boston");
+    const station = findStation("noaa/8443970");
     expect(() => {
       station.getExtremesPrediction({
         start: new Date("2025-12-17T00:00:00Z"),

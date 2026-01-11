@@ -34,8 +34,8 @@
     "prepack": "npm run build"
   },
   "dependencies": {
-    "@neaps/tide-database": "0.2",
-    "@neaps/tide-predictor": "^0.3.0",
+    "@neaps/tide-database": "0.3",
+    "@neaps/tide-predictor": "^0.4.0",
     "geolib": "^3.3.4"
   }
 }
