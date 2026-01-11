@@ -145,4 +145,9 @@ describe("Base constituent definitions", () => {
     expect(constituents["2MO5"]).toBeDefined();
     expect(constituents["2MO5"].speed(testAstro)).toBeCloseTo(71.911244, 6);
   });
+
+  it("has correct properties for MP1 (solar-lunar diurnal)", () => {
+    expect(constituents.MP1).toBeDefined();
+    expect(constituents.MP1.speed(testAstro)).toBeCloseTo(14.0251729, 7);
+  });
 });
