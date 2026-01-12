@@ -67,8 +67,8 @@ console.log(timeline);
 //   datum: 'MLLW',
 //   units: 'meters',
 //   station: {
-//     id: 'us-fl-port-of-west-palm-beach',
-//     name: 'Port of West Palm Beach',
+//     id: 'noaa/8722588',
+//     name: 'Port of Palm Beach',
 //     // ...
 //   },
 //   timeline: [
@@ -99,8 +99,8 @@ console.log(prediction);
 //   datum: 'MSL',
 //   units: 'meters',
 //   station: {
-//     id: 'us-fl-port-of-west-palm-beach',
-//     name: 'Port of West Palm Beach',
+//     id: 'noaa/8722588',
+//     name: 'Port of Palm Beach',
 //     // ...
 //   },
 //   time: 2025-12-19T05:30:00.000Z,
@@ -162,7 +162,7 @@ stationsNear({ latitude: 45.6, longitude: -122.7 }, 5).forEach((s) => {
 import { findStation } from "neaps";
 
 // Find station by Neaps ID
-findStation("us-wa-seattle"); // Seattle
+findStation("noaa/8443970"); // Boston
 
 // Find station by source ID (e.g. NOAA)
 findStation("9440083"); // Vancouver

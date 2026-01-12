@@ -11,7 +11,7 @@ console.log(
 );
 
 // Find station by Neaps ID
-findStation("us/ma/boston"); // Boston
+findStation("noaa/8443970"); // Boston
 
 // Find station by source ID (e.g. NOAA)
 findStation("9440083"); // Vancouver
